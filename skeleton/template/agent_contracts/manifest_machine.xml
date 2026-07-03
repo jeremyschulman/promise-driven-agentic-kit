@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Toy non-LLM agent manifest: the espresso machine.
+
+  A deterministic service agent (no FizzBee block, so nothing to model-check).
+  It offers a brewing capability the barista consumes. Validated by
+  schema/agent-manifest.xsd and wired into the promise graph by
+  scripts/verify_promise_graph.py.
+-->
+<agent-manifest agent="espresso_machine" version="1.0">
+
+  <description>
+    The espresso machine: brews and pours a requested drink and reports success
+    or failure. Deterministic hardware service — it makes no judgments about
+    whether a drink should be served; it only brews.
+  </description>
+
+  <promises>
+    <offer id="brew_drink" type="workflow" to="barista">
+      <body>Brew and pour the requested drink, returning success or a hardware
+        failure. Makes no decision about whether the drink should be served —
+        that is the barista's promise to keep.</body>
+    </offer>
+
+    <offer id="report_failure" type="invariant" to="barista">
+      <body>Always reports a brew failure rather than silently producing
+        nothing, so the barista can relay it to the customer.</body>
+    </offer>
+  </promises>
+
+</agent-manifest>

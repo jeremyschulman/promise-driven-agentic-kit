@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual env / uv
+.venv/
+.uv/
+
+# Test / tooling caches
+.pytest_cache/
+.ruff_cache/
+
+# Local scratch / rendered template output
+/render-test/
+*.tmp
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

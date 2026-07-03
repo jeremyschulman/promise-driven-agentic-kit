@@ -1,0 +1,46 @@
+# {{ project_name }}
+
+{{ project_description }}
+
+This is a **contract-driven agent**: each agent's instructions are a single
+document that is (1) a model-checked FizzBee state machine, (2) a Promise Theory
+manifest, and (3) the LLM's operating instructions. Structural guarantees are
+*proven* offline and *re-enforced* in code; judgment stays in prose. See the
+the **promise-driven-agentic-kit** whitepaper for the full methodology.
+
+## Quick start
+
+```bash
+uv sync          # create the venv and install deps
+make gate        # tests + model-check + promise-graph verification
+```
+
+New here? Read [GETTING-STARTED.md](GETTING-STARTED.md) — it covers installing
+`uv` and the `fizz` model checker.
+
+## Layout
+
+| Path | What it is |
+| --- | --- |
+| `agent_contracts/` | The contract documents. `agent_*.xml` are LLM agents (with a FizzBee contract); `manifest_*.xml` are non-LLM agents (promise manifest only). |
+| `schema/` | The XSD schemas the contracts are validated against. |
+| `src/{{ package_name }}/contracts/` | The loader (`contract_doc.py`), the `fizz` integration (`fizz_check.py`), and the promise-manifest loader (`promises.py`). |
+| `scripts/` | `verify_fizzbee_contracts.py` (model-checks every contract) and `verify_promise_graph.py` (checks the inter-agent promise graph). |
+| `tests/` | Schema validation and the model-check gate. |
+
+## The gate
+
+`make gate` runs three independent checks — all must pass before you ship:
+
+1. `uv run pytest -q` — the test suite (schema validation + model-check).
+2. `uv run python scripts/verify_fizzbee_contracts.py` — exhaustively model-checks every `agent_*.xml` contract with `fizz`.
+3. `uv run python scripts/verify_promise_graph.py` — verifies every `−use` binds to a `+offer` and every promise condition is quenched.
+
+## Writing your own agent
+
+The included `barista` agent is a placeholder. To build your own:
+
+1. Copy `agent_contracts/agent_barista.xml` to `agent_contracts/agent_<yourname>.xml`.
+2. Rewrite the `<contract>` FizzBee block (state, guards, invariants) and the `<promises>` manifest.
+3. Validate it: `uv run pytest -q` (schema) and `make fizz-check` (model check).
+4. Mirror each invariant with real enforcement code and a test — the model check proves the spec, **not** the LLM's behavior.

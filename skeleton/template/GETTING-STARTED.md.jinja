@@ -1,0 +1,73 @@
+# Getting started with {{ project_name }}
+
+This guide sets up everything you need to author and verify contract-driven
+agents: the Python environment (via **uv**) and the **FizzBee** model checker
+(the `fizz` command).
+
+## 1. Prerequisites
+
+| Tool | Why | Install |
+| --- | --- | --- |
+| **Python {{ python_version }}+** | runs the agent and the tooling | [python.org](https://www.python.org/) or `uv python install {{ python_version }}` |
+| **uv** | environment + dependency manager | `curl -LsSf https://astral.sh/uv/install.sh \| sh` (see [docs](https://docs.astral.sh/uv/)) |
+| **fizz** (FizzBee) | model-checks the contracts | see step 3 |
+| **Homebrew** *(macOS/Linux)* | easiest way to install `fizz` | [brew.sh](https://brew.sh/) |
+
+## 2. Python environment
+
+```bash
+uv sync
+```
+
+`uv sync` reads `pyproject.toml`, creates a `.venv`, and installs both runtime
+and dev dependencies (including `pytest` and `lxml`). Run project commands with
+`uv run …` so they use that environment — e.g. `uv run pytest -q`.
+
+## 3. Install the FizzBee model checker
+
+The `fizz` binary exhaustively checks that no contract can reach a state that
+violates its invariants.
+
+**Homebrew (recommended):**
+
+```bash
+brew tap fizzbee-io/fizzbee
+brew install fizzbee
+fizz --help          # confirm it's on your PATH
+```
+
+**Prebuilt binary (alternative):** download a release for your OS from
+<https://github.com/fizzbee-io/fizzbee/releases>, extract it, and put the `fizz`
+binary on your `PATH`.
+
+> Tip: `fizz install-skills` drops FizzBee's own reference skills into
+> `~/.claude/skills/`, which help when writing FizzBee in an agentic editor.
+
+If `fizz` is not installed, `pytest` will *skip* the model-check test with a
+clear message, but `make fizz-check` (and therefore `make gate`) will **fail** —
+model checking is not optional for a real contract.
+
+## 4. Run the gate
+
+```bash
+make gate
+```
+
+This runs, in order:
+
+1. `uv run pytest -q` — schema validation + model-check test.
+2. `uv run python scripts/verify_fizzbee_contracts.py` — model-checks every `agent_*.xml`.
+3. `uv run python scripts/verify_promise_graph.py` — verifies the promise graph.
+
+On a freshly generated project this is **green out of the box** against the toy
+`barista` agent — proof that your toolchain is set up correctly before you write
+a line of your own.
+
+## 5. Next steps
+
+- Read the two toy contracts in `agent_contracts/` — `agent_barista.xml` (an LLM
+  agent, with a FizzBee `<contract>`) and `manifest_machine.xml` (a non-LLM
+  service agent, promise manifest only).
+- Follow **"Writing your own agent"** in [README.md](README.md).
+- Keep every FizzBee invariant paired with real enforcement code and a test:
+  the model check proves the *specification*, never the LLM's *behavior*.

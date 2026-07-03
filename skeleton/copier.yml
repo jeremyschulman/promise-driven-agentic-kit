@@ -1,0 +1,42 @@
+# Copier template for a contract-driven agent.
+# Usage:  copier copy <this-dir-or-repo-url> my-new-agent
+# See README.md in this folder, and ../docs/why-promise-driven-agents.md.
+
+_subdirectory: template
+_templates_suffix: .jinja
+_min_copier_version: "9.0.0"
+
+project_name:
+  type: str
+  help: Human-readable project name
+  default: My Contract-Driven Agent
+
+project_slug:
+  type: str
+  help: Distribution name (kebab-case, used as the PyPI/project name)
+  default: "{{ project_name | lower | replace(' ', '-') | replace('_', '-') }}"
+
+package_name:
+  type: str
+  help: Importable Python package name (snake_case)
+  default: "{{ project_name | lower | replace(' ', '_') | replace('-', '_') }}"
+
+project_description:
+  type: str
+  help: One-line description of the agent
+  default: A contract-driven agent built on model-checked FizzBee contracts and Promise Theory.
+
+author_name:
+  type: str
+  help: Author name (optional)
+  default: ""
+
+author_email:
+  type: str
+  help: Author email (optional)
+  default: ""
+
+python_version:
+  type: str
+  help: Minimum Python version
+  default: "3.13"
