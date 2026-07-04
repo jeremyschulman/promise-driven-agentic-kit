@@ -26,7 +26,9 @@ This is a long document, written to be read in parts. Each part stands on its ow
 | **X** | Closing argument. |
 | **Appendices** | Glossary (Promise Theory term ↔ Penny artifact), references, repository index. |
 
-Throughout, the running example is **Penny**, MLB's SAP Concur expense agent. Penny is not a toy: it authenticates users against a financial system of record, acts on behalf of other people (executive-assistant delegation), reads receipts with vision models, and writes expense reports and line items through restricted-scope APIs. Every code and contract excerpt below is real and lives in this repository.
+Throughout, the running example is **Penny**, MLB's SAP Concur expense agent. Penny is not a toy: it authenticates users against a financial system of record, acts on behalf of other people (executive-assistant delegation), reads receipts with vision models, and writes expense reports and line items through restricted-scope APIs. Every code and contract excerpt below is real, drawn from the Penny reference implementation.
+
+> **Want to run it, not just read it?** This kit ships a self-contained, runnable incarnation of everything below — a live, ADK-backed clinic-appointment agent — in [`examples/clinic-appointments/`](../examples/clinic-appointments/). Its six agents demonstrate the same patterns (identity gate, conditional/assisted promises, a code-enforced no-double-book invariant, superagent composition) in a codebase you can model-check *and actually talk to*.
 
 ---
 
@@ -662,15 +664,24 @@ That is not a Penny-specific result. It is what any serious agentic system will 
 
 # Appendix C — Repository index
 
-| Artifact | Path |
+**In this kit — runnable; open these first.** The [`examples/clinic-appointments/`](../examples/clinic-appointments/) worked example is a live, model-checked incarnation of every pattern in this whitepaper:
+
+| Artifact | Path (in this kit) |
 |---|---|
-| Orchestrator contract | `agent_contracts/agent_orchestrator.xml` |
-| Create-report contract | `agent_contracts/agent_create_expense_report.xml` |
-| Add-expense contract | `agent_contracts/agent_add_expense.xml` |
+| Contract schemas | [schema/](../schema/) |
+| Orchestrator contract | [agent_clinic_orchestrator.xml](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml) |
+| Workflow-subagent contracts | [agent_book_appointment.xml](../examples/clinic-appointments/agent_contracts/agent_book_appointment.xml), [agent_manage_appointment.xml](../examples/clinic-appointments/agent_contracts/agent_manage_appointment.xml) |
+| Service / state manifests | [manifest_*.xml](../examples/clinic-appointments/agent_contracts/) |
+| Code-enforced invariants (the assessment twins) | [src/clinic/services/schedule.py](../examples/clinic-appointments/src/clinic/services/schedule.py) |
+| FizzBee model-check gate | [scripts/verify_fizzbee_contracts.py](../examples/clinic-appointments/scripts/verify_fizzbee_contracts.py) |
+| Promise-graph verifier | [scripts/verify_promise_graph.py](../examples/clinic-appointments/scripts/verify_promise_graph.py) |
+
+**In the Penny reference implementation.** The excerpts quoted throughout are from Penny's source tree (a separate, private repository); paths are for orientation, not links:
+
+| Artifact | Path (in Penny) |
+|---|---|
+| Orchestrator / subagent contracts | `agent_contracts/agent_orchestrator.xml`, `agent_create_expense_report.xml`, `agent_add_expense.xml` |
 | Executor / registry / OCR / superagent manifests | `agent_contracts/manifest_*.xml` |
-| Contract schemas (this kit) | [schema/](../schema/) |
-| FizzBee model-check gate | `scripts/verify_fizzbee_contracts.py` |
-| Promise-graph verifier | `scripts/verify_promise_graph.py` |
 | Contract loader | `src/penny/a2a/workflows/contract_doc.py` |
 | Code-enforced invariants | `src/penny/expense_core/services/contract.py` |
 

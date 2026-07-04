@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  agent-contract.xsd
+  ==================================================================
+  Schema for the LLM-agent contract documents: agent_*.xml
+  (agent_orchestrator.xml, agent_create_expense_report.xml,
+   agent_add_expense.xml).
+
+  A contract document is ONE artifact read by three audiences:
+
+    1. the `fizz` model checker  -> the <contract> FizzBee block, an
+       exhaustively verifiable state machine (guards + invariants).
+    2. the agent-construction code -> the <promises> manifest, from
+       which the agent's description, bound tools, and promise graph
+       are built (promises/loader.py, toolbinding.py).
+    3. the LLM at runtime         -> the ENTIRE document, fed verbatim
+       as the instruction; <objective>, <step-guidance>, and
+       <responses> are the prose it reasons over.
+
+  This schema fixes the OUTER shape (which sections must be present,
+  in what order, with which attributes) while deliberately leaving the
+  FizzBee source and the per-step prose as opaque text — XSD cannot,
+  and should not, parse the FizzBee DSL or enumerate every guidance
+  tag. Validity here means "well-formed contract envelope"; the
+  FizzBee semantics are proven separately by
+  scripts/verify_fizzbee_contracts.py and the promise graph by
+  scripts/verify_promise_graph.py.
+
+  Prescriptive stance: all six sections are required. A contract that
+  omits <enforcement>, for example, is treated as incomplete rather
+  than tolerated — the enforcement layer is non-negotiable in this
+  pattern (model checking proves the spec, not the LLM's behavior).
+  ==================================================================
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+  <xs:include schemaLocation="promise-common.xsd"/>
+
+  <!-- ============================================================
+       Root element
+       ============================================================ -->
+  <xs:element name="agent-instructions">
+    <xs:annotation>
+      <xs:documentation>
+        Root of an LLM-agent contract document. `workflow` is the
+        stable workflow id (matches the agent_&lt;workflow&gt;.xml file
+        stem and the id load_contract_doc() is keyed by). `version` is
+        the contract document version.
+
+        The child order is fixed and meaningful: what the agent is for
+        (objective) -> what it provably does (contract) -> what it
+        promises and uses (promises) -> how the LLM should carry each
+        step out (step-guidance) -> what code enforces regardless of
+        the LLM (enforcement) -> canned response templates (responses).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="objective" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>
+              Natural-language statement of the agent's purpose and the
+              behavior it promises. Prose only.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="contract" type="Contract"/>
+        <xs:element name="promises" type="AgentContractPromises"/>
+        <xs:element name="step-guidance" type="StepGuidance"
+                    maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              One block per step/action the LLM performs. At least one
+              is required. The `action` label usually matches a FizzBee
+              action name, but need not — some steps (e.g. scenario
+              detection) are LLM-judgment stages with no state change.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="enforcement" type="Enforcement"/>
+        <xs:element name="responses" type="Responses"/>
+      </xs:sequence>
+      <xs:attribute name="workflow" type="xs:NMTOKEN" use="required"/>
+      <xs:attribute name="version" type="VersionString" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ============================================================
+       <contract> — the model-checkable FizzBee block
+       ============================================================ -->
+  <xs:complexType name="Contract">
+    <xs:annotation>
+      <xs:documentation>
+        Wraps exactly one &lt;fizzbee&gt; element. Nothing else belongs
+        here — the region is lifted out verbatim and run through `fizz`.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="fizzbee" type="Fizzbee"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Fizzbee">
+    <xs:annotation>
+      <xs:documentation>
+        The FizzBee state machine as raw text (YAML frontmatter +
+        actions, guards, and `always assertion` invariants). Opaque to
+        XSD by design.
+
+        `mode` is fixed to "runtime-instructions": the same `oneof`
+        construct means "explore all branches" to the model checker and
+        "the agent selects exactly one" to the LLM. `verified` records
+        the fizz toolchain version the block was last checked against
+        (optional but strongly recommended once a contract is proven).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="mode" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:token">
+              <xs:enumeration value="runtime-instructions"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="verified" type="xs:token" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ============================================================
+       <promises> — manifest for an LLM agent
+       (description + tools + offers/uses)
+       ============================================================ -->
+  <xs:complexType name="AgentContractPromises">
+    <xs:annotation>
+      <xs:documentation>
+        The promise manifest for an LLM agent. Unlike a bare manifest
+        document, it also carries the agent's catalog &lt;description&gt;
+        and its bound &lt;tools&gt;, because those drive agent
+        construction. All offers precede all uses (offers first is a
+        readability convention the schema enforces).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="tools" type="ToolList"/>
+      <xs:element name="offer" type="PromiseOffer" maxOccurs="unbounded"/>
+      <xs:element name="use" type="PromiseUse"
+                  minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ToolList">
+    <xs:annotation>
+      <xs:documentation>
+        The ordered list of tools the agent is bound to. At least one
+        tool is required.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="tool" type="ToolRef" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- ============================================================
+       <step-guidance> — per-action prose (open content)
+       ============================================================ -->
+  <xs:complexType name="StepGuidance" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        Free-form guidance for one action. The wrapper is validated
+        (an `action` label is required); the interior is intentionally
+        unconstrained — authors use whatever prose sub-elements read
+        best (binding, timing, note, render, confirm, field, gate,
+        picker, on-failure, ...). Modeled as a lax wildcard so the
+        schema never has to chase a growing tag set.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:any namespace="##any" processContents="lax"
+              minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="action" type="xs:token" use="required"/>
+  </xs:complexType>
+
+  <!-- ============================================================
+       <enforcement> — code-enforced invariants (mixed content)
+       ============================================================ -->
+  <xs:complexType name="Enforcement" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        The invariants the server/service code MUST enforce
+        independently of the LLM (defense in depth; mirrored by
+        pytest). Mixed content: a leading descriptive sentence or two
+        followed by one &lt;rule&gt; per enforced invariant. Each
+        rule's `id` conventionally matches a FizzBee `always assertion`
+        name so the proof and the guard code are traceably paired.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="rule" type="Rule"
+                  minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Rule">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="id" type="xs:NMTOKEN" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ============================================================
+       <responses> — canned reply templates (open content)
+       ============================================================ -->
+  <xs:complexType name="Responses" mixed="true">
+    <xs:annotation>
+      <xs:documentation>
+        Named response templates the LLM should reuse verbatim for key
+        replies (auth-required, out-of-scope, success, error, ...). The
+        set of template names is open per agent, so each child is
+        accepted as a lax wildcard; the template text may contain
+        Markdown and [placeholder] tokens.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:any namespace="##any" processContents="lax"
+              minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

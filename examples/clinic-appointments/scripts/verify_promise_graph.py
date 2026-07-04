@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+"""Verify the inter-agent promise graph across all contract and manifest documents.
+
+Two checks, both derived from Promise Theory:
+
+  1. Binding completeness — every ``<use id=… from=A>`` (-) must meet a matching
+     ``<offer id=…>`` (+) published by agent A. A use of something no agent
+     promised is a design defect. Uses from declared EXTERNAL parties (humans /
+     outside services with no manifest) are exempt.
+  2. Condition quenching — every ``<condition ref=c>`` on an offer must either be
+     self-assessed (assessed="self") or quenched by some ``<use quenches=…c…>``.
+
+Exit code is non-zero if the graph is incoherent, so it can gate CI.
+
+Usage:
+    python scripts/verify_promise_graph.py [--docs-dir DIR]
+"""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+_SRC = Path(__file__).resolve().parents[1] / "src"
+if _SRC.is_dir() and str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))
+
+from clinic.contracts.promises import iter_manifests  # noqa: E402
+
+# Parties that publish no manifest (a human patient, an outside service). A use
+# from one of these is not checked for a matching offer. Extend as your system grows.
+EXTERNAL_PARTIES = {"patient"}
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--docs-dir", default=None, help="path to agent_contracts/")
+    args = parser.parse_args(argv)
+
+    manifests = list(iter_manifests(args.docs_dir))
+
+    offers_by_agent: dict[str, set[str]] = {}
+    for m in manifests:
+        ids: set[str] = set()
+        for offer in m.offers:
+            ids.add(offer.id)
+        offers_by_agent[m.agent] = ids
+
+    quenched: set[str] = set()
+    for m in manifests:
+        for use in m.uses:
+            for token in use.quenches:
+                quenched.add(token)
+
+    errors: list[str] = []
+
+    # 1. Binding completeness.
+    for m in manifests:
+        for use in m.uses:
+            if use.frm in EXTERNAL_PARTIES:
+                continue
+            if use.frm not in offers_by_agent:
+                errors.append(
+                    f"{m.agent}: uses '{use.id}' from unknown agent '{use.frm}'"
+                )
+            elif use.id not in offers_by_agent[use.frm]:
+                errors.append(
+                    f"{m.agent}: uses '{use.id}' which '{use.frm}' does not offer"
+                )
+
+    # 2. Condition quenching.
+    for m in manifests:
+        for offer in m.offers:
+            for cond in offer.conditions:
+                if cond.assessed == "self":
+                    continue
+                if cond.ref not in quenched:
+                    errors.append(
+                        f"{m.agent}: offer '{offer.id}' condition '{cond.ref}' "
+                        "is not quenched by any use (and is not assessed=\"self\")"
+                    )
+
+    if errors:
+        for err in errors:
+            print(f"[FAIL] {err}", file=sys.stderr)
+        print(f"{len(errors)} promise-graph error(s).", file=sys.stderr)
+        return 1
+
+    print(f"[PASS] promise graph coherent across {len(manifests)} agent(s).")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

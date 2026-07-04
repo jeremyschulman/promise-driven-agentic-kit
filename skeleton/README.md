@@ -17,7 +17,7 @@ Kit](../README.md): [`schema/`](../schema/) defines the contract format and
 uv tool install copier          # or: pipx install copier
 
 # scaffold a new repo from this template
-copier copy <path-to-contract-kit>/skeleton my-new-agent
+copier copy <path-to-promise-driven-agentic-kit>/skeleton my-new-agent
 cd my-new-agent
 
 # set up and prove the gate is green
@@ -38,7 +38,7 @@ my-new-agent/
 ├── GETTING-STARTED.md          # environment + fizz install + the gate
 ├── pyproject.toml              # uv-managed, Python ≥ 3.13
 ├── Makefile                    # `make gate` = tests + fizz-check + promise-check
-├── schema/                     # vendored copy of the contract-kit XSDs
+├── schema/                     # vendored copy of the kit's XSDs
 ├── agent_contracts/
 │   ├── agent_barista.xml       # toy LLM contract (never dispense before payment)
 │   └── manifest_machine.xml    # toy non-LLM manifest (the espresso machine)

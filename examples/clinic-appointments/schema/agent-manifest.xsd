@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  agent-manifest.xsd
+  ==================================================================
+  Schema for the non-LLM agent promise manifests: manifest_*.xml
+  (manifest_executor.xml, manifest_session_registry.xml,
+   manifest_receipt_ocr.xml, manifest_penny_superagent.xml).
+
+  A manifest declares an agent that is NOT a conversational LLM — a
+  protocol boundary, a shared-state store, a vision/OCR service, or the
+  superagent envelope the outside world sees. It therefore has NO
+  FizzBee <contract> and NO per-step <step-guidance>: there is no
+  runtime prose for an LLM to read. It publishes only its promises so
+  the promise-graph verifier can wire it into the network.
+
+  Structurally a manifest is thus much smaller than an LLM contract:
+    <agent-manifest agent="..." version="...">
+      <description>...</description>
+      <promises> +offers / -uses </promises>
+    </agent-manifest>
+
+  Note the shape difference from agent-contract.xsd: here <description>
+  sits at the ROOT (an LLM contract keeps its description inside
+  <promises>, alongside <tools>). Both families share the offer/use/
+  condition vocabulary via promise-common.xsd.
+  ==================================================================
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+  <xs:include schemaLocation="promise-common.xsd"/>
+
+  <xs:element name="agent-manifest">
+    <xs:annotation>
+      <xs:documentation>
+        Root of a non-LLM agent's promise manifest. `agent` is the
+        agent's stable name as referenced by other agents' offers/uses
+        (the `to` and `from` party names across the whole graph must
+        resolve to these). `version` is the manifest version.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="description" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>
+              What this agent is and does, in prose. For the superagent
+              manifest this is exterior-facing text; for interior
+              service agents it is documentation for maintainers.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="promises" type="ManifestPromises"/>
+      </xs:sequence>
+      <xs:attribute name="agent" type="xs:NMTOKEN" use="required"/>
+      <xs:attribute name="version" type="VersionString" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="ManifestPromises">
+    <xs:annotation>
+      <xs:documentation>
+        The bare promise manifest: offers first, then any uses. At
+        least one offer is required — a manifest that promises nothing
+        has no reason to be a declared agent. Uses are optional (e.g.
+        the superagent envelope publishes derived offers and consumes
+        nothing directly).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="offer" type="PromiseOffer" maxOccurs="unbounded"/>
+      <xs:element name="use" type="PromiseUse"
+                  minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
