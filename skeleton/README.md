@@ -1,7 +1,7 @@
 # Skeleton — a copier template for a new contract-driven agent
 
 This folder is a [copier](https://copier.readthedocs.io/) template that scaffolds a
-brand-new repository laid out like Penny: an `agent_contracts/` directory of
+brand-new repository laid out like the kit's examples: an `agent_contracts/` directory of
 model-checked contract documents, the loader/verifier machinery that reads them,
 a working **toy agent** (a "barista"), and the three-part CI gate — all wired to
 `uv` and ready to run.

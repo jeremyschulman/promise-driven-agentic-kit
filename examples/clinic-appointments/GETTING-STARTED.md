@@ -26,7 +26,7 @@ contracts, promise-graph verification, and the enforcement-twin unit tests.
 ## 2. Live agent — Vertex AI via a service account
 
 Auth uses **Application Default Credentials from a service-account JSON**. The
-required Google environment variables (Penny's convention):
+required Google environment variables (the standard Vertex convention):
 
 | Variable | Purpose | Notes |
 | --- | --- | --- |

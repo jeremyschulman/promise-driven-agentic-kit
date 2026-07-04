@@ -1,7 +1,7 @@
 """Google / Vertex AI environment bootstrap.
 
 Auth is via a **service-account JSON** (Application Default Credentials), never
-an API key. We mirror Penny's convention: read ``GOOGLE_APPLICATION_CREDENTIALS``,
+an API key. We follow the standard Vertex convention: read ``GOOGLE_APPLICATION_CREDENTIALS``,
 derive ``GOOGLE_CLOUD_PROJECT`` from the service-account file's ``project_id`` if
 unset, default the location, and turn on the Vertex backend.
 

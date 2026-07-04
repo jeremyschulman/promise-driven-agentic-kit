@@ -2,7 +2,7 @@
 
 ### Model-Checked Contracts and Promise Theory as a Rubric for Agentic Software Systems
 
-*Concepts and implementation by Jeremy Schulman. This article is AI-generated from the Penny source tree and the two companion documents ([contracts-not-prompts.md](contracts-not-prompts.md), [penny-promise-theory-architecture.md](penny-promise-theory-architecture.md)).*
+*Concepts and implementation by Jeremy Schulman. This article is AI-generated; the two companion documents are [contracts-not-prompts.md](contracts-not-prompts.md) and [promise-theory-architecture.md](promise-theory-architecture.md).*
 
 *Audience: principal engineers and architects designing agentic systems, and readers of Promise Theory. It assumes fluency in distributed-systems thinking but no prior exposure to formal methods or Promise Theory — both are developed from first principles, with citations, as we go.*
 
@@ -21,14 +21,12 @@ This is a long document, written to be read in parts. Each part stands on its ow
 | **V** | How do many agents compose into a system whose promises are mechanically checkable? (inter-agent) |
 | **VI** | How do assessment and trust work when the promiser is stochastic? |
 | **VII** | How do agents nest into superagents, and what discipline does that impose? |
-| **VIII** | The rubric: an eight-point standard for any agentic system, generalized beyond Penny. |
+| **VIII** | The rubric: an eight-point standard for any agentic system. |
 | **IX** | The honest objections and limits — including the ones a Promise Theorist will raise first. |
 | **X** | Closing argument. |
-| **Appendices** | Glossary (Promise Theory term ↔ Penny artifact), references, repository index. |
+| **Appendices** | Glossary (Promise Theory term ↔ kit artifact), references, repository index. |
 
-Throughout, the running example is **Penny**, MLB's SAP Concur expense agent. Penny is not a toy: it authenticates users against a financial system of record, acts on behalf of other people (executive-assistant delegation), reads receipts with vision models, and writes expense reports and line items through restricted-scope APIs. Every code and contract excerpt below is real, drawn from the Penny reference implementation.
-
-> **Want to run it, not just read it?** This kit ships a self-contained, runnable incarnation of everything below — a live, ADK-backed clinic-appointment agent — in [`examples/clinic-appointments/`](../examples/clinic-appointments/). Its six agents demonstrate the same patterns (identity gate, conditional/assisted promises, a code-enforced no-double-book invariant, superagent composition) in a codebase you can model-check *and actually talk to*.
+Throughout, the running examples are the two **runnable, in-repo agents** this kit ships. The primary one is a **clinic-appointment assistant** ([`examples/clinic-appointments/`](../examples/clinic-appointments/), on Google ADK): it verifies a patient's identity, checks insurance eligibility, and books, reschedules, and cancels appointments through code-enforced gates. The second is the **Trials of the Holy Grail** ([`examples/holy-grail-trials/`](../examples/holy-grail-trials/), on Pydantic AI), which we use for the superagent-card discipline and to demonstrate framework-independence. Every code and contract excerpt below is real, and you can model-check it *and talk to it*.
 
 ---
 
@@ -38,23 +36,23 @@ Throughout, the running example is **Penny**, MLB's SAP Concur expense agent. Pe
 
 The dominant way teams instruct an LLM agent is a prose system prompt:
 
-> *"You are a helpful expense assistant. Always authenticate the user before creating anything. When acting for an executive, confirm who you're acting for first…"*
+> *"You are a helpful clinic assistant. Always verify the patient before booking anything. Never book an appointment that isn't covered without confirming self-pay first…"*
 
 This is easy to write, reads well in a design review, and is **impossible to verify**. More importantly, it encodes a category error: it addresses the model as though it were a *deterministic executor* that will *comply* with instructions. It will not, because it cannot. An LLM is a stochastic sampler over token sequences. On any given turn it may classify intent wrongly, skip a step, or invent a tool argument. No wording of a prompt changes the fundamental fact that the prompt is a *solicitation*, not a *command*.
 
 For a one-shot question-answering bot, the category error is harmless — a wrong turn is cheap and self-correcting. For a **stateful, multi-step, safety-sensitive** agent it is the origin of the incidents that keep teams up at night, because it leaves the one question you actually need answered unanswerable:
 
-> *Can this agent ever reach a state it must never be in — for example, filing an expense under the wrong person, or creating a financial record before the user has authenticated?*
+> *Can this agent ever reach a state it must never be in — for example, booking an appointment before the patient is verified, or double-booking a slot?*
 
 With a prose prompt, the honest answer is "probably not, but I can't prove it."
 
 ## 1.2 Three specific ways prose breaks down
 
-Penny's real requirements make the failure modes concrete:
+The clinic agent's real requirements make the failure modes concrete:
 
-- No workflow (create a report, add an expense) may run until the user's Concur account is connected.
-- When an executive assistant acts for an executive, the *active traveler* must be resolved **before** any workflow starts, or expenses are filed under the wrong identity.
-- If the user pivots mid-task ("actually, first do X"), the agent may suspend the current task — but **at most one** task may be suspended, or the conversation state becomes unrecoverable.
+- No workflow (book, cancel, reschedule) may run until the patient's identity is verified.
+- No appointment may be booked before insurance eligibility is checked — or the patient explicitly chooses self-pay — or coverage is filed for the wrong plan.
+- If the patient pivots mid-task ("actually, cancel the other one first"), the agent may suspend the current task — but **at most one** task may be suspended, or the conversation state becomes unrecoverable.
 
 Write those as prose bullets and three problems follow immediately:
 
@@ -69,7 +67,7 @@ The insight that dissolves the category error is this: **a multi-step agent is a
 Everything here rests on two moves, developed in Parts III–V:
 
 1. **Make the agent's instructions a formal, model-checked state machine** — so "can it ever reach a bad state?" is answered by exhaustive search at design time. (This is the "contracts, not prompts" wager; see the [companion article](contracts-not-prompts.md).)
-2. **Model the whole system in Promise Theory** — so that every dependency between agents (and between the LLM and its enforcement code, and between Penny and Concur, and between Penny and its user) is a *voluntary, declared, assessable promise* rather than a hidden assumption or an imposed command.
+2. **Model the whole system in Promise Theory** — so that every dependency between agents (and between the LLM and its enforcement code, and between the agent and external services, and between the agent and its user) is a *voluntary, declared, assessable promise* rather than a hidden assumption or an imposed command.
 
 The first move makes a single agent trustworthy. The second makes a *system* of agents trustworthy. The thesis of this document is that together they constitute a **rubric** — a repeatable engineering standard — for agentic software in general.
 
@@ -108,13 +106,13 @@ A **conditional promise** `b|c` reads "I promise *b*, given that *c* holds" (B&B
 
 When an agent makes a conditional promise `b|c` **and** separately promises to *acquire* the condition `c` from some third party, the pair reduces to an **assisted promise** — from the promisee's view, the agent simply promises *b* (B&B, Def. 31; eq. 6.26; "Law 4 — assisted quenching of a pre-requisite promise"). The act of satisfying a condition is called **quenching** it.
 
-This machinery matters enormously for agentic systems, because it is exactly the shape of "Penny will create your expense report": Penny promises the report *conditional* on authentication, delegation, and duplicate-checking, and separately promises to obtain each of those conditions from the agent responsible for it. We return to this in Part V.
+This machinery matters enormously for agentic systems, because it is exactly the shape of "the clinic will book your appointment": the booking agent promises the appointment *conditional* on identity, eligibility, an open slot, and confirmation, and separately promises to obtain each of those conditions from the agent responsible for it. We return to this in Part V.
 
 ## 2.5 Assessment and trust
 
 > "An assessment is a decision about whether a promise has been kept or not. Every agent makes its own assessment about promises it is aware of." (B&B, §2.13)
 
-Promises are statements of *intent*. Keeping them is never guaranteed — a promise "can increase or decrease our certainty of a promised outcome," nothing more. Therefore every promisee that relies on a promise must **assess** whether it was kept, *locally and subjectively*. Two agents can assess the same event differently (Penny thinks the report was created; the caller's client timed out and thinks it failed).
+Promises are statements of *intent*. Keeping them is never guaranteed — a promise "can increase or decrease our certainty of a promised outcome," nothing more. Therefore every promisee that relies on a promise must **assess** whether it was kept, *locally and subjectively*. Two agents can assess the same event differently (the agent thinks the appointment was booked; the caller's client timed out and thinks it failed).
 
 **Trust** is the accumulated valuation of an agent's promise-keeping — the integral of assessment over time — which modulates *how much* a promisee relies on a promiser. Trust modulates reliance; it never creates obligation.
 
@@ -140,7 +138,7 @@ Teams that treat prompts as *commands* are perpetually surprised when the model 
 
 ## 3.1 Anatomy
 
-Each Penny LLM agent's *entire* instruction set is a single XML document. Its shape is fixed by a schema in this kit ([agent-contract.xsd](../schema/agent-contract.xsd)); the six sections each have a distinct job:
+Each LLM agent's *entire* instruction set is a single XML document. Its shape is fixed by a schema in this kit ([agent-contract.xsd](../schema/agent-contract.xsd)); the six sections each have a distinct job:
 
 ```
 <agent-instructions workflow="…" version="…">
@@ -171,36 +169,38 @@ This "one artifact, three readers" property is the distinctive engineering featu
 
 ## 3.2 The `<contract>`: a model-checkable state machine
 
-The center of gravity is `<contract>`, a block of pure [FizzBee](https://fizzbee.io) — a specification language in the TLA+/PlusCal lineage[^lamport] with Python-like syntax. Here is the authentication rule from Penny's orchestrator, verbatim from `agent_orchestrator.xml`:
+The center of gravity is `<contract>`, a block of pure [FizzBee](https://fizzbee.io) — a specification language in the TLA+/PlusCal lineage[^lamport] with Python-like syntax. Here is the verification rule from the clinic orchestrator, verbatim from [`agent_clinic_orchestrator.xml`](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml):
 
 ```python
-atomic action EnsureAuth:
-    require not concur_authenticated
+atomic action VerifyPatient:
+    require not patient_verified
     require active_workflow == NO_WORKFLOW
-    concur_authenticated = oneof [True, False]
+    patient_verified = oneof [True, False]
 
-always assertion AuthBeforeWorkflow:
-    return active_workflow == NO_WORKFLOW or concur_authenticated
+always assertion PatientVerifiedBeforeWorkflow:
+    return active_workflow == NO_WORKFLOW or patient_verified
 ```
 
 Read in plain English:
 
-- An **`action`** is something the agent can do. **`require`** clauses are **guards** — preconditions that must hold for the action to be legal. `EnsureAuth` may run only when the user is *not* yet authenticated and *no* workflow is active.
-- **`oneof [True, False]`** models a nondeterministic outcome — the login might succeed or fail.
-- An **`always assertion`** is an **invariant** — a property that must hold in *every reachable state*. `AuthBeforeWorkflow` says: either no workflow is active, or the user is authenticated. There is *no legal state* in which a workflow runs without authentication.
+- An **`action`** is something the agent can do. **`require`** clauses are **guards** — preconditions that must hold for the action to be legal. `VerifyPatient` may run only when the patient is *not* yet verified and *no* workflow is active.
+- **`oneof [True, False]`** models a nondeterministic outcome — verification might succeed or fail.
+- An **`always assertion`** is an **invariant** — a property that must hold in *every reachable state*. `PatientVerifiedBeforeWorkflow` says: either no workflow is active, or the patient is verified. There is *no legal state* in which a workflow runs unverified.
 
 ## 3.3 Model checking as pre-assessment
 
-A **model checker** (`fizz`) explores every reachable combination of state variables the actions can produce and confirms no invariant is ever violated. Penny runs it offline in CI (`scripts/verify_fizzbee_contracts.py`):
+A **model checker** (`fizz`) explores every reachable combination of state variables the actions can produce and confirms no invariant is ever violated. The clinic example runs it offline in CI (`scripts/verify_fizzbee_contracts.py`):
 
 ```
-[PASS] orchestrator
-[PASS] create_expense_report
-[PASS] add_expense
+[PASS] book_appointment
+[PASS] clinic_orchestrator
+[PASS] manage_appointment
 3/3 contract(s) passed model checking.
 ```
 
-If someone adds an action that could set `active_workflow` while `concur_authenticated` is false, the checker returns the exact sequence of steps that reaches the bad state and fails the build. "Can it ever…?" is answered by exhaustive search, at design time, before an LLM or a user is anywhere near it.
+If someone adds an action that could set `active_workflow` while `patient_verified` is false, the checker returns the exact sequence of steps that reaches the bad state and fails the build. "Can it ever…?" is answered by exhaustive search, at design time, before an LLM or a user is anywhere near it.
+
+**This is not hypothetical.** The Trials of the Holy Grail example has a Quest Marshal that grants the Grail only after both trials pass (`GrailRequiresBothTrials`). Its *first draft failed model-checking*: a knight could re-attempt an already-passed trial and flip it back to failed *after* the Grail was granted, violating the invariant. The checker produced the counterexample trace; the fix (making a passed trial sticky) was mechanical. That is pre-assessment doing its job on a real defect.
 
 In Promise Theory terms, this is **pre-assessment** (Part VI): a proof that the agent's promise set is internally *coherent* — that the agent is not promising something it has structurally made impossible — before the promise is ever offered. The `verified="fizz-0.5.1"` attribute stamped in each `<fizzbee>` tag records which toolchain version last certified it.
 
@@ -208,7 +208,7 @@ In Promise Theory terms, this is **pre-assessment** (Part VI): a proof that the 
 
 What makes this a set of *instructions* and not merely a spec is a single deliberate reinterpretation. In classic model checking, `oneof [A, B]` means "explore **both** branches." When the same document is handed to the LLM, `oneof` means "**you, the agent, select exactly one** path at runtime, based on the conversation."
 
-Penny declares this explicitly: `<fizzbee mode="runtime-instructions">`. One artifact, two readings:
+The contract declares this explicitly: `<fizzbee mode="runtime-instructions">`. One artifact, two readings:
 
 - **Model checker's reading:** explore all branches → prove no branch violates an invariant.
 - **LLM's reading:** choose one branch → the invariants describe the box you must stay inside.
@@ -219,115 +219,98 @@ The checker proves the *space of allowed behavior* is safe; the LLM navigates *w
 
 The contract is deliberately *not* the whole document. The other sections divide the labor:
 
-- **`<step-guidance>`** is where fuzzy judgment lives — how to classify intent, which tool to call, how to phrase a hand-off. This is prose, because "is this message a greeting or a request?" is not a formal property and never will be.
-- **`<enforcement>`** restates the invariants as rules the *server code* enforces independently of the model. Every FizzBee invariant has a code twin and a pytest test.
-- **`<responses>`** are templates so critical replies (the auth link, the "which report?" prompt) are consistent.
+- **`<step-guidance>`** is where fuzzy judgment lives — how to classify intent, which tool to call, how to phrase a hand-off. This is prose, because "is this message a greeting or a booking request?" is not a formal property and never will be.
+- **`<enforcement>`** restates the invariants as rules the *server code* enforces independently of the model. Every FizzBee invariant has a code twin and a test.
+- **`<responses>`** are templates so critical replies (the eligibility prompt, the "which appointment?" question) are consistent.
 
-The rule: **formalize structure and ordering (state transitions, invariants); leave judgment and phrasing to prose.** Don't try to formalize intent classification — you'll fail. Don't leave "auth before write" to prose — it'll drift. The `<promises>` section, developed next, is where these two halves are reconciled into a single Promise-Theoretic statement.
+The rule: **formalize structure and ordering (state transitions, invariants); leave judgment and phrasing to prose.** Don't try to formalize intent classification — you'll fail. Don't leave "verify before you book" to prose — it'll drift. The `<promises>` section, developed next, is where these two halves are reconciled into a single Promise-Theoretic statement.
 
 ---
 
 # Part IV — From Guards to Promises: The Intra-Agent Discipline
 
-This part makes the central conceptual claim of the intra-agent half: **every FizzBee guard is a conditional-promise body, every invariant is a promise, and the enforcement code is the assessment.** Penny's contracts are Promise Theory in disguise; the `<promises>` manifest simply makes the disguise explicit.
+This part makes the central conceptual claim of the intra-agent half: **every FizzBee guard is a conditional-promise body, every invariant is a promise, and the enforcement code is the assessment.** The contracts are Promise Theory in disguise; the `<promises>` manifest simply makes the disguise explicit.
 
 ## 4.1 An invariant is a promise; its guard is the condition
 
-Return to `AuthBeforeWorkflow`. As a FizzBee invariant it is a safety property. As a *promise* it is Penny's orchestrator declaring, to the user and to its own subagents:
+Return to `PatientVerifiedBeforeWorkflow`. As a FizzBee invariant it is a safety property. As a *promise* it is the clinic orchestrator declaring, to the patient and to its own subagents:
 
-> *"I will not run a workflow unless you are authenticated."*
+> *"I will not run a workflow unless you are verified."*
 
-The corresponding manifest entry in `agent_orchestrator.xml` states it as a conditional offer:
+The corresponding manifest entry in `agent_clinic_orchestrator.xml` states it as a conditional offer:
 
 ```xml
-<offer id="relay_to_matching_offer" type="workflow" to="user">
-  <body>Relay workflow requests to the subagent whose published offer
-    matches the intent … </body>
-  <condition ref="concur_authenticated"/>
-  <condition ref="traveler_resolved"/>
+<offer id="relay_to_matching_offer" type="workflow" to="patient">
+  <body>Relay a booking / cancel / reschedule request to the subagent whose
+    published offer matches …</body>
+  <condition ref="patient_verified"/>
 </offer>
 ```
 
-The `<condition ref="concur_authenticated"/>` is the promise's `|c`. Its `ref` is deliberately the *same token* as the FizzBee guard variable, so the prose promise, the model-checked spec, and the enforcement code all speak one vocabulary. That shared name is not a nicety; it is what lets a reviewer trace a single guarantee across all three readers of the document.
+The `<condition ref="patient_verified"/>` is the promise's `|c`. Its `ref` is deliberately the *same token* as the FizzBee guard variable, so the prose promise, the model-checked spec, and the enforcement code all speak one vocabulary. That shared name is not a nicety; it is what lets a reviewer trace a single guarantee across all three readers of the document.
 
-## 4.2 Worked example: `create_expense_report`
+## 4.2 Worked example: `book_appointment`
 
-The create-report subagent (`agent_create_expense_report.xml`) proves five invariants. Two are worth dwelling on:
+The booking subagent ([`agent_book_appointment.xml`](../examples/clinic-appointments/agent_contracts/agent_book_appointment.xml)) proves four invariants. Two are worth dwelling on:
 
 ```python
-always assertion CreateRequiresConfirmation:
-    return (not report_created) or business_purpose_confirmed
+always assertion EligibilityBeforeBooking:
+    return (not appointment_booked) or eligibility_checked
 
-always assertion NoSilentDuplicate:
-    return (not report_created) or (not similar_report_exists) or (duplicate_resolution == "create_new")
+always assertion NoDoubleBook:
+    return (not appointment_booked) or slot_available
 ```
 
-`NoSilentDuplicate` is a genuinely subtle safety property: the agent must never silently create a same-occasion draft twice. As a promise, it is: *"I will not create a report when a same-occasion draft already exists, unless you explicitly chose to."* The manifest publishes it as an `invariant`-typed offer to the compliance scope:
+`NoDoubleBook` is a genuinely load-bearing safety property: the agent must never commit an appointment to a slot that is already taken. As a promise, it is: *"I will never book a slot that isn't open."* The manifest publishes it as an `invariant`-typed offer to the compliance scope:
 
 ```xml
-<offer id="no_silent_duplicate" type="invariant" to="user mlb-compliance">
-  <body>Never silently creates a report when a same-occasion DRAFT already
-    exists for the owner. An exact same-occasion match … is refused in code
-    before the create call … unless the user explicitly chose "create new anyway";
-    near-occasion matches are surfaced by the subagent's LLM judgment.</body>
+<offer id="never_double_book" type="invariant" to="patient clinic-compliance">
+  <body>A slot is never booked twice; the commit is refused by the provider
+    schedule if the slot was taken since it was offered (NoDoubleBook, kept in
+    code regardless of the model).</body>
 </offer>
 ```
 
-Notice the body itself names the division of labor from §3.5: the *exact* match is caught in code (a hard assessment), the *near* match is LLM judgment (soft). One promise, kept jointly by two agents of very different reliability — a two-member superagent, which we formalize in Part VII.
+Notice the body itself names the division of labor from §3.5: the LLM *promises* not to double-book, but the guarantee is *kept* by the `provider_schedule` service refusing a taken slot in code. One promise, kept jointly by two agents of very different reliability — a two-member superagent, which we formalize in Part VII.
 
-## 4.3 Worked example: `add_expense` and the promise-with-fallback
+## 4.3 Worked example: the promise-with-fallback
 
-The add-expense subagent (`agent_add_expense.xml`) contains the pattern that best shows Promise Theory earning its keep — a promise *paired with an explicit fallback promise*:
-
-```python
-atomic action ItemizeHotel:
-    require expense_created
-    require is_lodging
-    require all_lines_mapped
-    require reconciles
-    itemized = True
-
-atomic action WarnItemization:
-    require expense_created
-    require is_lodging
-    require (not all_lines_mapped) or (not reconciles)
-    itemize_warned = True
-```
-
-In the manifest these become two offers:
+The booking subagent also contains the pattern that best shows Promise Theory earning its keep — a promise *paired with an explicit fallback promise*. When the chosen slot is no longer open, the agent must *never silently book a different time*; it offers alternates instead:
 
 ```xml
-<offer id="auto_itemize_hotel" type="workflow" to="user">
-  <body>Auto-itemize a lodging expense … when every line maps to a known
-    category and the amounts reconcile exactly to the total.</body>
-  <condition ref="all_lines_mapped" assessed="self"/>
-  <condition ref="reconciles" assessed="self"/>
+<offer id="book_appointment" type="workflow" to="clinic_orchestrator patient">
+  <body>Book one appointment … at a confirmed open slot.</body>
+  <condition ref="slot_available"/>
+  <condition ref="booking_confirmed"/>
+  …
 </offer>
-<offer id="itemization_warning" type="workflow" to="user">
-  <body>The promised fallback for auto_itemize_hotel: when the lodging
-    breakdown does not map or reconcile, warn the user … — never guess.</body>
+<offer id="offer_alternate_slot" type="workflow" to="patient">
+  <body>The promised fallback: when the chosen slot is no longer open, offer the
+    nearest available slots and let the patient pick — never silently book a
+    different time.</body>
+  <condition ref="slot_taken" assessed="self"/>
 </offer>
 ```
 
-This is honest promising in the strict sense: the agent assesses *its own* ability to keep `auto_itemize` (via `all_lines_mapped ∧ reconciles`, computed in code, not by the model) and, when it cannot, keeps a *different* promise — a warning — rather than guessing. The `assessed="self"` attribute is a Promise-Theoretic annotation: it marks a condition the promiser evaluates itself, as opposed to one quenched by another agent's offer (Part V).
+This is honest promising in the strict sense: the agent assesses *its own* ability to keep the booking (the slot is still open) and, when it cannot, keeps a *different* promise — offer alternates — rather than guessing. The `assessed="self"` attribute is a Promise-Theoretic annotation: it marks a condition the promiser evaluates itself, as opposed to one quenched by another agent's offer (Part V). The Trials example uses the same shape twice: a wrong Bridge answer falls back to the Gorge, and an unacceptable shrubbery falls back to "Ni!" again.
 
 ## 4.4 Why the enforcement layer is non-negotiable
 
-`add_expense` also proves the whitelist and readable-receipt invariants:
+The booking subagent also gates the create on confirmation and coverage:
 
 ```python
-always assertion CreateRequiresSupportedType:
-    return (not expense_created) or expense_type_resolved
+always assertion ConfirmBeforeBooking:
+    return (not appointment_booked) or booking_confirmed
 
-always assertion CreateRequiresReadableReceipt:
-    return (not expense_created) or (not has_receipt) or receipt_readable
+always assertion CoveredOrSelfPay:
+    return (not appointment_booked) or eligible or self_pay
 ```
 
-The model check proves these hold *for every legal action sequence*. It does **not** — and cannot — prove that the *LLM follows the legal action sequence*. The model can still mis-classify an expense type or attempt a create it shouldn't. This is the single most important caveat in the entire technique, and Promise Theory explains exactly why the fix is mandatory:
+The model check proves these hold *for every legal action sequence*. It does **not** — and cannot — prove that the *LLM follows the legal action sequence*. The model can still mis-read eligibility or attempt a booking it shouldn't. This is the single most important caveat in the entire technique, and Promise Theory explains exactly why the fix is mandatory:
 
 > The LLM is a stochastic promiser. A promise from an unreliable promiser is worthless to the promisee **without independent assessment.**
 
-So the twelve-type whitelist is enforced in code (`expense_core/services/expense_types.py`), the readable-receipt gate is enforced in code (`receipt_extraction.py`), and the boilerplate comment is *not even exposed* as a parameter the model could set (`services/contract.py`). The `<enforcement>` section names each rule; a pytest twin re-checks it. The code is the **assessment apparatus** the promisee (here, the compliance scope, on the user's behalf) uses to decide whether the stochastic promiser kept its promise.
+So `NoDoubleBook`, `EligibilityBeforeBooking`, and `ConfirmBeforeBooking` are all enforced in code, in [`provider_schedule.commit_booking`](../examples/clinic-appointments/src/clinic/services/schedule.py): it refuses a taken slot, refuses a booking whose eligibility wasn't cleared, and refuses one the patient didn't confirm — no matter what the model does. The `<enforcement>` section names each rule; a test twin re-checks it. The code is the **assessment apparatus** the promisee (here, the compliance scope, on the patient's behalf) uses to decide whether the stochastic promiser kept its promise.
 
 **If you ship the contract as a prompt and skip the code layer, you have bought false confidence.** The proof certifies the map; the code polices the territory.
 
@@ -335,31 +318,30 @@ So the twelve-type whitelist is enforced in code (`expense_core/services/expense
 
 # Part V — The Inter-Agent Graph: Composing Promises
 
-Part IV made a single agent trustworthy. But Penny is not one agent — it is a system of agents behind a single face. The inter-agent half of the theory is where most agentic-system designs are weakest, because their dependencies are *hidden*: shared state that one agent writes and another silently reads, construction-time coupling, orchestrators that claim to "own" their subordinates. Promise Theory's contribution here is to make every such dependency an explicit, checkable edge.
+Part IV made a single agent trustworthy. But the clinic agent is not one agent — it is a system of agents behind a single face. The inter-agent half of the theory is where most agentic-system designs are weakest, because their dependencies are *hidden*: shared state that one agent writes and another silently reads, construction-time coupling, orchestrators that claim to "own" their subordinates. Promise Theory's contribution here is to make every such dependency an explicit, checkable edge.
 
 ## 5.1 The agents, restated as autonomous promisers
 
-Penny's runtime agents (full inventory in the [architecture doc](penny-promise-theory-architecture.md)):
+The clinic's agents (full inventory in the [architecture doc](promise-theory-architecture.md)):
 
 | Agent | Kind | Contract / manifest |
 |---|---|---|
-| `penny_orchestrator` | LLM (root) | `agent_orchestrator.xml` |
-| `penny_create_expense_report` | LLM (subagent) | `agent_create_expense_report.xml` |
-| `penny_add_expense` | LLM (subagent) | `agent_add_expense.xml` |
-| `executor` | non-LLM gateway | `manifest_executor.xml` |
-| `session_registry` | non-LLM shared state | `manifest_session_registry.xml` |
-| `receipt_ocr` | non-LLM (vision) | `manifest_receipt_ocr.xml` |
-| `penny_superagent` | the collective face | `manifest_penny_superagent.xml` |
+| `clinic_orchestrator` | LLM (root) | `agent_clinic_orchestrator.xml` |
+| `book_appointment` | LLM (subagent) | `agent_book_appointment.xml` |
+| `manage_appointment` | LLM (subagent) | `agent_manage_appointment.xml` |
+| `provider_schedule` | non-LLM service | `manifest_provider_schedule.xml` |
+| `insurance_eligibility` | non-LLM service | `manifest_insurance_eligibility.xml` |
+| `patient_registry` | non-LLM state | `manifest_patient_registry.xml` |
 
 Each publishes a **promise manifest**: what it offers (`+`), what it agrees to use (`−`), and under which conditions. The non-LLM agents have *no* FizzBee block — they are not stochastic, so there is no state machine to model-check — but they are full participants in the promise graph. This is why the kit ships *two* schemas: [agent-contract.xsd](../schema/agent-contract.xsd) for stochastic LLM agents and [agent-manifest.xsd](../schema/agent-manifest.xsd) for the deterministic ones.
 
 ## 5.2 The orchestrator that owns nothing
 
-The most consequential reframing is the orchestrator. Under the autonomy axiom (§2.1), the orchestrator **cannot** promise that a subagent will create a report — it can only promise its *own* behavior. So its manifest contains no "ownership": it promises to *classify* intent, to *relay* to the subagent whose published offer matches, to *resolve the traveler via the approved roster*, to *remember at most one suspension*, and to *relay results verbatim*. Routing stops being a command and becomes **selection among published offers**:
+The most consequential reframing is the orchestrator. Under the autonomy axiom (§2.1), the orchestrator **cannot** promise that a subagent will book anything — it can only promise its *own* behavior. So its manifest contains no "ownership": it promises to *verify* the patient, *classify* intent, *relay* to the subagent whose published offer matches, *remember at most one suspension*, and *relay results verbatim*. Routing stops being a command and becomes **selection among published offers**:
 
 ```xml
-<use id="create_draft_report" from="penny_create_expense_report">
-  <body>The create-report workflow offer; its confirmation and owner
+<use id="book_appointment" from="book_appointment">
+  <body>The booking workflow offer; its eligibility, slot, and confirmation
     conditions are the subagent's own to keep.</body>
 </use>
 ```
@@ -372,74 +354,68 @@ Pairing every `−` with a `+` yields a bidirectional, typed graph. Contrast thi
 
 ```mermaid
 flowchart LR
-    subgraph SUPER["Penny superagent boundary"]
-        EX["executor"]
-        OR["orchestrator"]
-        CR["create_expense_report"]
-        AE["add_expense"]
-        SR["session_registry"]
-        OCR["receipt_ocr"]
+    patient["patient (human)"]
+    subgraph CLINIC["clinic superagent"]
+        orch["clinic_orchestrator"]
+        book["book_appointment"]
+        manage["manage_appointment"]
+        reg["patient_registry"]
+        sched["provider_schedule"]
+        elig["insurance_eligibility"]
     end
-    GE["Gemini Enterprise"]
-    CONCUR["SAP Concur"]
-    USER["User"]
-
-    GE -->|imposes invocation| EX
-    EX -->|"+verified_identity"| OR
-    EX -->|"+staged_receipts"| AE
-    OR -->|"−create_draft_report"| CR
-    OR -->|"−add_expense_line"| AE
-    CR -->|"+create_draft_report (cond c₁)"| OR
-    AE -->|"+add_expense_line (cond c₂)"| OR
-    CR -->|"−active_traveler"| SR
-    AE -->|"−active_report"| SR
-    SR -->|"+active_traveler / +active_report"| CR
-    OCR -->|"+receipt_draft (if readable)"| AE
-    AE -->|"−receipt_draft"| OCR
-    CR -->|"−report_api"| CONCUR
-    AE -->|"−expense_api"| CONCUR
-    CR -->|"−purpose_confirmation"| USER
-    USER -->|"+confirmation"| CR
+    patient -->|requests| orch
+    orch -->|"−book_appointment"| book
+    orch -->|"−cancel / −reschedule"| manage
+    orch -->|"−patient_identity"| reg
+    book -->|"+book_appointment (cond)"| orch
+    book -->|"−active_patient"| reg
+    book -->|"−eligibility_check"| elig
+    book -->|"−open_slots / −commit_booking"| sched
+    manage -->|"−appointment_record"| sched
+    elig -->|"−active_patient"| reg
+    sched -->|"−active_patient"| reg
 ```
 
 Three properties of this graph are worth stating as design laws:
 
-1. **An unmatched `−` is a detectable defect.** An agent consuming something no agent promised is a bug the promise-graph verifier can find offline. Penny's pre-migration codebase had exactly one such defect: subagents read `active_traveler_login` from shared state that *no agent had promised*. Which brings us to §5.4.
-2. **There are no ownership edges.** The command edges (orchestrator → subagent "route/suspend/resume") are gone. What remains is the orchestrator's `−use` of the subagent's *conditional offer*. The subagent's guards were always the real gate; the graph now says so.
-3. **Failure semantics are local.** If the create-report subagent fails to keep its offer, the orchestrator (which promised only to *relay* outcomes) assesses that independently, and so does the user. No one's promise *obliges* anyone else to compensate — compensation, if wanted, must itself be a promise.
+1. **An unmatched `−` is a detectable defect.** An agent consuming something no agent promised is a bug the promise-graph verifier can find offline. (The classic failure it prevents: a subagent reading shared state that *no agent promised* — see §5.4.)
+2. **There are no ownership edges.** The command edges (orchestrator → subagent "route/suspend/resume") are gone. What remains is the orchestrator's `−use` of the subagent's *conditional offer*. The subagents' guards were always the real gate; the graph now says so.
+3. **Failure semantics are local.** If the booking subagent fails to keep its offer, the orchestrator (which promised only to *relay* outcomes) assesses that independently, and so does the patient. No one's promise *obliges* anyone else to compensate — compensation, if wanted, must itself be a promise.
 
 ## 5.4 Promoting shared state to an agent
 
-The single most important structural move in Penny's migration was to stop treating shared session state as a *blackboard* and start treating it as an *agent*. Before: `EaMcpRuntime`/Firestore was written by the orchestrator and silently read by subagents — a hidden imposition. After: `session_registry` is an autonomous agent that *publishes* `+active_traveler` with provenance, and the subagents declare matching `−use` promises quenched by it:
+The single most important structural move is to stop treating shared session state as a *blackboard* and start treating it as an *agent*. The naive design lets the orchestrator write "the active patient" somewhere and lets the subagents silently read it — a hidden imposition. Instead, `patient_registry` is an autonomous agent that *publishes* `+active_patient` with provenance, and the subagents declare matching `−use` promises quenched by it:
 
 ```xml
-<!-- in add_expense's manifest -->
-<use id="active_report" from="session_registry" quenches="report_resolved">
-  <body>Consumes the active report the registry publishes; when absent,
-    resolves one with the user before creating.</body>
+<!-- in book_appointment's manifest -->
+<use id="active_patient" from="patient_registry" quenches="patient_verified">
+  <body>The verified patient the booking is for; the registry publishes it,
+    this agent never changes who is active.</body>
 </use>
 ```
 
-The `quenches="report_resolved"` attribute is the edge the verifier follows from a consumer's *need* to a provider's *offer*. Once state is an agent, the dependency that was invisible becomes a binding — assessable, testable, and impossible to forget when you add workflow #3.
+The `quenches="patient_verified"` attribute is the edge the verifier follows from a consumer's *need* to a provider's *offer*. Once state is an agent, the dependency that was invisible becomes a binding — assessable, testable, and impossible to forget when you add a third workflow.
 
-## 5.5 The assisted promise: "Penny will create your report"
+## 5.5 The assisted promise: "the clinic will book your appointment"
 
-Now the machinery of §2.4 pays off. The user experiences a single promise — *"Penny will create my report."* Internally that decomposes into a conditional promise plus a chain of quenched conditions:
+Now the machinery of §2.4 pays off. The patient experiences a single promise — *"my appointment will be booked."* Internally that decomposes into a conditional promise plus a chain of quenched conditions:
 
 ```mermaid
 flowchart TB
-    U["User assesses one promise:<br/>'my report will be created'"]
-    CR["create_expense_report<br/>+create_report given (purpose_confirmed ∧ owner_resolved ∧ concur_connected)"]
-    C1["−purpose_confirmation ⟶ User<br/>(ConfirmBusinessPurpose gate)"]
-    C2["−active_traveler ⟶ session_registry<br/>(quenches owner_resolved)"]
-    C3["−concur_session ⟶ session_registry<br/>(quenches concur_connected)"]
-    U --- CR
-    CR --> C1
-    CR --> C2
-    CR --> C3
+    U["patient assesses one promise:<br/>'my appointment will be booked'"]
+    B["book_appointment<br/>+book given (patient_verified ∧ eligibility_checked ∧ slot_available ∧ booking_confirmed)"]
+    C1["−confirmation ⟶ patient"]
+    C2["−active_patient ⟶ patient_registry (quenches patient_verified)"]
+    C3["−eligibility_check ⟶ insurance_eligibility (quenches eligibility_checked)"]
+    C4["−open_slots ⟶ provider_schedule (quenches slot_available)"]
+    U --- B
+    B --> C1
+    B --> C2
+    B --> C3
+    B --> C4
 ```
 
-Because the subagent promises both `create | owner_resolved` **and** `−owner_resolved` (it will acquire the owner from the registry), the pair reduces — by Law 4 — to the assisted promise `create(owner)` that the user actually experiences, while the graph preserves *who quenches each prerequisite*. This is what the theory adds over the FizzBee guards alone: the guards say *when* the agent may act; the conditional promises say *who it relies on for each condition, and that the reliance is agreed.*
+Because the subagent promises both `book | slot_available` **and** `−open_slots` (it will acquire the slot from the schedule), the pair reduces — by Law 4 — to the assisted promise `book(appointment)` that the patient actually experiences, while the graph preserves *who quenches each prerequisite*. This is what the theory adds over the FizzBee guards alone: the guards say *when* the agent may act; the conditional promises say *who it relies on for each condition, and that the reliance is agreed.*
 
 ## 5.6 Offline verification of the graph
 
@@ -447,7 +423,7 @@ Exactly as the FizzBee contracts are model-checked, the promise manifests are ve
 
 - **Binding completeness** — every `−` has a matching `+`.
 - **Condition quenching** — every `|c` is either quenched by some agent's offer or explicitly `assessed="self"`.
-- **Card entailment** — every capability advertised on the external agent card is *entailed* by interior offers (Part VII).
+- **Card entailment** — every capability advertised on the external agent card is *entailed* by interior offers (Part VII; implemented in the Trials example's verifier).
 
 This extends the "contracts, not prompts" wager from the single-agent question — *"can this agent reach a bad state?"* — to the system-level question: ***"can this system of agents make a promise it has no way to keep?"***
 
@@ -455,90 +431,91 @@ This extends the "contracts, not prompts" wager from the single-agent question �
 
 # Part VI — Assessment, Trust, and Honest Promising
 
-Promises are about intent; keeping them is never guaranteed (§2.5). A mature agentic system is therefore defined less by its promises than by its *assessments*. Penny already assesses constantly — the discipline is to *recognize* these as assessments and to eventually *record* them.
+Promises are about intent; keeping them is never guaranteed (§2.5). A mature agentic system is therefore defined less by its promises than by its *assessments*. The clinic agent already assesses constantly — the discipline is to *recognize* these as assessments and to eventually *record* them.
 
-## 6.1 Assessment mechanisms Penny already has
+## 6.1 Assessment mechanisms the system already has
 
-- **`ConcurResponse.raise_for_status()/.parse()`** — Penny's per-call assessment of Concur's API promise. A parse failure ("promise not kept: malformed body") is a distinct assessment from a 4xx ("promise not kept: refused").
-- **OAuth scope comparison** (`_log_granted_scopes`) — comparing requested vs. granted scopes is a documented assessment of Concur's authorization promise: Concur "silently drops" scopes the app isn't approved for. That log line is the canonical example of promise-vs-outcome divergence in the codebase.
-- **`validate_receipt_draft` / the `readable` flag** — the add-expense agent's assessment of the OCR agent's draft *before* relying on it.
-- **`verify_fizzbee_contracts.py` + `verified="…"`** — *pre-assessment*: proof that a promise set is coherent before it is ever offered (§3.3). The pytest `<enforcement>` twins are repeated offline assessments.
-- **The `reconciles` check** — the add-expense agent assessing its *own* ability to keep `auto_itemize` before promising it, downgrading to `warn` when it can't (§4.3).
+- **Structured refusals** — every service returns `{"ok": false, "unmet": …}` rather than raising across a boundary. A refusal is a *decision that a condition was not met* — an assessment, surfaced as a first-class outcome.
+- **The eligibility verdict** — `book_appointment`'s assessment of coverage *before* it relies on it. Coverage that comes back "not covered" is a promise not kept by the plan, assessed and relayed, not silently ignored.
+- **`verify_fizzbee_contracts.py` + `verified="…"`** — *pre-assessment*: proof that a promise set is coherent before it is ever offered (§3.3). The `<enforcement>` test twins are repeated offline assessments.
+- **The `provider_schedule` gate** — the schedule assessing, in code, whether a slot is still open before it commits — the assessment behind the LLM's `NoDoubleBook` promise (§4.2).
 
 ## 6.2 Honest promisers
 
-The OCR agent is a textbook honest promiser. Its manifest (`manifest_receipt_ocr.xml`) declares the limits of its own reliability *in the promise body*:
+The `insurance_eligibility` service is a textbook honest promiser. Its manifest (`manifest_insurance_eligibility.xml`) declares the limits of its own reliability *in the promise body*:
 
 ```xml
-<offer id="non_authoritative" type="invariant" to="penny_add_expense user">
-  <body>Nothing extracted is authoritative; every draft requires user
-    confirmation before anything is written to Concur.</body>
+<offer id="non_authoritative" type="invariant" to="book_appointment patient">
+  <body>The verdict is point-in-time and is not a guarantee of payment; the
+    booking agent must have the patient acknowledge a not-covered result before
+    proceeding self-pay.</body>
 </offer>
 ```
 
-A promiser that publishes its own unreliability lets promisees calibrate their assessment. The consumer (`add_expense`) accordingly conditions its `−use` of the draft on downstream user confirmation. Compare `PENNY_REPORT_COMMENT` — the boilerplate stamped on every created report ("Penny is still in training, and the User is required to verify all values before submitting"). That is Penny publicly calibrating the *user's* expected assessment: an honest, low-trust self-declaration.
+A promiser that publishes its own unreliability lets promisees calibrate their assessment. The consumer (`book_appointment`) accordingly conditions its `−use` of the verdict on an explicit patient decision. The Trials example does the same with its Bridgekeeper, which advertises that *correctness is judged in code, not by the seeker's confidence* — "Blue— no, yellow!" is judged wrong.
 
 ## 6.3 Trust as recorded assessment
 
-What Penny lacks — and what the [architecture doc](penny-promise-theory-architecture.md) proposes as refactoring R4 — is an **assessment ledger**: a record, per `(agent, promise-type)`, of promised / kept / not-kept / unknown outcomes. With it, **trust modulates reliance, never obligation**: low OCR keep-rate for a vendor class → the add-expense agent tightens its confirmation prompt; repeated Concur 401s on a scope → the orchestrator proactively offers reconnection instead of retrying; high subagent keep-rate → the orchestrator relays with less hedging. This is the theory's trust-as-integral-of-assessment made operational — and it is the natural next build once the promise graph exists.
+What these examples don't yet build — and what the [architecture doc](promise-theory-architecture.md) sketches — is an **assessment ledger**: a record, per `(agent, promise-type)`, of promised / kept / not-kept / unknown outcomes. With it, **trust modulates reliance, never obligation**: a dependency with a low keep-rate earns a tighter confirmation prompt; a service that repeatedly refuses gets a proactive reconnection flow instead of blind retries; a high-keep-rate subagent gets relayed with less hedging. This is the theory's trust-as-integral-of-assessment made operational — the natural next build once the promise graph exists.
 
 ## 6.4 Structured refusal as the non-cooperation path
 
-Autonomy includes the right to decline. Penny's tools already return `{"ok": false, …}` structured refusals rather than raising across boundaries — voluntary non-cooperation, not an error. Standardizing these into one shape that names *which promise could not bind and which condition failed* (architecture doc, R5) lets the orchestrator relay unmet-condition information mechanically, and lets the ledger record `not_kept(condition)` rather than a generic error. A refusal is a first-class promise outcome, not an exception.
+Autonomy includes the right to decline. The services already return `{"ok": false, …}` structured refusals rather than raising across boundaries — voluntary non-cooperation, not an error. Each refusal names *which promise could not bind and which condition failed* (e.g. `{"unmet": "slot_available"}`), which lets the orchestrator relay unmet-condition information mechanically and lets a future ledger record `not_kept(condition)` rather than a generic error. A refusal is a first-class promise outcome, not an exception.
 
 ---
 
 # Part VII — Superagents and Boundaries
 
-## 7.1 Penny is the worked example of a superagent
+## 7.1 A superagent is one agent to the outside
 
-From Gemini Enterprise's vantage point there is exactly one agent: the card at `/.well-known/agent-card.json` promising "manage Concur expenses; does not submit." Inside the boundary, that collective promise is *emergent from* the sub-promises — the executor's identity/staging offers, the orchestrator's classify/relay offers, the subagents' conditional workflow offers, the registry's state offers, the OCR agent's draft offer. This is B&B's server-pool pattern (fig. 4.4): members promise `+S` outward through a common face plus interior coordination promises invisible to the client.
+The Trials of the Holy Grail example makes the superagent boundary explicit. From a seeker's vantage there is exactly one agent — "the Trials of the Holy Grail." Inside the boundary, that collective promise is *emergent from* the sub-promises: the Marshal's verify/route offers, the two trials' conditional offers, and the registry/Bridgekeeper/market services. This is B&B's server-pool pattern (fig. 4.4): members promise `+S` outward through a common face plus interior coordination promises invisible to the client.
 
 ```mermaid
 flowchart TB
-    subgraph BOUND["Penny superagent (one agent to the outside)"]
+    subgraph BOUND["grail superagent (one agent to a seeker)"]
         direction TB
-        EX["executor"]
-        OR["orchestrator"]
-        CR["create_report"]
-        AE["add_expense"]
-        SR["session_registry"]
-        OCR["receipt_ocr"]
+        marshal["grail_quest_marshal"]
+        bridge["bridge_of_death"]
+        ni["knights_who_say_ni"]
+        reg["round_table_registry"]
+        keeper["bridgekeeper_questions"]
+        market["shrubbery_market"]
     end
-    CARD["agent-card.json<br/>collective +promise"]
-    GE["Gemini Enterprise"]
+    CARD["manifest_grail_superagent<br/>card offers, entailed-by interior"]
+    SEEKER["seeker"]
     BOUND --> CARD
-    CARD --> GE
-    EX -.-> OR -.-> CR
-    OR -.-> AE
-    CR -.-> SR
-    AE -.-> SR
-    AE -.-> OCR
+    CARD --> SEEKER
+    marshal -.-> bridge
+    marshal -.-> ni
+    bridge -.-> keeper
+    ni -.-> market
+    bridge -.-> reg
 ```
 
 ## 7.2 The card-entailment discipline
 
-The superagent manifest (`manifest_penny_superagent.xml`) makes each external offer name the interior offers that justify it:
+The superagent manifest ([`manifest_grail_superagent.xml`](../examples/holy-grail-trials/agent_contracts/manifest_grail_superagent.xml)) makes each external offer name the interior offers that justify it:
 
 ```xml
-<offer id="agent_description" type="card" to="gemini_enterprise user"
-       entailed-by="classify_intent relay_to_matching_offer create_draft_report add_expense_line staged_receipts attach_receipt never_submit">
-  <body>Autonomous expense assistant for SAP Concur … Does not submit
-    reports; users review and submit manually in Concur.</body>
+<offer id="quest_card" type="card" to="seeker knight"
+       entailed-by="classify_intent relay_to_trial knighthood_before_trial
+                    grail_only_after_both_trials cross_bridge pass_the_ni">
+  <body>Approach as a Knight of the Round Table and be marshalled through the
+    Trials of the Holy Grail … granted only once both trials are passed.</body>
 </offer>
 ```
 
-The discipline: **no capability appears on the agent card unless the interior promise graph can derive it.** The card's "attaches receipts only when the photo is readable" is derivable from the add-expense agent's `+attach|readable` and the OCR agent's `+readable` assessment. The verifier fails the build if any `entailed-by` id does not exist. This is the same single-source-of-truth move that `contract_doc.py` made for instructions-vs-model-checking, applied one level up — the outward promise can never drift from what the members actually offer.
+The discipline: **no capability appears on the agent card unless the interior promise graph can derive it.** The Trials example's `verify_promise_graph.py` fails the build if any `entailed-by` id does not exist as a real interior offer. This is the same single-source-of-truth move the contract makes for instructions-vs-model-checking, applied one level up — the outward promise can never drift from what the members actually offer.
 
 ## 7.3 The interior two-member superagent
 
-The `(create_report LLM + services/contract.py)` pair is itself a superagent: the LLM half promises to *follow* the contract; the code half promises to *enforce* it. Their conjunction is what makes `CommentIsBoilerplate` a promise Penny can keep *against a stochastic executor*. The companion article calls this "defense in depth"; in promise terms it is a coordinated promise made jointly by two agents with very different keeping-probabilities — the reliable agent (code) backstopping the unreliable one (LLM). **This is the atomic unit of the whole methodology**: never a stochastic promise alone, always a stochastic promise paired with a deterministic assessment.
+The `(book_appointment LLM + provider_schedule code)` pair is itself a superagent: the LLM half promises to *follow* the contract (never double-book); the code half promises to *enforce* it (refuse a taken slot). Their conjunction is what makes `NoDoubleBook` a promise the system can keep *against a stochastic executor*. The companion article calls this "defense in depth"; in promise terms it is a coordinated promise made jointly by two agents with very different keeping-probabilities — the reliable agent (code) backstopping the unreliable one (LLM). **This is the atomic unit of the whole methodology**: never a stochastic promise alone, always a stochastic promise paired with a deterministic assessment.
 
 ---
 
 # Part VIII — The Rubric
 
-This is the generalization. Everything above is specific to Penny; the following is not. It is a standard applicable to *any* agentic software system — any system in which one or more stochastic models are given tools and asked to act over multiple steps. The claim is strong and deliberate: **Promise Theory plus model-checked contracts is the correct engineering foundation for agentic AI, and the eight points below are its rubric.**
+This is the generalization. Everything above is grounded in two example agents; the following is not. It is a standard applicable to *any* agentic software system — any system in which one or more stochastic models are given tools and asked to act over multiple steps. The claim is strong and deliberate: **Promise Theory plus model-checked contracts is the correct engineering foundation for agentic AI, and the eight points below are its rubric.**
 
 The reasoning is a syllogism: an LLM is an autonomous stochastic agent (§2.7); autonomous agents cannot be commanded, only induced to promise and then assessed (§2.2, §2.5); therefore any system that relies on an LLM's behavior *must* be architected as promises with assessments, whether or not its designers use the vocabulary. The rubric simply makes explicit — and checkable — what the theory says is unavoidable.
 
@@ -562,7 +539,7 @@ The reasoning is a syllogism: an LLM is an autonomous stochastic agent (§2.7); 
 
 ### The rubric as a maturity model
 
-The eight points also read as a maturity ladder. Points 1–2 make a *single agent* trustworthy (most teams stop here, if they get this far). Points 3–6 make a *system* trustworthy. Points 7–8 make it *adaptive and honest* over time. Penny today fully implements 1–6, with 7–8 designed and partially built (the [architecture doc](penny-promise-theory-architecture.md) tracks them as refactorings R4–R5, R8).
+The eight points also read as a maturity ladder. Points 1–2 make a *single agent* trustworthy (most teams stop here, if they get this far). Points 3–6 make a *system* trustworthy. Points 7–8 make it *adaptive and honest* over time. The kit's examples implement 1–6 today (the Trials example adds point 6, card entailment); points 7–8 are sketched in the [architecture doc](promise-theory-architecture.md) as the natural next build.
 
 ## 8.2 When *not* to use it
 
@@ -581,7 +558,7 @@ Honesty is the point of a rubric. The costs are real:
 |---|---|
 | **Plain prose prompt** | An imposition with no assessment. The direct upgrade path: same delivery mechanism, add structure + verification. |
 | **ReAct / free tool loop** | Pure elicitation, no declared promises, no invariants. Fine for exploratory low-stakes use. |
-| **Guardrails / structured output** | Assessment of *output shape* only — a partial, output-side assessment. Complementary: Penny uses it for OCR extraction. |
+| **Guardrails / structured output** | Assessment of *output shape* only — a partial, output-side assessment. Complementary: structured tool results pair well with this pattern. |
 | **Code state-machine graph (LangGraph, etc.)** | Encodes the machine in code but *not model-checked* and *not the model's instructions* — two artifacts that drift. The promise/assessment split is implicit at best. |
 | **Deterministic workflow engine (LLM as leaf)** | Removes the stochastic agent from control flow — the safest option *when feasible*. When conversational routing needs the model, it isn't. |
 | **This pattern** | Promises (contracts) + assessment (code) + composition (promise graph), all model-checked and verified offline, one artifact per agent. |
@@ -596,7 +573,7 @@ A rigorous reader — and certainly a Promise Theorist — will raise these befo
 
 **"Model checking proves the specification, not the system."** Correct, and stated as the central caveat throughout (§3.3, §4.4). The proof certifies that the *promise set is coherent* — a pre-assessment. Keeping the promise at runtime is never guaranteed for a stochastic agent, which is exactly why points 4 and 7 of the rubric (assessment, ledger) are not optional. The technique does not claim to make the LLM correct; it claims to make its *failures bounded and detected*.
 
-**"Assessments are subjective and local — so what does a proof buy you across a boundary?"** Precisely the ability to *name whose assessment is whose*. When Gemini Enterprise assesses a turn as failed (timeout) while Penny assesses it as kept (the report exists in Concur), the promise graph does not eliminate the divergence — it makes the conversation tractable: *"your orchestrator broke its promise; ours kept ours."* Locality of assessment is a feature of reality, not a bug in the method.
+**"Assessments are subjective and local — so what does a proof buy you across a boundary?"** Precisely the ability to *name whose assessment is whose*. When a caller assesses a turn as failed (its client timed out) while the agent assesses it as kept (the appointment exists in the schedule), the promise graph does not eliminate the divergence — it makes the conversation tractable: *"your client's timeout is your assessment; the booking is real by ours."* Locality of assessment is a feature of reality, not a bug in the method.
 
 **"Isn't this just a state machine plus tests with fancier words?"** The words are load-bearing. A state machine plus tests gives you a machine and some checks. Promise Theory tells you *which* checks are mandatory (assessment of every stochastic promise), *which* dependencies are defects (unmatched `−`), *why* the orchestrator must not "own" its subagents (autonomy), and *how* the external contract relates to the internal one (entailment). It is the theory that turns a pile of good practices into a *rubric* with a reason for each rule.
 
@@ -606,35 +583,35 @@ A rigorous reader — and certainly a Promise Theorist — will raise these befo
 
 # Part X — Closing Argument
 
-The deepest finding, stated plainly: **an agentic system's intra-agent discipline is already Promise Theory in disguise, and its inter-agent discipline is where the theory has the most to give.** Penny's contract documents were self-promises — model-checked declarations about an agent's own behavior, enforced in code, with structured refusal as the non-cooperation path — before anyone used the word "promise." What the theory added was the other half: declared acceptances, conditions that name their quenchers, an assessment record, and an external promise *derived from* rather than *asserted alongside* its members.
+The deepest finding, stated plainly: **an agentic system's intra-agent discipline is already Promise Theory in disguise, and its inter-agent discipline is where the theory has the most to give.** A contract document is a self-promise — a model-checked declaration about an agent's own behavior, enforced in code, with structured refusal as the non-cooperation path — whether or not anyone uses the word "promise." What the theory adds is the other half: declared acceptances, conditions that name their quenchers, an assessment record, and an external promise *derived from* rather than *asserted alongside* its members.
 
 The wager compounds. "Contracts, not prompts" answered, for one agent, *can it reach a bad state?* Promise Theory answers, for the system, *can it make a promise it has no way to keep?* Both questions are answered **before deployment, by exhaustive offline checking**, on the same artifacts the model reads at runtime.
 
-Penny takes a receipt photo and turns it into a fully populated, receipt-attached Concur expense line — through authentication, delegation, intent routing, OCR, and three restricted-scope APIs — without ever being able to reach a state where it files an expense for the wrong person or before you have logged in. Not because a prompt asked nicely, but because the contract made it *provably impossible*, the code made it *assessed*, and the promise graph made every dependency *declared*.
+The clinic agent takes "I'm Ada Lovelace, book me a dermatology visit" and turns it into a confirmed, eligibility-checked appointment — through identity verification, coverage assessment, and a real scheduling API — without ever being able to reach a state where it books before you are verified or double-books a slot. The Trials agent lets a knight cross only with the right three answers and pass only with an acceptable shrubbery. Not because a prompt asked nicely, but because the contract made the bad states *provably unreachable*, the code made them *assessed*, and the promise graph made every dependency *declared*.
 
-That is not a Penny-specific result. It is what any serious agentic system will need, because the premise is universal: the model is an autonomous stochastic agent, and autonomous agents can only be promised, and then assessed. The eight-point rubric of Part VIII is one concrete way to build on that premise. It is offered here not as the last word but as a starting standard — a rubric for the agentic systems still to be built.
+That is not a domain-specific result. It is what any serious agentic system will need, because the premise is universal: the model is an autonomous stochastic agent, and autonomous agents can only be promised, and then assessed. The eight-point rubric of Part VIII is one concrete way to build on that premise. It is offered here not as the last word but as a starting standard — a rubric for the agentic systems still to be built.
 
 ---
 
-# Appendix A — Glossary: Promise Theory term ↔ Penny artifact
+# Appendix A — Glossary: Promise Theory term ↔ kit artifact
 
-| Promise Theory | In Penny |
+| Promise Theory | In the examples (clinic / grail) |
 |---|---|
-| Agent (autonomous) | Each `LlmAgent`, the executor, the session registry, the OCR service, Concur, GE, the user |
+| Agent (autonomous) | Each LLM agent, the services (schedule, eligibility, registry), the human user, the model |
 | Promise body *b* | The `<body>` of an `<offer>`/`<use>`; a FizzBee invariant |
 | `+b` (offer) | `<offer>` in a manifest |
 | `−b` (use/accept) | `<use>` in a manifest |
 | Conditional promise `b|c` | `<offer>` with a `<condition ref="c"/>`; a FizzBee `require` guard |
 | Quenching a condition | `<use … quenches="c">` matched to another agent's `+c` |
 | Self-assessed condition | `<condition … assessed="self"/>` |
-| Assisted promise (Law 4) | "Penny will create your report" = create-report's `create|owner` + `−owner` from the registry (§5.5) |
-| Assessment | `ConcurResponse.parse()`, the `readable` gate, code `<enforcement>`, pytest twins |
-| Pre-assessment | `fizz` model checking; `verified="fizz-0.5.1"` |
-| Trust (integral of assessment) | Proposed assessment ledger (architecture doc R4); `PENNY_REPORT_COMMENT` self-calibration |
-| Imposition | GE invoking Penny; a prose command to the LLM |
-| Structured refusal (non-cooperation) | `{"ok": false, …}` tool results; `<responses>` refusal templates |
-| Superagent | The Penny agent card; the LLM+code enforcement pair |
-| Card entailment | `entailed-by` on superagent offers; `verify_promise_graph.py` |
+| Assisted promise (Law 4) | "the clinic will book your appointment" = `book \| slot_available` + `−open_slots` from the schedule (§5.5) |
+| Assessment | structured refusals, the eligibility verdict, code `<enforcement>`, test twins |
+| Pre-assessment | `fizz` model checking; `verified="fizz-0.5.1"` (and the real bug it caught in the Grail Marshal) |
+| Trust (integral of assessment) | the proposed assessment ledger (architecture doc); the eligibility service's "point-in-time" self-calibration |
+| Imposition | a prose command to the LLM |
+| Structured refusal (non-cooperation) | `{"ok": false, "unmet": …}` service results; `<responses>` refusal templates |
+| Superagent | the grail superagent card; the LLM+code enforcement pair |
+| Card entailment | `entailed-by` on the grail superagent's offers; `verify_promise_graph.py` |
 
 # Appendix B — References
 
@@ -648,42 +625,33 @@ That is not a Penny-specific result. It is what any serious agentic system will 
 
 - L. Lamport, [*Specifying Systems*](https://lamport.azurewebsites.net/tla/book.html) — the TLA+ book; the lineage behind FizzBee.[^lamport]
 - H. Wayne, [*Learn TLA+*](https://learntla.com) and ["The business case for formal methods"](https://www.hillelwayne.com/post/business-case-formal-methods/).
-- [FizzBee](https://fizzbee.io) — the specification language and model checker used by Penny's contracts.
+- [FizzBee](https://fizzbee.io) — the specification language and model checker used by the contracts.
 
 **Agent patterns (for the comparison in Part VIII)**
 
 - Yao et al., [*ReAct: Synergizing Reasoning and Acting in Language Models*](https://arxiv.org/abs/2210.03629).
 - [LangGraph](https://langchain-ai.github.io/langgraph/) — the code state-machine-graph approach.
 - [Guardrails AI](https://www.guardrailsai.com/docs) — output-validation guardrails.
-- Anthropic, ["Building effective agents"](https://www.anthropic.com/engineering/building-effective-agents) — orchestrator-workers and routing patterns, which map onto Penny's split.
+- Anthropic, ["Building effective agents"](https://www.anthropic.com/engineering/building-effective-agents) — orchestrator-workers and routing patterns, which map onto the orchestrator/subagent split.
 
-**Companion documents in this repository**
+**Companion documents in this kit**
 
 - [contracts-not-prompts.md](contracts-not-prompts.md) — the shorter, no-formal-methods-assumed article this whitepaper deepens.
-- [penny-promise-theory-architecture.md](penny-promise-theory-architecture.md) — the full agent-by-agent Promise Theory analysis and the eight prioritized refactorings (R1–R8).
+- [promise-theory-architecture.md](promise-theory-architecture.md) — the clinic system re-analyzed agent-by-agent through Promise Theory.
 
 # Appendix C — Repository index
 
-**In this kit — runnable; open these first.** The [`examples/clinic-appointments/`](../examples/clinic-appointments/) worked example is a live, model-checked incarnation of every pattern in this whitepaper:
+Everything the whitepaper quotes is runnable and lives in this kit. Open the clinic first; the Trials example adds the superagent card and the framework-independence proof.
 
-| Artifact | Path (in this kit) |
+| Artifact | Path |
 |---|---|
 | Contract schemas | [schema/](../schema/) |
-| Orchestrator contract | [agent_clinic_orchestrator.xml](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml) |
-| Workflow-subagent contracts | [agent_book_appointment.xml](../examples/clinic-appointments/agent_contracts/agent_book_appointment.xml), [agent_manage_appointment.xml](../examples/clinic-appointments/agent_contracts/agent_manage_appointment.xml) |
-| Service / state manifests | [manifest_*.xml](../examples/clinic-appointments/agent_contracts/) |
+| Clinic orchestrator contract | [agent_clinic_orchestrator.xml](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml) |
+| Clinic workflow-subagent contracts | [agent_book_appointment.xml](../examples/clinic-appointments/agent_contracts/agent_book_appointment.xml), [agent_manage_appointment.xml](../examples/clinic-appointments/agent_contracts/agent_manage_appointment.xml) |
+| Clinic service / state manifests | [manifest_*.xml](../examples/clinic-appointments/agent_contracts/) |
 | Code-enforced invariants (the assessment twins) | [src/clinic/services/schedule.py](../examples/clinic-appointments/src/clinic/services/schedule.py) |
-| FizzBee model-check gate | [scripts/verify_fizzbee_contracts.py](../examples/clinic-appointments/scripts/verify_fizzbee_contracts.py) |
-| Promise-graph verifier | [scripts/verify_promise_graph.py](../examples/clinic-appointments/scripts/verify_promise_graph.py) |
-
-**In the Penny reference implementation.** The excerpts quoted throughout are from Penny's source tree (a separate, private repository); paths are for orientation, not links:
-
-| Artifact | Path (in Penny) |
-|---|---|
-| Orchestrator / subagent contracts | `agent_contracts/agent_orchestrator.xml`, `agent_create_expense_report.xml`, `agent_add_expense.xml` |
-| Executor / registry / OCR / superagent manifests | `agent_contracts/manifest_*.xml` |
-| Contract loader | `src/penny/a2a/workflows/contract_doc.py` |
-| Code-enforced invariants | `src/penny/expense_core/services/contract.py` |
+| Superagent card + entailment | [manifest_grail_superagent.xml](../examples/holy-grail-trials/agent_contracts/manifest_grail_superagent.xml), [verify_promise_graph.py](../examples/holy-grail-trials/scripts/verify_promise_graph.py) |
+| Framework-independence (same contracts, different runtime) | [clinic build.py](../examples/clinic-appointments/src/clinic/agents/build.py) (ADK) vs [grail build.py](../examples/holy-grail-trials/src/grail/agents/build.py) (Pydantic AI) |
 
 ---
 

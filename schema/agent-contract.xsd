@@ -3,8 +3,8 @@
   agent-contract.xsd
   ==================================================================
   Schema for the LLM-agent contract documents: agent_*.xml
-  (agent_orchestrator.xml, agent_create_expense_report.xml,
-   agent_add_expense.xml).
+  (e.g. agent_clinic_orchestrator.xml, agent_book_appointment.xml,
+   agent_grail_quest_marshal.xml — see the examples/ in this kit).
 
   A contract document is ONE artifact read by three audiences:
 

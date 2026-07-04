@@ -3,8 +3,8 @@
   agent-manifest.xsd
   ==================================================================
   Schema for the non-LLM agent promise manifests: manifest_*.xml
-  (manifest_executor.xml, manifest_session_registry.xml,
-   manifest_receipt_ocr.xml, manifest_penny_superagent.xml).
+  (e.g. manifest_provider_schedule.xml, manifest_insurance_eligibility.xml,
+   manifest_grail_superagent.xml — see the examples/ in this kit).
 
   A manifest declares an agent that is NOT a conversational LLM — a
   protocol boundary, a shared-state store, a vision/OCR service, or the

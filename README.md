@@ -12,8 +12,9 @@ single contract document that is read three ways:
 - the **natural-language guidance** the model follows at runtime.
 
 Structural guarantees are *proven* offline and *re-enforced* in code; judgment
-stays in prose. The reference implementation is **Penny**, an SAP Concur expense
-agent — used throughout the docs as the worked example.
+stays in prose. Two complete, runnable agents in [`examples/`](examples/) — a
+clinic-appointment assistant and the Trials of the Holy Grail — serve as the
+worked examples throughout the docs.
 
 ## Start here
 
@@ -25,7 +26,7 @@ for agentic systems. If you read one thing, read this.
 
 | Folder | Purpose | Link |
 | --- | --- | --- |
-| `docs` | The methodology: the whitepaper plus two companion articles ([contracts-not-prompts](docs/contracts-not-prompts.md) and the [Promise Theory architecture analysis](docs/penny-promise-theory-architecture.md)). | [docs/](docs/) |
+| `docs` | The methodology: the whitepaper plus two companion articles ([contracts-not-prompts](docs/contracts-not-prompts.md) and the [Promise Theory architecture analysis](docs/promise-theory-architecture.md)). | [docs/](docs/) |
 | `schema` | XSD schemas defining and validating the two contract-document formats — `agent_*.xml` (LLM agents) and `manifest_*.xml` (non-LLM agents). Each is heavily annotated and doubles as a spec. | [schema/](schema/) |
 | `skeleton` | A [copier](https://copier.readthedocs.io/) template that scaffolds a brand-new contract-driven agent repo (uv-managed) with a working toy "barista" agent and the full three-part verification gate — green out of the box. | [skeleton/](skeleton/) |
 | `skills` | An agentic-coding skill (`authoring-agent-contracts`) that walks an engineer through writing, validating, and model-checking a new contract. Repos scaffolded from `skeleton/` already bundle it under `.claude/skills/`; for other projects, copy it into your `.claude/skills/` (or `~/.claude/skills/`). | [skills/](skills/) |
@@ -55,10 +56,9 @@ xmllint --noout --schema schema/agent-contract.xsd  your-agent-contract.xml
 xmllint --noout --schema schema/agent-manifest.xsd  your-agent-manifest.xml
 ```
 
-## Provenance & license
+## License
 
-Extracted from the Penny project, where the methodology was developed. Licensed
-under [Apache-2.0](LICENSE).
+Licensed under [Apache-2.0](LICENSE).
 
 ---
 

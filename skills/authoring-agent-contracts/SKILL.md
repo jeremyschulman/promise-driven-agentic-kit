@@ -89,8 +89,8 @@ The contract-specific rules:
 - Declare state in an `Init` action; give each capability an `atomic action` with
   `require` guards (the preconditions); state safety properties as
   `always assertion` invariants.
-- Model uncertain outcomes (an API that may fail, a receipt that may be unreadable)
-  with `oneof [True, False]` so the checker explores both.
+- Model uncertain outcomes (an external call that may fail, a slot that may already
+  be taken) with `oneof [True, False]` so the checker explores both.
 
 ### 4. Write the `<promises>` manifest
 

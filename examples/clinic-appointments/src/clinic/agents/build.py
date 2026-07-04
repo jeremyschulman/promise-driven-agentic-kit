@@ -2,7 +2,7 @@
 
 The contract is the single source of truth: the agent's ``description`` and its
 bound ``tools`` come straight from the ``<promises>`` manifest, and the entire
-XML document is the ``instruction``. This is the same move Penny makes — the LLM,
+XML document is the ``instruction``. This is the same one-artifact move the methodology makes — the LLM,
 the model checker, and the constructor all read one artifact.
 
 Importing this module requires ``google-adk``; the pure-Python services and the
