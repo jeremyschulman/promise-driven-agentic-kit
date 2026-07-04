@@ -19,3 +19,7 @@ __pycache__/
 .DS_Store
 .idea/
 .vscode/
+
+# Skill-triggering eval artifacts (transient) and run_eval's temp commands
+/.eval-workspace/
+/.claude/commands/
