@@ -119,10 +119,42 @@ async def smoke() -> None:
         print(f"<<< {await _turn(runner, t)}")
 
 
+# A scripted conversation for recording a Rich-rendered demo (e.g. with asciinema).
+# The arc walks the gates: identity -> list -> eligibility refusal/self-pay ->
+# pivot to a covered service -> confirmation gate -> booked.
+_DEMO_TURNS = [
+    "Hi! I'm Ada Lovelace, date of birth 1990-01-01.",
+    "What appointments do I currently have?",
+    "I'd like to see Dr. Patel for a cardiology check-up.",
+    "No thanks on self-pay — let's book a dermatology visit with Dr. Chen instead. What's open?",
+    "Tuesday, July 7th at 9 AM sounds great — please book it.",
+]
+
+
+async def demo() -> None:
+    """Auto-play the scripted scenario through the Rich renderer (for recording)."""
+    from rich.console import Console
+    from rich.markdown import Markdown
+
+    runner = await _make_runner()
+    console = Console()
+    console.print("[bold]Clinic appointment agent[/]  [dim](demo)[/]\n")
+    for text in _DEMO_TURNS:
+        console.print(f"[bold cyan]you[/]: {text}")
+        with console.status("[dim]thinking…[/]", spinner="dots"):
+            reply = await _turn(runner, text)
+        console.print("[bold green]clinic[/]")
+        console.print(Markdown(reply))
+        console.print()
+        await asyncio.sleep(1.2)
+
+
 def main() -> None:
     mode = sys.argv[1] if len(sys.argv) > 1 else "chat"
     if mode == "smoke":
         asyncio.run(smoke())
+    elif mode == "demo":
+        asyncio.run(demo())
     elif mode == "once":
         asyncio.run(once(" ".join(sys.argv[2:]) or "hello"))
     else:

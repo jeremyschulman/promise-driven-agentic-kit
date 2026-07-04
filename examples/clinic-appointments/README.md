@@ -13,6 +13,24 @@ to touch an appointment the patient doesn't own.
 > it has six agents, so it shows the part of Promise Theory that matters most —
 > **composition**. It is still small enough to read in a sitting.
 
+## Watch it
+
+![Clinic agent demo](media/demo.gif)
+
+A real recorded session (live on Vertex, Rich-rendered). The agent verifies the
+patient, lists their appointments, **declines an uncovered service and offers
+self-pay** (the eligibility gate), then books a covered visit **only after the
+patient confirms** (the confirm gate) — every gate you see is model-checked *and*
+code-enforced.
+
+```bash
+asciinema play media/demo.cast     # replay the source recording in your terminal
+uv run python -m clinic demo       # run the scripted scenario live yourself
+# re-record + regenerate the GIF:
+asciinema rec -c "uv run python -m clinic demo" media/demo.cast
+agg media/demo.cast media/demo.gif
+```
+
 ## The promise graph
 
 ```mermaid
