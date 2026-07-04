@@ -1,12 +1,16 @@
 """Run the clinic agent.
 
 Usage:
-    python -m clinic chat     # interactive REPL (default)
+    python -m clinic chat     # interactive REPL (Rich-rendered when on a TTY)
     python -m clinic smoke    # scripted multi-turn conversation (a quick live check)
     python -m clinic once "your message here"
 
 Requires Google/Vertex env (see GETTING-STARTED.md): a service-account JSON in
 GOOGLE_APPLICATION_CREDENTIALS. `adk web` also works — point it at src/clinic.
+
+The interactive `chat` uses Rich (Markdown rendering + a "thinking" spinner) when
+stdout is a terminal, and falls back to a plain stdin/stdout loop otherwise —
+so piping, `smoke`, and `once` stay clean, capturable text.
 """
 
 from __future__ import annotations
@@ -52,8 +56,39 @@ async def _turn(runner, text: str) -> str:
     return reply
 
 
+# ---- interactive chat ----
 async def chat() -> None:
     runner = await _make_runner()
+    if sys.stdout.isatty():
+        await _chat_rich(runner)
+    else:
+        await _chat_plain(runner)
+
+
+async def _chat_rich(runner) -> None:
+    from rich.console import Console
+    from rich.markdown import Markdown
+    from rich.prompt import Prompt
+
+    console = Console()
+    console.print(
+        "[bold]Clinic appointment agent[/]  [dim](type 'exit' to quit)[/]\n"
+    )
+    while True:
+        try:
+            text = await asyncio.to_thread(Prompt.ask, "[bold cyan]you[/]")
+        except (EOFError, KeyboardInterrupt):
+            break
+        if text.strip().lower() in {"exit", "quit"}:
+            break
+        with console.status("[dim]thinking…[/]", spinner="dots"):
+            reply = await _turn(runner, text)
+        console.print("[bold green]clinic[/]")
+        console.print(Markdown(reply))
+        console.print()
+
+
+async def _chat_plain(runner) -> None:
     print("Clinic appointment agent. Type 'exit' to quit.\n")
     while True:
         try:
@@ -62,9 +97,10 @@ async def chat() -> None:
             break
         if text.strip().lower() in {"exit", "quit"}:
             break
-        print(f"penny-clinic> {await _turn(runner, text)}\n")
+        print(f"clinic> {await _turn(runner, text)}\n")
 
 
+# ---- scripted / one-shot (always plain text, so output is capturable) ----
 async def once(text: str) -> None:
     runner = await _make_runner()
     print(await _turn(runner, text))

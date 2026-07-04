@@ -73,7 +73,7 @@ make gate            # schema + fizz model-check + promise-graph + enforcement t
 # live — needs a Google service-account JSON (see GETTING-STARTED.md):
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
 uv run python -m clinic smoke     # scripted verify -> list -> book demo
-uv run python -m clinic chat      # interactive
+uv run python -m clinic chat      # interactive (Rich: Markdown replies + a "thinking" spinner)
 ```
 
 `adk web` also works — point it at `src/clinic`.
