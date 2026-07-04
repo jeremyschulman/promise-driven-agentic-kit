@@ -27,6 +27,7 @@ New here? Read [GETTING-STARTED.md](GETTING-STARTED.md) — it covers installing
 | `src/{{ package_name }}/contracts/` | The loader (`contract_doc.py`), the `fizz` integration (`fizz_check.py`), and the promise-manifest loader (`promises.py`). |
 | `scripts/` | `verify_fizzbee_contracts.py` (model-checks every contract) and `verify_promise_graph.py` (checks the inter-agent promise graph). |
 | `tests/` | Schema validation and the model-check gate. |
+| `.claude/skills/authoring-agent-contracts/` | An agentic-coding skill that walks you (and Claude) through authoring a new contract. It triggers automatically when you work on contract files. |
 
 ## The gate
 

@@ -44,7 +44,8 @@ my-new-agent/
 │   └── manifest_machine.xml    # toy non-LLM manifest (the espresso machine)
 ├── src/<package>/contracts/    # contract loader, fizz_check, promise loader
 ├── scripts/                    # verify_fizzbee_contracts.py, verify_promise_graph.py
-└── tests/                      # schema validation + model-check gate
+├── tests/                      # schema validation + model-check gate
+└── .claude/skills/authoring-agent-contracts/   # the authoring skill, ready to use in-repo
 ```
 
 The toy barista exists to be replaced: it demonstrates the flagship pattern
@@ -60,4 +61,13 @@ them here:
 
 ```bash
 cp ../schema/*.xsd template/schema/
+```
+
+The same applies to the bundled authoring skill — `template/.claude/skills/authoring-agent-contracts/`
+is a copy of [`../skills/authoring-agent-contracts/`](../skills/authoring-agent-contracts/).
+Re-copy it when the canonical skill changes:
+
+```bash
+rm -rf template/.claude/skills/authoring-agent-contracts
+cp -R ../skills/authoring-agent-contracts template/.claude/skills/
 ```
