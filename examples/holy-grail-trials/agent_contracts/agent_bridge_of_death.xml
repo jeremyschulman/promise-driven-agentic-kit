@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The Bridge of Death — the three-questions trial.
+
+  "What is your name? What is your quest? What is your favourite colour?"
+  Answer all three correctly and you may cross. Answer wrong — or waver — and you
+  are cast into the Gorge of Eternal Peril. Correctness is judged in code by the
+  Bridgekeeper against the knight's own registry record, not by the seeker's
+  confidence.
+-->
+<agent-instructions workflow="bridge_of_death" version="1.0">
+
+  <objective>
+    Conduct the Bridge of Death trial for the verified knight. Ask the three
+    questions, take the knight's answers, and have the Bridgekeeper judge them.
+    If all three are correct, the knight crosses and the trial is recorded as
+    passed. If any is wrong, the knight is cast into the Gorge of Eternal Peril —
+    never let a wrong answer across.
+  </objective>
+
+  <contract>
+    <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
+---
+deadlock_detection: false
+liveness: "false"
+options:
+  max_concurrent_actions: 1
+---
+
+# ---- State ----
+action Init:
+    questions_asked  = False
+    answers_given    = False
+    answers_correct  = oneof [True, False]   # judged in code by the Bridgekeeper
+    crossed          = False
+    cast_into_gorge  = False
+
+atomic action AskThreeQuestions:
+    require not questions_asked
+    questions_asked = True
+
+atomic action ReceiveAnswers:
+    require questions_asked
+    require not answers_given
+    answers_given   = True
+    answers_correct = oneof [True, False]
+
+atomic action Cross:
+    require answers_given
+    require answers_correct
+    require not crossed
+    require not cast_into_gorge
+    crossed = True
+
+# ---- Fallback: a wrong answer -> the Gorge of Eternal Peril ----
+atomic action CastIntoGorge:
+    require answers_given
+    require not answers_correct
+    require not crossed
+    require not cast_into_gorge
+    cast_into_gorge = True
+
+# ---- Invariants ----
+# The knight is never across without having answered all three questions.
+always assertion ThreeQuestionsBeforeCrossing:
+    return (not crossed) or answers_given
+
+# The knight never crosses on a wrong answer.
+always assertion NoCrossingWithWrongAnswer:
+    return (not crossed) or answers_correct
+
+# One cannot both cross and be cast into the Gorge.
+always assertion NeverBothCrossAndGorge:
+    return (not crossed) or (not cast_into_gorge)
+    </fizzbee>
+  </contract>
+
+  <promises>
+    <description>Conducts the Bridge of Death: asks the three questions, has the Bridgekeeper judge the answers in code, and lets the knight cross only if all three are correct — otherwise casts them into the Gorge of Eternal Peril. Never crosses a wrong answer.</description>
+
+    <tools>
+      <tool name="get_active_knight"/>
+      <tool name="get_bridge_questions"/>
+      <tool name="judge_crossing"/>
+    </tools>
+
+    <offer id="cross_bridge" type="workflow" to="grail_quest_marshal knight">
+      <body>Let the verified knight cross the Bridge of Death and record the
+        trial as passed — only when all three answers are correct.</body>
+      <condition ref="knight_verified"/>
+      <condition ref="answers_correct"/>
+    </offer>
+
+    <offer id="gorge_fallback" type="workflow" to="knight">
+      <body>The promised fallback: a wrong or wavering answer casts the knight
+        into the Gorge of Eternal Peril — never a silent pass.</body>
+      <condition ref="answer_is_wrong" assessed="self"/>
+    </offer>
+
+    <offer id="no_crossing_with_wrong_answer" type="invariant" to="knight round-table">
+      <body>No knight crosses on a wrong answer; correctness is decided by the
+        Bridgekeeper's canonical answers in code (NoCrossingWithWrongAnswer).</body>
+    </offer>
+
+    <use id="active_knight" from="round_table_registry" quenches="knight_verified">
+      <body>The verified knight attempting the crossing.</body>
+    </use>
+    <use id="canonical_answers" from="bridgekeeper_questions" quenches="answers_correct">
+      <body>The three questions and the knight's correct answers; the Bridgekeeper
+        judges the given answers against these.</body>
+    </use>
+    <use id="record_trial" from="round_table_registry">
+      <body>Records the Bridge of Death as passed, keyed to the verified knight.</body>
+    </use>
+  </promises>
+
+  <step-guidance action="AskThreeQuestions">
+    <binding>Call get_bridge_questions and ask them, in order: name, quest,
+      favourite colour. (For the truly bold, the Bridgekeeper may ask the
+      airspeed velocity of an unladen swallow — mind whether it is African or
+      European.)</binding>
+  </step-guidance>
+
+  <step-guidance action="ReceiveAnswers">
+    <binding>Collect the knight's three answers, then call
+      judge_crossing(name, quest, favourite_colour). Do NOT decide correctness
+      yourself — the Bridgekeeper's code judges against the registry.</binding>
+  </step-guidance>
+
+  <step-guidance action="Cross">
+    <binding>Only if judge_crossing returns crossed=true, tell the knight they
+      may cross; the trial is recorded as passed.</binding>
+  </step-guidance>
+
+  <step-guidance action="CastIntoGorge">
+    <binding>If judge_crossing returns crossed=false, relay the Gorge response —
+      the knight is cast into the Gorge of Eternal Peril. Do not retry the same
+      wrong answer.</binding>
+  </step-guidance>
+
+  <enforcement>
+    The service layer enforces these independently of the LLM:
+    <rule id="NoCrossingWithWrongAnswer">judge_crossing records a crossing only when all three answers match the Bridgekeeper's canonical answers.</rule>
+    <rule id="ThreeQuestionsBeforeCrossing">judge_crossing requires all three answers to be supplied.</rule>
+  </enforcement>
+
+  <responses>
+    <crossed>
+      Right. Off you go. You may cross the Bridge of Death.
+    </crossed>
+    <gorge>
+      AAAAAAAAAUGH! — Wrong. Into the Gorge of Eternal Peril with you.
+    </gorge>
+  </responses>
+
+</agent-instructions>

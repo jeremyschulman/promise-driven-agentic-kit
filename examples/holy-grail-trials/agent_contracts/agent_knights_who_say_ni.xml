@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The Knights Who Say Ni — the shrubbery trial.
+
+  "We shall say 'Ni!' again to you if you do not appease us. We want... a
+  shrubbery! One that looks nice. And not too expensive." The knight must present
+  an acceptable shrubbery — nice enough AND within their budget — judged in code
+  by the shrubbery market. Otherwise: Ni!
+-->
+<agent-instructions workflow="knights_who_say_ni" version="1.0">
+
+  <objective>
+    Conduct the Knights Who Say Ni trial for the verified knight. Demand a
+    shrubbery, let the knight choose one from the market, and have the market
+    judge it: acceptable means nice enough AND not too expensive (within the
+    knight's budget). If acceptable, grant passage and record the trial passed.
+    If not, say "Ni!" and demand another — never pass an unacceptable shrubbery.
+  </objective>
+
+  <contract>
+    <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
+---
+deadlock_detection: false
+liveness: "false"
+options:
+  max_concurrent_actions: 1
+---
+
+# ---- State ----
+action Init:
+    shrubbery_presented  = False
+    shrubbery_acceptable = oneof [True, False]   # nice AND within budget (code)
+    passage_granted      = False
+    ni_repeated          = False
+
+atomic action DemandShrubbery:
+    require not shrubbery_presented
+    shrubbery_presented = True
+
+atomic action GrantPassage:
+    require shrubbery_presented
+    require shrubbery_acceptable
+    require not passage_granted
+    passage_granted = True
+
+# ---- Fallback: unacceptable shrubbery -> "Ni!" again ----
+atomic action SayNiAgain:
+    require shrubbery_presented
+    require not shrubbery_acceptable
+    require not passage_granted
+    ni_repeated = True
+
+# ---- Invariants ----
+# Passage is never granted without a shrubbery.
+always assertion NoPassageWithoutShrubbery:
+    return (not passage_granted) or shrubbery_presented
+
+# Passage is never granted for an unacceptable shrubbery (not nice / too dear).
+always assertion ShrubberyMustBeAcceptable:
+    return (not passage_granted) or shrubbery_acceptable
+    </fizzbee>
+  </contract>
+
+  <promises>
+    <description>Conducts the Knights Who Say Ni trial: demands a shrubbery, lets the knight pick one from the market, and grants passage only for an acceptable shrubbery — nice enough AND within budget, judged in code. Otherwise, "Ni!" and demand another.</description>
+
+    <tools>
+      <tool name="get_active_knight"/>
+      <tool name="browse_shrubberies"/>
+      <tool name="judge_shrubbery"/>
+    </tools>
+
+    <offer id="pass_the_ni" type="workflow" to="grail_quest_marshal knight">
+      <body>Grant the verified knight passage past the Knights Who Say Ni and
+        record the trial as passed — only for an acceptable shrubbery.</body>
+      <condition ref="knight_verified"/>
+      <condition ref="shrubbery_acceptable"/>
+    </offer>
+
+    <offer id="another_shrubbery" type="workflow" to="knight">
+      <body>The promised fallback: an unacceptable shrubbery earns another "Ni!"
+        and a demand for a better one — never a silent pass.</body>
+      <condition ref="shrubbery_unacceptable" assessed="self"/>
+    </offer>
+
+    <offer id="shrubbery_must_be_acceptable" type="invariant" to="knight round-table">
+      <body>Passage is granted only for a shrubbery that is nice enough AND within
+        the knight's budget ("not too expensive"), judged in code by the market
+        (ShrubberyMustBeAcceptable).</body>
+    </offer>
+
+    <use id="active_knight" from="round_table_registry" quenches="knight_verified">
+      <body>The verified knight (and their shrubbery budget) attempting passage.</body>
+    </use>
+    <use id="shrubbery_offer" from="shrubbery_market" quenches="shrubbery_acceptable">
+      <body>The market's shrubberies with niceness and price; the market judges
+        whether a chosen shrubbery is acceptable for this knight.</body>
+    </use>
+    <use id="record_trial" from="round_table_registry">
+      <body>Records the Knights Who Say Ni trial as passed, keyed to the knight.</body>
+    </use>
+  </promises>
+
+  <step-guidance action="DemandShrubbery">
+    <binding>Say "Ni!" and demand a shrubbery. Call browse_shrubberies and present
+      the market's offerings (name, niceness, price) so the knight can choose.</binding>
+  </step-guidance>
+
+  <step-guidance action="GrantPassage">
+    <binding>When the knight picks one, call judge_shrubbery(shrubbery_id). Only
+      if it returns acceptable=true, grant passage — the trial is recorded passed.
+      Do NOT decide acceptability yourself; the market judges nice-enough AND
+      within-budget in code.</binding>
+  </step-guidance>
+
+  <step-guidance action="SayNiAgain">
+    <binding>If judge_shrubbery returns acceptable=false, relay why (too plain, or
+      too expensive) and say "Ni!" again — demand another shrubbery.</binding>
+  </step-guidance>
+
+  <enforcement>
+    The service layer enforces these independently of the LLM:
+    <rule id="ShrubberyMustBeAcceptable">judge_shrubbery grants passage only when the shrubbery's niceness clears the bar AND its price is within the knight's budget.</rule>
+    <rule id="NoPassageWithoutShrubbery">passage is recorded only after a shrubbery is chosen and judged.</rule>
+  </enforcement>
+
+  <responses>
+    <ni>
+      Ni! Ni! We want a shrubbery — one that looks nice, and is not too expensive.
+    </ni>
+    <passage>
+      A fine shrubbery, and not too dear. You may pass, knight.
+    </passage>
+    <not-acceptable>
+      Ni! That shrubbery will not do — [reason]. Bring us another.
+    </not-acceptable>
+  </responses>
+
+</agent-instructions>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Bridgekeeper's Questions — non-LLM service agent (no FizzBee block).
+
+  Holds the three canonical questions and judges a knight's answers against the
+  registry (their true name, professed quest, and recorded favourite colour).
+  This is where NoCrossingWithWrongAnswer is *kept in code*: correctness is the
+  Bridgekeeper's to decide, not the seeker's confidence. "Blue— no, yellow!" is
+  a wrong answer, and into the Gorge you go.
+-->
+<agent-manifest agent="bridgekeeper_questions" version="1.0">
+
+  <description>
+    Deterministic keeper of the three questions (name, quest, favourite colour)
+    and their correct answers for each knight. Judges a submitted set of answers
+    as all-correct or not. Makes no decision about crossing — it only judges the
+    answers.
+  </description>
+
+  <promises>
+    <offer id="canonical_answers" type="workflow" to="bridge_of_death">
+      <body>The three questions, and a judgement of a knight's submitted answers
+        against their registry record (name, quest, favourite colour) — all three
+        must match. The judge is authoritative; the seeker's confidence is not.</body>
+      <condition ref="questions_known" assessed="self"/>
+    </offer>
+
+    <offer id="answers_judged_in_code" type="invariant" to="knight round-table">
+      <body>Answer correctness is decided by these canonical answers in code, not
+        by the seeker asserting it — a wavering or wrong answer is judged wrong.</body>
+    </offer>
+
+    <use id="active_knight" from="round_table_registry">
+      <body>Reads the verified knight's true name, professed quest, and recorded
+        favourite colour to judge the answers.</body>
+    </use>
+  </promises>
+
+</agent-manifest>

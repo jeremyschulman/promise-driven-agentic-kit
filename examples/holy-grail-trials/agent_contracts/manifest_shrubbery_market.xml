@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Shrubbery Market — non-LLM service agent (no FizzBee block).
+
+  Roger the Shrubber's stock: shrubberies with a niceness rating and a price.
+  Judges whether a chosen shrubbery is acceptable for a given knight: nice enough
+  AND within that knight's budget ("one that looks nice, and not too expensive").
+  This is where ShrubberyMustBeAcceptable is kept in code.
+-->
+<agent-manifest agent="shrubbery_market" version="1.0">
+
+  <description>
+    Deterministic shrubbery market (Roger the Shrubber): lists shrubberies with a
+    niceness rating and a price, and judges whether a chosen one is acceptable for
+    a knight — nice enough AND within the knight's budget. It sells shrubberies;
+    it grants no passage.
+  </description>
+
+  <promises>
+    <offer id="shrubbery_offer" type="workflow" to="knights_who_say_ni">
+      <body>The available shrubberies (name, niceness, price) and a judgement of a
+        chosen shrubbery's acceptability for the knight: niceness at or above the
+        bar AND price within the knight's budget.</body>
+      <condition ref="shrubberies_in_stock" assessed="self"/>
+    </offer>
+
+    <offer id="fair_pricing" type="invariant" to="knight round-table">
+      <body>Acceptability is judged against the knight's own budget in code — "not
+        too expensive" is enforced, not eyeballed.</body>
+    </offer>
+
+    <use id="active_knight" from="round_table_registry">
+      <body>Reads the verified knight's shrubbery budget to judge acceptability.</body>
+    </use>
+  </promises>
+
+</agent-manifest>

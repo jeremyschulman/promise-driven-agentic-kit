@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Round Table Registry — non-LLM state agent (no FizzBee block).
+
+  Per-knight state: enrollment/identity, the knight's shrubbery budget and
+  favourite colour, the active (verified) knight, and which trials each knight
+  has passed. Progress is isolated per knight — one knight never sees or affects
+  another's. The analog of the clinic's patient_registry.
+-->
+<agent-manifest agent="round_table_registry" version="1.0">
+
+  <description>
+    Deterministic registry of the Knights of the Round Table: enrollment
+    (name + professed quest), each knight's favourite colour and shrubbery
+    budget, the active verified knight for the session, and which trials each has
+    passed. Isolated per knight.
+  </description>
+
+  <promises>
+    <offer id="knight_identity" type="identity" to="grail_quest_marshal">
+      <body>Confirms whether a seeker matches an enrolled Knight of the Round
+        Table (by name and professed quest); the verdict the Marshal uses to
+        settle verification.</body>
+      <condition ref="knight_enrolled" assessed="self"/>
+    </offer>
+
+    <offer id="active_knight" type="session-state" to="grail_quest_marshal bridge_of_death knights_who_say_ni bridgekeeper_questions shrubbery_market">
+      <body>The verified knight's record for this session (name, favourite colour,
+        shrubbery budget). Consumed by every agent that must act for the right
+        knight.</body>
+      <condition ref="knight_verified" assessed="self"/>
+    </offer>
+
+    <offer id="quest_progress" type="session-state" to="grail_quest_marshal knight">
+      <body>Which trials the knight has passed (bridge, ni), so the Marshal can
+        report progress and gate the Grail on both.</body>
+    </offer>
+
+    <offer id="record_trial" type="workflow" to="bridge_of_death knights_who_say_ni">
+      <body>Records a trial as passed, keyed to the verified knight; the trials
+        call this only after their own gate has held.</body>
+    </offer>
+
+    <offer id="progress_isolation" type="invariant" to="knight round-table">
+      <body>Each knight's identity and trial progress are keyed to that knight and
+        never readable or writable across knights (services/registry.py).</body>
+    </offer>
+
+    <use id="verified_identity" from="grail_quest_marshal">
+      <body>Accepts the verified-knight assertion from the Marshal; state is
+        updated only for the identity it verified this turn.</body>
+    </use>
+  </promises>
+
+</agent-manifest>

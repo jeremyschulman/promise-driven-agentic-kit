@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Grail Superagent — the collective promise the outside world sees.
+
+  From a seeker's vantage there is one agent: "the Trials of the Holy Grail".
+  These exterior `card` offers must be DERIVED from the interior promise graph —
+  the entailed-by attribute names the interior offers that justify each external
+  claim, and scripts/verify_promise_graph.py fails if any referenced offer does
+  not exist. No capability is advertised unless the members actually offer it.
+
+  (This is the facet the clinic example doesn't show: a superagent card + an
+  entailment check.)
+-->
+<agent-manifest agent="grail_superagent" version="1.0">
+
+  <description>
+    The Trials of the Holy Grail, presented as one agent to any seeker: the Quest
+    Marshal, the Bridge of Death, the Knights Who Say Ni, and their supporting
+    registry, Bridgekeeper, and shrubbery market.
+  </description>
+
+  <promises>
+    <offer id="quest_card" type="card" to="seeker knight"
+           entailed-by="classify_intent relay_to_trial knighthood_before_trial grail_only_after_both_trials cross_bridge pass_the_ni">
+      <body>Approach as a Knight of the Round Table and be marshalled through the
+        Trials of the Holy Grail — the Bridge of Death and the Knights Who Say Ni.
+        The Grail quest is granted only once both trials are passed.</body>
+    </offer>
+
+    <offer id="trials_skill" type="card" to="seeker"
+           entailed-by="cross_bridge no_crossing_with_wrong_answer pass_the_ni shrubbery_must_be_acceptable gorge_fallback another_shrubbery">
+      <body>Two trials with hard, code-enforced gates: answer the Bridgekeeper's
+        three questions correctly to cross (or fall into the Gorge), and present
+        an acceptable shrubbery to pass the Knights Who Say Ni (or hear "Ni!"
+        again).</body>
+    </offer>
+
+    <offer id="honest_limits" type="card" to="seeker knight"
+           entailed-by="knighthood_before_trial progress_isolation answers_judged_in_code fair_pricing">
+      <body>Only verified Knights of the Round Table may attempt the Trials; each
+        knight's progress is their own; and correctness and price are judged in
+        code, not asserted.</body>
+    </offer>
+  </promises>
+
+</agent-manifest>
