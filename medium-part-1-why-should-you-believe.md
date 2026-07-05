@@ -32,14 +32,13 @@ much of what you read about AI talks about copilots, chatbots, coding
 assistants, and other such personal-productivity tools, I've been automating the
 boring stuff, and building it in a completely different way.
 
-My "customers" are the business units I serve.  They want outcomes regardless if
-AI is used on the inside. Executives need to understand whether the money going
+My "customers" are the business units I serve. They want outcomes regardless of whether AI is used on the inside. Executives need to understand whether the money going
 into AI is showing up as material business value. Autonomous BPA speaks to both:
 it delivers the effect of *added staff*, value at the level of the whole
 organization. Before AI, the sheer complexity of these use-cases kept them off
 the table. The workflows were too tangled, too full of institutional knowledge,
 to automate the old way. In 2025, for me at least, AI became the enabling
-technology that finally makes creating them possible.
+technology that finally makes them possible.
 
 Along the way I worked out a technique for building
 them that I haven't seen anywhere else. So I'm not talking hypotheticals. I'm
@@ -49,19 +48,18 @@ So let me start with the assumption I think we're all quietly building on, and w
 
 Here's the "Cha, Ching!", concretely, so you know what I'm actually going after.
 One of the two example agents I'll show you (in the Github repo), which I call
-**The Clinic**, takes "I'm Ada Lovelace, book me a dermatology visit"* and turns
+**The Clinic**, takes *"I'm Ada Lovelace, book me a dermatology visit"* and turns
 it into a confirmed, eligibility-checked appointment, through real identity
 verification, a coverage check, and an actual scheduling API. And it **provably
 cannot** reach a state where it books before you're verified, or double-books a
 slot. Not because I asked it nicely in a prompt. Because the design makes those
-bad states unreachable*, and I can prove it, exhaustively, before I ever deploy.
+bad states *unreachable*, and I can prove it, exhaustively, before I ever deploy.
 
 That *"and I can prove it"* is the whole game. It's the thing a prose prompt can never give you. And make no mistake, something big is happening: agentic software is going through a paradigm shift. Let me tell you how I got here.
 
 ## I've seen this before
 
-This post is going to talk about building agentic systems in a whole new way.
-The concepts in it will change your life. They changed mine. 
+Let me try an opening on you: *This post is going to talk about building agentic systems in a whole new way. The concepts in it will change your life. They changed mine.*
 
 I've said almost exactly those words before. Here's how I opened a blog post in
 April 2013, back at Juniper Networks, when the subject was network
@@ -77,31 +75,31 @@ Then I looked, and the floor shifted under me. The sysadmins and the DevOps crow
 
 And it was obvious, standing there, that the same wave was about to hit networking whether the networking industry was ready or not.
 
-Part of why I could see it coming was my unique role.  I had my feet in two
+Part of why I could see it coming was my unique role. I had my feet in two
 worlds. I reported into the Junos engineering software team, learning from Phil
 Shafer (who essentially invented Junos automation), but my actual job was out in
 the field with the sales team, using my engineering depth to help sell the value
-of Junos. I have a split-brain mind - technologies, and go-to-market business.
+of Junos. I have a split-brain mind: technology and go-to-market business.
 Working across that boundary *was* the role. So much so that when I wrote the
 whole thing up in 2013, I called it "Bridging the Two Worlds." I've stood
 between worlds my whole career, which is probably why, years later, Mark's
 border-crossing ideas would feel like coming home.
 
-I wasn't guessing, and I wasn't alone. At PuppetConf in 2013, John Willis, the
-mentor who gave me that "Ah, Ha!" to "Cha, Ching!" phrase, pulled me aside and,
-in effect, handed me a crystal ball: *this* is what the next ten years of your
-career look like, he said, if you commit to the network-automation movement. I
-committed. And I had good company: Scott Robohn, my first manager at Juniper
-back in 2008, would go on to co-found the Network Automation Forum. My friend
-Peter Sprygada and I co-wrote the Puppet "netdev" module together; Peter went on
-to become the driving force behind Ansible's network automation, the reason so
-much of the world's network infrastructure is automated the way it is today. I
-mention them because the point that matters for *this* article isn't that I
-*noticed* a paradigm shift; it's that I was in the room, often near the front of
-it, while one was made. I know what the early days of a real shift feel like
-from the inside. 
+I wasn't guessing, and I wasn't alone. At PuppetConf in 2013, John Willis, a
+leader of the DevOps movement, who became a mentor and gave me that "Ah, Ha!" to
+"Cha, Ching!" phrase, pulled me aside and, in effect, handed me a crystal ball:
+*this* is what the next ten years of your career look like, he said, if you
+commit to the network-automation movement. I committed. And I had good company:
+Scott Robohn, my first manager at Juniper back in 2008, would go on to co-found
+the Network Automation Forum. My friend Peter Sprygada and I co-wrote the Puppet
+"netdev" module together; Peter went on to become the driving force behind
+Ansible's network automation, the reason so much of the world's network
+infrastructure is automated the way it is today. I mention them because the
+point that matters for *this* article isn't that I noticed* a paradigm shift;
+it's that I was in the room, often near the front of it, while one was made. I
+know what the early days of a real shift feel like from the inside.
 
-They feel like that right now.
+They feel like this right now.
 
 Here's the part of that story I want you to hold onto, because it turns out to
 be the whole point of *this* article. The vision at the time was to run **Puppet**, the
@@ -120,7 +118,7 @@ Read those two ideas again with 2026 eyes. You give an autonomous actor **scoped
 
 I've been designing systems around that principle for thirteen years. An LLM
 agent is just the newest, strangest, most capable actor I've ever been asked to
-hand the keys to. And when I started building agentic based solutions, I
+hand the keys to. And when I started building agentic solutions, I
 promptly forgot my own hard-won lesson.
 
 ## The wall: I forgot my own lesson
