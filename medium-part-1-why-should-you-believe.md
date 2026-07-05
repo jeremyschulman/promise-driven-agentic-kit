@@ -1,8 +1,8 @@
 # Promises, Promises — Why Should You Believe?
 
-### Part 1 of 2. You can't command an LLM. You can only elicit a promise, then assess it. Why a twenty-year-old theory is the right foundation for agentic software, from someone who watched the same shift remake another field once before.
+### Twenty years ago, Mark Burgess quietly seeded the DevOps era. His Promise Theory is about to do the same for agentic AI.
 
-*By Jeremy Schulman*
+*By Jeremy Schulman · Part 1 of 2*
 
 ---
 
@@ -86,7 +86,7 @@ between worlds my whole career, which is probably why, years later, Mark's
 border-crossing ideas would feel like coming home.
 
 I wasn't guessing, and I wasn't alone. At PuppetConf in 2013, John Willis, a
-leader of the DevOps movement, who became a mentor and gave me that "Ah, Ha!" to
+leader of the DevOps movement who became a mentor and gave me that "Ah, Ha!" to
 "Cha, Ching!" phrase, pulled me aside and, in effect, handed me a crystal ball:
 *this* is what the next ten years of your career look like, he said, if you
 commit to the network-automation movement. I committed. And I had good company:
@@ -95,7 +95,7 @@ the Network Automation Forum. My friend Peter Sprygada and I co-wrote the Puppet
 "netdev" module together; Peter went on to become the driving force behind
 Ansible's network automation, the reason so much of the world's network
 infrastructure is automated the way it is today. I mention them because the
-point that matters for *this* article isn't that I noticed* a paradigm shift;
+point that matters for *this* article isn't that I *noticed* a paradigm shift;
 it's that I was in the room, often near the front of it, while one was made. I
 know what the early days of a real shift feel like from the inside.
 
@@ -116,10 +116,9 @@ to two ideas:
 
 Read those two ideas again with 2026 eyes. You give an autonomous actor **scoped authority** to act, and you put a **deterministic layer beneath it that guarantees it cannot cause harm, no matter what it tries.** You don't trust the actor. You trust the guarantee.
 
-I've been designing systems around that principle for thirteen years. An LLM
-agent is just the newest, strangest, most capable actor I've ever been asked to
-hand the keys to. And when I started building agentic solutions, I
-promptly forgot my own hard-won lesson.
+In 2014 I left Juniper to chase the idea further, and joined the startup that became **Apstra**, which pioneered *intent-based networking.* The thesis was simple, and to me revelatory: start with a single declarative **intent**, a description of what the network should *be* that you can reason about programmatically. From that one intent you derive two things: the configuration that drives the network into that state, *and* the tests that continuously validate it stays there. Change the intent, and both flow from it in lockstep. Nothing drifts, because there is one source of truth and everything else is derived from it. I carried that philosophy to the Network Automation Forum's inaugural event (the forum Scott Robohn helped found) in a talk I called *Design Driven Network Assurance.* That pattern is in my DNA.
+
+So I've spent more than a decade designing around two hard-won instincts: put a deterministic guarantee underneath the actor, and start from a single declarative source of truth. An LLM agent is just the newest, strangest, most capable actor I've ever been asked to hand the keys to, and when I turned to building agents I gravitated toward that same shape. It *felt* right. But I'm a practitioner, not a theorist. Feeling right isn't the same as knowing, and the only way to know is to build it and watch what happens. So I started building. And at first, I got it embarrassingly wrong.
 
 ## The wall: I forgot my own lesson
 
@@ -141,9 +140,27 @@ With a prose prompt, the most honest answer I could give was: *"Probably not. Bu
 
 I hate that answer. It's the "oh crap, is it the network?" of agent design: the sinking feeling that something's wrong and you have no way to know whether your own system is the cause. I'd forgotten what made 2013 work: you don't make the actor trustworthy by asking nicely. You put a guarantee underneath it. So I went looking for the agentic version of that guarantee.
 
+## A practitioner's workaround
+
+I'm a practitioner. I live at the intersection of emerging technology and business acceleration, which means I rarely start from theory. I start by trying things and keeping what works.
+
+So in 2025 I experimented. If prose was too loose, maybe structure would tighten it. I moved my instructions into YAML, betting that a data format would rein the model in. It helped a little, but the style was still *imperative*: I was writing the same step-by-step commands, just in tidier brackets, and the hallucinations kept coming. I was still trying to command the thing.
+
+Then I read about POML, Microsoft's Prompt Orchestration Markup Language, which encodes prompts as XML. I didn't agree with the specifics of their approach, but it lit a fuse. What if I used XML not to organize *commands*, but to declare *intent*: goal-oriented, with tags and attributes that carried real semantic meaning? Instead of telling the model *how* to act, step by step, I would declare *what* a correct outcome looked like and let it find the path.
+
+That change did something I didn't expect. It wasn't only that the agent worked more often. It was that the *failures changed shape.* Instead of writing a mess of defensive code to catch unpredictable output, I found that when the model did fail, it failed in specific, legible ways I could guardrail cleanly. The structure made the failures tractable. So I dropped prose entirely and went to XML, writ large.
+
+But I still couldn't *prove* anything. I had better odds, not a guarantee, and 2013 had already taught me that better odds are not the same as a promise you can keep.
+
+## A serendipitous conversation
+
+The next piece fell into place in 2026, and it was pure luck. I was at a conference where John Willis was speaking, and I fell into conversation with an associate professor from Brown University who was presenting on *formal methods*: the mathematics of proving that a system can never misbehave. I asked him a question that wouldn't let go of me. Could you write an agent's instructions in the symbolic language of formal methods? It is so concise, so exact. We talked, and I left with more questions than answers, but with a strong sense that there was *something there.*
+
+Someone pointed me to [FizzBee](https://fizzbee.io). I had braced for TLA+, the venerable formal-methods language from Leslie Lamport (the same computer scientist who gave us LaTeX, and it reads that way). FizzBee was different. It looked and read like Python. And as I worked through its concepts, a bell went off: *this feels like Promise Theory.* I only half-knew Promise Theory at that point, but I knew enough to feel the resonance. So I went to learn it.
+
 ## The reframe: an LLM is an autonomous agent
 
-What unstuck me wasn't an AI paper. It was a body of work called [**Promise Theory**](http://markburgess.org/promises.html), developed by [Mark Burgess](http://markburgess.org/) and formalized with Jan Bergstra. It's about two decades old, and, this is not a coincidence, it comes from the very same configuration-management and distributed-systems world that gave us Puppet and Infrastructure as Code in the first place. The neighboring discipline came to my rescue twice in one career, and both times, it turned out, through the same man's ideas.
+What I found explained everything I'd stumbled into. [**Promise Theory**](http://markburgess.org/promises.html), developed by [Mark Burgess](http://markburgess.org/) and formalized with Jan Bergstra, didn't rescue me; my XML experiment had already done that. What it gave me was the *why* beneath the practice, and the vocabulary to do on purpose what I'd been doing by feel. It's about two decades old, and, this is not a coincidence, it comes from the very same configuration-management and distributed-systems world that gave us Puppet and Infrastructure as Code in the first place. The neighboring discipline came to my rescue twice in one career, and both times, it turned out, through the same man's ideas.
 
 Here's something worth sitting with before we go further. Burgess spent the better part of twenty years developing Promise Theory, and for most of that time it lived at the margins, precisely *because* it refuses to stay inside one discipline. It draws on physics, on logic, on distributed systems, on the plain study of how autonomous things cooperate. Ideas that travel across borders like that are the easiest for any single field to wave off as "not our department." They're also the ones that, when someone finally listens, turn out to explain the thing nobody else can. Promise Theory was built to reason about autonomous agents more than a decade before the most important autonomous agent any of us would ever build (the LLM) even existed. It was *right,* and it was *early,* and it was *waiting.* I'm listening now. I think you should too.
 
@@ -153,7 +170,7 @@ Promise Theory reasons about systems built from **autonomous** parts, and its fo
 
 You cannot *force* another agent to do anything. You can only ask, and it decides. Promise Theory gives that ask a name: an **imposition.** A command, a hint, a request: all impositions, and all of them guarantee exactly nothing, because the target is autonomous. The only thing an agent can genuinely give you is a **promise:** a declaration about *itself* that you, the recipient, can then rely on and (here's the load-bearing word) **assess.**
 
-Now read that axiom again with an LLM in mind, because this is where I sat up straight:
+Now read that axiom again with an LLM in mind, because this is where my brain started to hyperventilate:
 
 **Everything Promise Theory says about autonomous agents is true of an LLM as a matter of engineering fact, not as a metaphor.**
 
@@ -161,15 +178,19 @@ Now read that axiom again with an LLM in mind, because this is where I sat up st
 - The most a prompt can do is *elicit a promise* to behave a certain way. Because the promiser is stochastic, you the recipient **must** verify.
 - It is one autonomous agent among several: the model, the code around it, the external APIs, the human. There is no privileged commander in the room.
 
+*Oh my god,* I kept thinking, *this is the way.* And then again. And again.
+
 That's the reframe, and it changed how I build. Teams that treat prompts as commands spend their lives asking "why won't it obey?" Teams that treat prompts as **promises requiring assessment** build the guarantee on day one. I'd been living in the first camp, having forgotten I already knew how to live in the second.
 
 If you take one idea from this article, take this one: **you can't command an LLM. You can only elicit a promise and then assess whether it was kept.** I've started calling the whole approach that follows from it **promise-and-assess.** It's the direct descendant of "hand over scoped authority, guarantee no harm underneath."
 
-## The idea is only half the battle
+## The gunpowder effect
 
-Here's where most write-ups about Promise Theory and AI stop. They land the reframe, quote the axioms, and leave you nodding, with no idea what to do Monday morning. That gap is exactly where the real work lives. "Treat your LLM as an autonomous promiser" is a beautiful idea and completely inert until you can answer: where does the promise *live?* What file is it in? How do you check it? How does it survive contact with a real framework and a real deploy?
+That's when it detonated. Three ideas I'd been circling separately snapped into one: the declarative XML that made an agent's intent legible, a formal-methods language that could *prove* a state machine never reaches a bad state, and Promise Theory, which explained what I was actually doing and how to compose many agents without lying to myself about control. Gunpowder is three inert ingredients that do nothing apart and level a wall together. This was that. The XML became a *contract.* Formal methods made it *provable.* Promise Theory made it *composable*, and honest.
 
-I spent the last year answering that, and built it into an open-source kit you can run today. That's the companion to this piece: **[Contracts, Not Prompts: How to Build an Agent You Can Prove](#)**. In it I show you the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state machine that proves The Clinic can never book before you're verified; and the enforcement code that keeps a stochastic promiser honest.
+But a spark isn't a running system. And this is where most write-ups about Promise Theory and AI stop: they land the reframe, quote the axioms, and leave you nodding, with no idea what to do Monday morning. That gap is exactly where the real work lives. "Treat your LLM as an autonomous promiser" is a beautiful idea and completely inert until you can answer: where does the promise *live?* What file is it in? How do you check it? How does it survive contact with a real framework and a real deploy?
+
+So I put together what I'm calling the **promise-driven-agentic-kit**: a set of files that help a software engineer turn these ideas into a real agentic solution, in Python. You don't so much *run* it as *build* with it. The companion to this piece, **[Contracts, Not Prompts: How to Build an Agent You Can Prove](#)**, walks the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state machine that proves The Clinic can never book before you're verified; and the enforcement code that keeps a stochastic promiser honest.
 
 For now, hold onto the instinct I asked you to keep at the very top. Why should you believe an LLM's promise? You shouldn't, not on its own. You elicit the promise, and then you verify it. *Trust, but verify.* Here, that isn't a proverb. It's the whole method, and it's buildable. Let me prove it to you.
 

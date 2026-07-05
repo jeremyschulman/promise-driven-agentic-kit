@@ -1,16 +1,16 @@
 # Contracts, Not Prompts: How to Build an Agent You Can Prove
 
-### Part 2 of 2. The runnable method: a model-checked contract, enforcement code that keeps a stochastic promiser honest, and a promise graph, so your agent can't reach a state it must never be in. With two runnable examples.
+### The runnable method: a model-checked contract, enforcement code that keeps a stochastic promiser honest, and a promise graph, so your agent can't reach a state it must never be in. With two runnable examples.
 
-*By Jeremy Schulman*
+*By Jeremy Schulman · Part 2 of 2*
 
 ---
 
 This is the second of two pieces, and it's the *how*. The first, [Promises, Promises — Why Should You Believe?](#), made the case; here I'll compress that case into a few sentences so we can get straight to building.
 
-An LLM is an autonomous, stochastic agent. You cannot command it. You can only elicit a promise and then *assess* whether it was kept. *Trust, but verify.* I've watched this shape work before, in another field: you hand an autonomous actor scoped authority, and put a deterministic guarantee beneath it so it cannot cause harm, no matter what it tries. (I tell that whole story in the first piece: Puppet, networks, and a physicist named Mark Burgess whose Promise Theory underpins all of this.) The trouble is that most write-ups land the reframe and then leave you staring at a blank file. Where does the promise *live?* What file is it in? How do you check it?
+An LLM is an autonomous, stochastic agent. You cannot command it. You can only elicit a promise and then *assess* whether it was kept. *Trust, but verify.* I've watched this shape work before, in another field: hand an autonomous actor scoped authority, put a deterministic guarantee beneath it so it cannot cause harm, and you can safely let it run. (I tell that whole story in the first piece: Puppet, networks, and a physicist named Mark Burgess whose Promise Theory underpins all of this.) There I also told how three ideas fused into the method you're about to see built: **declarative XML** to make an agent's intent legible, a **formal-methods language** to *prove* it safe, and **Promise Theory** to explain why it works and how to compose many agents honestly. I called it the gunpowder effect. This piece is the explosion, made concrete.
 
-This piece answers that. I spent the last year building the answer into a runnable open-source kit: `<Github repo: TBD>`. We'll work through it with **The Clinic**, an appointment agent that provably cannot book before it verifies you, or double-book a slot. Not because a prompt asked nicely, but because the design makes those states unreachable, and I can prove it before I deploy. Let me show you the bridge. There are only a handful of moving parts, and none of them are exotic.
+A synthesis is not yet a running system, though. Most write-ups land the reframe and leave you staring at a blank file: where does the promise *live?* What file is it in? How do you check it? I built the answer into an open-source kit you build *with*, not one you run: the **promise-driven-agentic-kit** (`<Github repo: TBD>`), a set of files that help you construct these systems in Python. We'll work through it with **The Clinic**, an appointment agent that provably cannot book before it verifies you, or double-book a slot. Not because a prompt asked nicely, but because the design makes those states unreachable, and I can prove it before I deploy. Let me show you the bridge. There are only a handful of moving parts, and none of them are exotic.
 
 ## One artifact, three readers
 
@@ -54,6 +54,8 @@ This is the question a prose prompt can never answer: *"can it ever reach a bad 
 And this is not a toy that only passes because I wrote it to pass. My second example is the Trials of the Holy Grail (yes, the Monty Python one, knights and the Bridge of Death and the Knights Who Say "Ni!") with a Quest Marshal that should grant the Grail quest only after *both* trials are passed. **Its first draft failed model-checking.** The checker found a sequence I never would have: a knight could re-attempt a trial he'd already passed, fail it *after* the Grail was granted, and blow the invariant. The tool handed me the exact step-by-step trace to the bad state. The fix, making a passed trial "sticky," took two minutes. That's a real bug, caught by exhaustive search, before any human or any model ever touched the agent. Prose could never have caught it.
 
 Now, "same bytes." In the usual setup (a state machine coded in one place, a prompt written in another) the machine and the instructions are *two different artifacts that drift.* You fix one, forget the other, and find out in production. Here, the state machine the checker proves and the instructions the model reads are **the same document.** They can't drift, because there's nothing to drift from.
+
+That property isn't new, and it isn't really mine. A single declarative source of truth, with everything else derived from it, is the discipline behind intent-based networking, which I came up through years ago (that story is in the first piece). Here the source is a contract rather than a network design, but the rule is identical: change the one source, and everything downstream follows. Nothing drifts.
 
 ## Formalize the structure, leave judgment to prose
 
@@ -151,7 +153,7 @@ Strip away the machinery and one shape remains, and it's the same shape I first 
 
 The prize I promised at the very top, The Clinic that *provably cannot* book before you're verified, isn't a trick of a clever prompt. It's the payoff of that shape, made concrete: the contract makes the bad states unreachable, the code makes every promise assessed, and the promise graph makes every dependency something we declared out loud.
 
-I packaged the whole thing as an open-source kit: the two runnable examples, the schemas, a project template that scaffolds a new contract-driven agent that's green out of the box, and an authoring skill that walks you through writing your first contract. You can model-check the examples *and talk to them.*
+I packaged all of this as the **promise-driven-agentic-kit**. It isn't an app you run; it's a set of files you build *with*, in Python. It ships two complete worked examples you *can* run and talk to (The Clinic and the Trials of the Holy Grail), the contract schemas, a template that scaffolds a fresh contract-driven agent that's green out of the box, and agentic-coding **Skills** you fold into your own workflow to author and model-check contracts as you go.
 
 So here's my ask: go try it. Take a small, stateful agent you already have, one where a wrong turn actually costs something, and write its rules as a contract instead of a prompt. Run the model checker. Watch it find the state you didn't think of. Then come tell me what it caught.
 
