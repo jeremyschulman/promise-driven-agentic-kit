@@ -1,6 +1,6 @@
 # Promises, Promises — Why Should You Believe?
 
-### Twenty years ago, Mark Burgess quietly seeded the DevOps era. His Promise Theory is about to do the same for agentic AI.
+### Twenty years ago, Mark Burgess forged the foundations of the DevOps era. His Promise Theory is about to do the same for agentic AI.
 
 *By Jeremy Schulman · Part 1 of 2*
 
