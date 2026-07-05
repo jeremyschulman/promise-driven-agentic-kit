@@ -6,9 +6,9 @@
 
 ---
 
-I want this article to blow your mind. I know how that lands — it's a big promise, and you have no reason yet to believe it. Good. Hold onto that skepticism; it's the whole point, and we'll get there.
+I want this article to blow your mind. I know how that lands — it's a big promise, and you have no reason yet to believe it. Good. *Trust, but verify.* Hold onto that instinct; it's the whole point, and we'll get there.
 
-For over a year I've been building and shipping the hard kind of AI agent: stateful, multi-step, safety-sensitive systems that run real business workflows, where a wrong move actually costs something. Along the way I worked out a technique for building complex agentic systems that I haven't seen anywhere else. So I'm not talking hypotheticals — I'm going to *show* it to you, and hand you the means to build it yourself.
+For over a year I've been building and running in production the hard kind of AI agent: stateful, multi-step, safety-sensitive systems — effectively internal products, sophisticated business-process automations that, before this generation of AI, we simply would never have attempted. AI turned out to be the enabling technology that makes the previously improbable possible. Along the way I worked out a technique for building these systems that I haven't seen anywhere else. So I'm not talking hypotheticals — I'm going to *show* it to you, and hand you the means to build it yourself.
 
 I had the *aha.* Now let me take you to the *cha-ching.*
 
@@ -16,7 +16,7 @@ And here's why I'm this confident: something big is happening. Agentic software 
 
 > *"This post is going to talk about managing networks in a whole new way. The concepts in it will change your life. They changed mine. There is no doubt that something big is happening. Our industry is going through a paradigm shift."*
 
-I was right. I bet my career on that sentence and never looked back — and I didn't just *watch* that shift happen. I was part of a small, passionate core group of people who set out to help change the industry, and did. So when I tell you the same thing now, about agents, it isn't hype. It's pattern recognition from someone who has crossed this exact bridge once before — from a neighboring discipline into a field that wasn't ready for it.
+I was right. I bet my career on that sentence and never looked back — and I didn't just *watch* that shift happen. I was part of a passionate group of people around the world who set out to help change the industry, and did. So when I tell you the same thing now, about agents, it isn't hype. It's pattern recognition from someone who has crossed this exact bridge once before — from a neighboring discipline into a field that wasn't ready for it.
 
 So let me start with the assumption I think we're all quietly building on, and why it's broken: **that if we just write the instructions carefully enough, the machine will do as it's told.** It won't. It can't. **You cannot command an LLM — you can only elicit a promise and then verify it.** The teams who accept that *first*, who stop trying to command their agents and start doing something fundamentally different, are going to build the systems everyone else spends the next few years catching up to.
 
@@ -28,13 +28,13 @@ That *"and I can prove it"* is the whole game. It's the thing a prose prompt can
 
 Back in 2012 I was at Juniper Networks, deep in the Junos software world, when the head of networks at a Fortune 5 company asked me to make Puppet run on a switch. This was no idle question — a major sales deal hinged on the answer. My honest first reaction was, *"What is Puppet?"*
 
-Then I looked, and the floor shifted under me. The sysadmins and the DevOps crowd had quietly gone through an entire revolution while the networking world wasn't paying attention. They'd stopped hand-configuring servers one at a time and started treating infrastructure as *code* — declarative, version-controlled, automatically enforced. The tools getting all the attention were **Puppet** and **Chef** — friendlier, wrapped in approachable languages that made the whole thing feel easy. But here's a detail whose weight I'd only feel years later: that entire declarative, desired-state model traced back to **CFEngine**, built in 1993 by a physicist named **Mark Burgess.** Puppet was essentially his idea, re-imagined to be easier to use. And while the newcomers took the spotlight, CFEngine was quietly running some of the largest deployments on earth — single installations north of a million machines. The foundational tool wasn't the famous one. Hold that name: it's the same Mark Burgess whose *Promise Theory* is the backbone of this article. His fingerprints were on the last paradigm shift I lived through, too — I just didn't know it yet.
+Then I looked, and the floor shifted under me. The sysadmins and the DevOps crowd had quietly gone through an entire revolution while the networking world wasn't paying attention. They'd stopped hand-configuring servers one at a time and started treating infrastructure as *code* — declarative, version-controlled, automatically enforced. The tools getting all the attention were **Puppet** and **Chef** — friendlier, wrapped in approachable languages that made the whole thing feel easy. But here's a detail whose weight I'd only feel years later: that entire declarative, desired-state model traced back to **CFEngine**, built in 1993 by a physicist named **Mark Burgess.** Puppet was a friendlier take on the paradigm he pioneered. And while the newcomers took the spotlight, CFEngine was quietly running some of the largest deployments on earth — single installations north of a million machines. The foundational tool wasn't the famous one. Hold that name: it's the same Mark Burgess whose *Promise Theory* is the backbone of this article. His fingerprints were on the last paradigm shift I lived through, too — I just didn't know it yet.
 
 And it was obvious, standing there, that the same wave was about to hit networking whether the networking industry was ready or not.
 
 Part of why I could see it coming was where I stood: feet in two worlds. I reported into the Junos software team — learning from Phil Shafer, who essentially invented Junos automation — but my actual job was out in the field with the sales team, turning that engineering depth into closed deals. Engineer in one ear, customer in the other. Working across that boundary *was* the role — so much so that when I wrote the whole thing up in 2013, I called it "Bridging the Two Worlds." I've stood between worlds my whole career, which is probably why, years later, Mark's border-crossing ideas would feel like coming home.
 
-I wasn't guessing, and I wasn't alone. At PuppetConf in 2013, John Willis — the mentor who gave me that "aha to cha-ching" phrase — pulled me aside and, in effect, handed me a crystal ball: *this* is what the next ten years of your career look like, he said, if you commit to the network-automation movement. I committed. And I had good company: Scott Robohn, my first manager at Juniper back in 2008, would go on to co-found the Network Automation Forum. I mention them because the point that matters for *this* article isn't that I *noticed* a paradigm shift — it's that I was in the room, often near the front of it, while one was made. I know what the early days of a real shift feel like from the inside. They feel like right now.
+I wasn't guessing, and I wasn't alone. At PuppetConf in 2013, John Willis — the mentor who gave me that "aha to cha-ching" phrase — pulled me aside and, in effect, handed me a crystal ball: *this* is what the next ten years of your career look like, he said, if you commit to the network-automation movement. I committed. And I had good company: Scott Robohn, my first manager at Juniper back in 2008, would go on to co-found the Network Automation Forum. My friend Peter Sprygada and I co-wrote the Puppet "netdev" module together; Peter went on to become the driving force behind Ansible's network automation — the reason so much of the world's network infrastructure is automated the way it is today. I mention them because the point that matters for *this* article isn't that I *noticed* a paradigm shift — it's that I was in the room, often near the front of it, while one was made. I know what the early days of a real shift feel like from the inside. They feel like right now.
 
 Here's the part of that story I want you to hold onto, because it turns out to be the whole point of *this* article. The vision was to run **Puppet** — the sysadmins' own automation — natively on the switch, so that when they rolled out an application, the network changes it needed rolled out *with* it: no ticket, no waiting on the networking team. And if the rollout went sideways, a single rollback reverted the application *and* the network together, as one unit. That was the truly game-changing part. The reason it actually *worked* — the reason the networking team could hand over that power without living in fear — came down to two ideas:
 
@@ -42,6 +42,8 @@ Here's the part of that story I want you to hold onto, because it turns out to b
 2. **A guarantee underneath.** As I wrote back then, the networking team was comfortable handing over control because *"Junos can guarantee at the OS level that [Puppet] won't harm the network."*
 
 Read those two ideas again with 2026 eyes. You give an autonomous actor **scoped authority** to act, and you put a **deterministic layer beneath it that guarantees it cannot cause harm — no matter what it tries.** You don't trust the actor. You trust the guarantee.
+
+And we built it. Puppet for Junos shipped, and ran in production at real customers. I honestly never tracked whether it won that Fortune 5 deal — because by then, the deal wasn't the point. The lesson was.
 
 I've been designing systems around that principle for thirteen years. An LLM agent is just the newest, strangest, most capable actor I've ever been asked to hand the keys to. And when I started building agents, I promptly forgot my own hard-won lesson.
 
@@ -107,7 +109,7 @@ Here's the move that made everything click. Instead of a prose prompt, each agen
 
 One artifact. Three readers. Same bytes. That last part matters more than it sounds, and I'll come back to it.
 
-At the center of the contract is a small **state machine,** written in a language called [FizzBee](https://fizzbee.io) — it's in the TLA+ family of formal specification languages, but with a Python-ish syntax that reads approachably. Here's the actual rule from **The Clinic** — the clinic-appointment assistant that's one of two runnable example agents in the kit — verbatim:
+At the center of the contract is a small **state machine,** written in a language called [FizzBee](https://fizzbee.io) — it's in the TLA+ family of formal specification languages, but with a Python-ish syntax that reads approachably. Here's the actual rule from **The Clinic** — the clinic-appointment assistant that's one of two runnable example agents in the kit, and a clean, shareable stand-in for the production systems I can't put on the page — verbatim:
 
 ```fizz
 atomic action VerifyPatient:
@@ -203,7 +205,7 @@ Three consequences fall out of this, and they're why I now design this way:
 
 So the wager scales. For one agent it was *"can this reach a bad state?"* For the superagent it becomes *"can this society of agents make a promise it has no way to keep?"* — and I answer that before I deploy, too.
 
-I believe the engineers building serious systems must have **choice and control** — choice of tools, frameworks, and languages, and control over how they build, deploy, and evolve. Any method worth adopting has to honor that instead of locking you in. So the property I care about most here isn't a feature at all; it's that the method asks nothing of your stack. The two examples prove it: The Clinic and the Trials of the Holy Grail run on **entirely different frameworks** — The Clinic on Google's ADK, the Trials on Pydantic AI — yet they share the *same* contracts and the *same* enforcement code. The only meaningful difference between them is a single file wiring each to its runtime. Everything that makes them *safe* is identical and framework-independent. The method lives in the contracts and the assessment code — not in anybody's framework-of-the-month. Choose your tools; keep your guarantees.
+I believe engineers building serious systems must have **choice and control** — choice of tools, frameworks, and languages, and control over how they build, deploy, and evolve. Any method worth adopting has to honor that instead of locking you in. So the property I care about most here isn't a feature at all; it's that the method asks nothing of your stack. The two examples prove it: The Clinic and the Trials of the Holy Grail run on **entirely different frameworks** — The Clinic on Google's ADK, the Trials on Pydantic AI — yet they share the *same* contracts and the *same* enforcement code. The only meaningful difference between them is a single file wiring each to its runtime. Everything that makes them *safe* is identical and framework-independent. The method lives in the contracts and the assessment code — not in anybody's framework-of-the-month. Choose your tools; keep your guarantees.
 
 ## Part 9 — What you actually walk away with
 
@@ -238,9 +240,13 @@ The prize I promised you at the very top — The Clinic that *provably cannot* b
 
 I packaged the whole thing as an open-source kit: the two runnable examples, the schemas, a project template that scaffolds a new contract-driven agent that's green out of the box, and an authoring skill that walks you through writing your first contract. You can model-check the examples *and talk to them.*
 
+A confession before I let you go. Not everything I run in production uses this method — not yet. This past season, Major League Baseball put an agentic system called **Connie** into production to help keep the game on the air: it watches the network feeds that carry every pitch to millions of fans, catches anomalies, and acts before they become outages. Google featured it during the World Series. Connie doesn't use the method in this article. But if I were building it today, it would — and that, more than anything, is why I wrote this.
+
 So here's my ask, the same one I made in 2013: go try it. Take a small, stateful agent you already have — one where a wrong turn actually costs something — and write its rules as a contract instead of a prompt. Run the model checker. Watch it find the state you didn't think of. Then come tell me what it caught.
 
-You can't command an LLM. But you can get a promise out of it, and you can guarantee the rest. I've bet on this shape before. I'm betting on it again — and this time, I'd love for you to build it with me.
+So — why should you believe? You shouldn't. Not a promise from a stochastic machine, and honestly, not one from me either. This is where the rule from the top earns its keep, with one word removed: you come to trust an agent *by* verifying it, in code, over and over. Trust *by* verify. You can't command an LLM. You can only get a promise out of it — and then prove it's kept. That was the *aha.* This is the *cha-ching.*
+
+I've bet on this shape before. I'm betting on it again — and this time, I'd love for you to build it with me.
 
 ---
 
