@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 560" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1280" height="560" fill="#ffffff"/>
+
+  <text x="640" y="50" text-anchor="middle" font-size="32" font-weight="700" fill="#1f2937">The Build Stage</text>
+  <text x="640" y="82" text-anchor="middle" font-size="16" fill="#6b7280">Your AI coding assistant turns the contract into a running agent, on the framework you choose.</text>
+
+  <defs>
+    <marker id="ba" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+
+  <!-- CONTRACT -->
+  <rect x="40" y="180" width="240" height="168" rx="12" fill="#ffffff" stroke="#6366f1" stroke-width="2"/>
+  <rect x="40" y="180" width="240" height="46" rx="12" fill="#6366f1"/>
+  <rect x="40" y="210" width="240" height="16" fill="#6366f1"/>
+  <text x="60" y="211" font-size="16" font-weight="700" fill="#ffffff">THE CONTRACT</text>
+  <text x="60" y="262" font-size="14" fill="#1f2937">Promises, step-guidance,</text>
+  <text x="60" y="284" font-size="14" fill="#1f2937">and enforcement rules.</text>
+
+  <path d="M280 264 L 346 264" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#ba)"/>
+
+  <!-- ASSISTANT -->
+  <rect x="350" y="160" width="330" height="232" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="350" y="160" width="330" height="46" rx="12" fill="#7c3aed"/>
+  <rect x="350" y="190" width="330" height="16" fill="#7c3aed"/>
+  <text x="372" y="191" font-size="16" font-weight="700" fill="#ffffff">AI CODING ASSISTANT</text>
+  <text x="372" y="242" font-size="14" fill="#1f2937">Reads the contract and builds</text>
+  <text x="372" y="264" font-size="14" fill="#1f2937">the agent, guided by the kit's</text>
+  <text x="372" y="286" font-size="14" fill="#1f2937">authoring Skills.</text>
+  <g font-size="13" font-weight="700">
+    <rect x="372" y="322" width="104" height="28" rx="14" fill="#ede9fe" stroke="#c4b5fd"/>
+    <text x="424" y="341" text-anchor="middle" fill="#6d28d9">Claude Code</text>
+    <rect x="484" y="322" width="64" height="28" rx="14" fill="#ede9fe" stroke="#c4b5fd"/>
+    <text x="516" y="341" text-anchor="middle" fill="#6d28d9">Codex</text>
+    <rect x="556" y="322" width="96" height="28" rx="14" fill="#ede9fe" stroke="#c4b5fd"/>
+    <text x="604" y="341" text-anchor="middle" fill="#6d28d9">OpenCode</text>
+  </g>
+
+  <path d="M680 236 C 706 214, 716 200, 726 194" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#ba)"/>
+  <path d="M680 316 C 706 338, 716 352, 726 358" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#ba)"/>
+
+  <!-- FRAMEWORK WIRING -->
+  <rect x="730" y="150" width="500" height="134" rx="12" fill="#ffffff" stroke="#0d9488" stroke-width="2"/>
+  <rect x="730" y="150" width="500" height="44" rx="12" fill="#0d9488"/>
+  <rect x="730" y="178" width="500" height="16" fill="#0d9488"/>
+  <text x="752" y="180" font-size="16" font-weight="700" fill="#ffffff">FRAMEWORK WIRING</text>
+  <text x="752" y="224" font-size="14" fill="#1f2937">Binds the declared tools and builds the agent on</text>
+  <text x="752" y="246" font-size="14" fill="#1f2937">the framework you pick.</text>
+  <g font-size="12" font-weight="700">
+    <rect x="752" y="256" width="86" height="22" rx="11" fill="#ccfbf1" stroke="#5eead4"/>
+    <text x="795" y="271" text-anchor="middle" fill="#0f766e">LangGraph</text>
+    <rect x="846" y="256" width="92" height="22" rx="11" fill="#ccfbf1" stroke="#5eead4"/>
+    <text x="892" y="271" text-anchor="middle" fill="#0f766e">Pydantic AI</text>
+    <rect x="946" y="256" width="66" height="22" rx="11" fill="#ccfbf1" stroke="#5eead4"/>
+    <text x="979" y="271" text-anchor="middle" fill="#0f766e">CrewAI</text>
+    <rect x="1020" y="256" width="96" height="22" rx="11" fill="#ccfbf1" stroke="#5eead4"/>
+    <text x="1068" y="271" text-anchor="middle" fill="#0f766e">Google ADK</text>
+  </g>
+
+  <!-- ENFORCEMENT CODE -->
+  <rect x="730" y="300" width="500" height="120" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <rect x="730" y="300" width="500" height="44" rx="12" fill="#d97706"/>
+  <rect x="730" y="328" width="500" height="16" fill="#d97706"/>
+  <text x="752" y="330" font-size="16" font-weight="700" fill="#ffffff">ENFORCEMENT CODE</text>
+  <text x="752" y="374" font-size="14" fill="#1f2937">A deterministic twin for every invariant:</text>
+  <text x="752" y="396" font-size="14" fill="#1f2937">code that refuses to break a promise.</text>
+
+  <text x="640" y="500" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2937">= a runnable agent, wired to your stack and guarded in code.</text>
+</svg>

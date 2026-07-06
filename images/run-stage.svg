@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 520" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1280" height="520" fill="#ffffff"/>
+
+  <text x="640" y="50" text-anchor="middle" font-size="32" font-weight="700" fill="#1f2937">The Run Stage</text>
+  <text x="640" y="82" text-anchor="middle" font-size="16" fill="#6b7280">At runtime the LLM acts freely, but every action is assessed against the contract's promises before it happens.</text>
+
+  <defs>
+    <marker id="oa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9ca3af"/>
+    </marker>
+  </defs>
+
+  <!-- USER -->
+  <rect x="40" y="252" width="160" height="84" rx="12" fill="#f9fafb" stroke="#9ca3af" stroke-width="2"/>
+  <text x="120" y="300" text-anchor="middle" font-size="15" font-weight="700" fill="#374151">A user request</text>
+
+  <path d="M200 294 L 246 294" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#oa)"/>
+
+  <!-- LLM -->
+  <rect x="250" y="204" width="310" height="184" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+  <rect x="250" y="204" width="310" height="46" rx="12" fill="#2563eb"/>
+  <rect x="250" y="234" width="310" height="16" fill="#2563eb"/>
+  <text x="272" y="235" font-size="16" font-weight="700" fill="#ffffff">THE LLM</text>
+  <text x="272" y="278" font-size="13" fill="#6b7280">in your agentic framework</text>
+  <text x="272" y="308" font-size="14" fill="#1f2937">Follows the contract's</text>
+  <text x="272" y="330" font-size="14" fill="#1f2937">step-guidance and proposes</text>
+  <text x="272" y="352" font-size="14" fill="#1f2937">an action or tool call.</text>
+
+  <path d="M560 294 L 606 294" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#oa)"/>
+
+  <!-- ENFORCEMENT GATE -->
+  <rect x="610" y="204" width="300" height="184" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+  <rect x="610" y="204" width="300" height="46" rx="12" fill="#d97706"/>
+  <rect x="610" y="234" width="300" height="16" fill="#d97706"/>
+  <text x="632" y="235" font-size="16" font-weight="700" fill="#ffffff">ENFORCEMENT CODE</text>
+  <text x="632" y="290" font-size="14" fill="#1f2937">Assesses the proposed action</text>
+  <text x="632" y="312" font-size="14" fill="#1f2937">against the invariants, before</text>
+  <text x="632" y="334" font-size="14" fill="#1f2937">anything runs.</text>
+
+  <!-- branches -->
+  <path d="M910 258 C 936 244, 946 238, 956 234" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#oa)"/>
+  <text x="922" y="232" font-size="12" font-weight="700" fill="#059669">keeps promise</text>
+  <path d="M910 336 C 936 350, 946 356, 956 362" stroke="#e11d48" stroke-width="2" fill="none" marker-end="url(#oa)"/>
+  <text x="918" y="372" font-size="12" font-weight="700" fill="#e11d48">breaks promise</text>
+
+  <!-- EXECUTE -->
+  <rect x="960" y="196" width="280" height="92" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="982" y="228" font-size="15" font-weight="700" fill="#065f46">EXECUTE</text>
+  <text x="982" y="256" font-size="14" fill="#047857">Run it. Return the result</text>
+  <text x="982" y="276" font-size="14" fill="#047857">to the user.</text>
+
+  <!-- REFUSE -->
+  <rect x="960" y="316" width="280" height="112" rx="12" fill="#fff1f2" stroke="#e11d48" stroke-width="2"/>
+  <text x="982" y="348" font-size="15" font-weight="700" fill="#9f1239">REFUSE</text>
+  <text x="982" y="376" font-size="14" fill="#be123c">A structured refusal names the</text>
+  <text x="982" y="396" font-size="14" fill="#be123c">unmet condition. No harm done.</text>
+
+  <text x="640" y="482" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2937">The agent acts freely, but never past the guarantees. That is trust.</text>
+</svg>
