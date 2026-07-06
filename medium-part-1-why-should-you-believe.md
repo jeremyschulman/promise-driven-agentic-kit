@@ -2,7 +2,7 @@
 
 ### Twenty years ago, Mark Burgess forged the foundations of the DevOps era. His Promise Theory is about to do the same for agentic AI.
 
-*By Jeremy Schulman · Part 1 of 2*
+*By Jeremy Schulman · Part 1 of 3*
 
 ---
 
@@ -10,14 +10,13 @@ I promise to blow your mind. I know how that lands: you have no reason yet to
 believe me. Good. *Trust, but verify.* Hold onto that instinct; it's the whole
 point, and we'll get there.
 
-I've had an "Ah, Ha!" moment. Across two pieces I want to take you all the way
+I've had an "Ah, Ha!" moment. Across three pieces I want to take you all the way
 to the "Cha, Ching!", to the point where you can put into practice what you are
 going to read about. This is not about another shiny demo or agentic
 development framework. I want to share with you an entirely different _approach_ to
 building sophisticated agentic solutions.
 
-This first piece makes the case. The next piece, [Contracts, Not Prompts: How to Build an Agent You Can Prove](#), shows you the
-way.
+This first piece makes the case. The two that follow show you the way, starting with [Contracts, Not Prompts: How to Build an Agent You Can Prove](#).
 
 **TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
 
