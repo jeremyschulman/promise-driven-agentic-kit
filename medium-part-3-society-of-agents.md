@@ -20,6 +20,12 @@ This is where I think Promise Theory earns its keep most, because multi-agent sy
 
 Promise Theory drags every one of those dependencies into the open using two polarities. An agent makes an **offer** (`+`), "I will provide this," or a **use** (`−`), "I will accept and use that." Both are promises; the `−` is not mere dependence, it's an agent promising to accept what another offers. And the rule that does the work: cooperation only *binds* when a `+` offer meets a matching `−` use. An offer nobody uses, or a use nothing offers, is a **design defect you can detect mechanically.**
 
+Draw the whole clinic that way and its promise graph appears:
+
+![The Clinic as a promise graph. The patient talks to one superagent; inside, the clinic_orchestrator routes to two LLM subagents (book_appointment and manage_appointment), which lean on three deterministic service agents (patient_registry, provider_schedule, insurance_eligibility). Gray edges are uses meeting offers; the indigo edges are the shared verified-patient dependency that every agent declares against the registry. An unmatched edge is a build failure.](images/clinic-promise-graph.png)
+
+Trace one request through it. A patient says *"book me an appointment."* The orchestrator verifies identity against the `patient_registry`, classifies the intent, and then, instead of *commanding* anyone, hands the request to the subagent whose published offer matches it — here, `book_appointment`. That booking agent in turn *uses* three offers to do its job: the registry's verified patient, the insurer's `eligibility_check`, and the schedule's `open_slots`; then it commits through the schedule's `commit_booking`, where `NoDoubleBook` is kept in code regardless of what the model decided. Every arrow on that path is a promise one agent published and another declared it depends on. None of it is implicit.
+
 Each agent publishes a small manifest of its offers and uses. Here's the booking agent promising not to double-book, written as an offer:
 
 ```xml
@@ -39,6 +45,25 @@ Three consequences fall out of this, and they're why I now design this way:
 **Shared state becomes an agent.** Instead of a blackboard the orchestrator scribbles on and the subagents peek at, the patient registry is its *own* agent that publishes the verified patient; consumers declare that they rely on it. The invisible dependency becomes a declared, checkable binding, impossible to forget when you add a third workflow six months later.
 
 **The whole graph is verified offline.** Just as the state machines get model-checked, the promise manifests get checked for completeness: every `−` use meets a `+` offer, and every condition is either met by some agent's offer or explicitly self-assessed. An agent relying on something nobody promised is a **build failure, not a 2 a.m. surprise.**
+
+Concretely, that check is just matching names across contracts. The schedule *publishes* its open slots, and the booking agent *declares* it depends on them — same `id`, a `+` meeting a `−`:
+
+```xml
+<!-- provider_schedule publishes (+) -->
+<offer id="open_slots" type="session-state" to="book_appointment manage_appointment clinic_orchestrator">
+  <body>The currently open slots per provider. A slot is bookable only while
+    it appears here.</body>
+  <condition ref="slots_exist" assessed="self"/>
+</offer>
+
+<!-- book_appointment declares it relies on them (−) -->
+<use id="open_slots" from="provider_schedule" quenches="slot_available">
+  <body>The provider's currently open slots; a slot is only bookable while
+    it appears here.</body>
+</use>
+```
+
+Miss that match — a `−` with no `+` to meet it — and the build goes red before a single request arrives.
 
 So the wager scales. For one agent it was *"can this reach a bad state?"* For the superagent it becomes *"can this society of agents make a promise it has no way to keep?"* And I answer that before I deploy, too.
 
