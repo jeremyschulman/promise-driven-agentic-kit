@@ -34,17 +34,21 @@ states unreachable, and I can prove it before I deploy.
 
 ## `Contract` - One Artifact for Software Lifecycle
 
-Here's the move that made everything click. Instead of a prose prompt, each
-agent's *entire* instruction set becomes a single document. I call it a
-**contract.** And the trick is that this one document is read by three different
-consumers, each taking what it needs.
+Here's the move that made everything click. Instead of a prose prompt, an agent's *entire* instruction set becomes a single document. I call it a **contract.** You author it once, then carry that same document through every stage of building the system: Design, Build, and Run.
 
 ![One contract across the AI development lifecycle. Design: the FizzBee model checker reads it and returns a verdict, either PASS or a counterexample showing the exact path to a bad state. Build: your AI coding assistant reads it to generate the agent and its enforcement code. Run: the LLM executes inside any agentic framework, with the enforcement code assessing every action. Proven at design, enforced at runtime.](images/contract-lifecycle.png)
 
-One artifact. Three readers. Same bytes. That last part matters more than it sounds, and
-I'll come back to it.
+One document, three stages, same bytes. That last part matters more than it sounds, and I'll come back to it. The rest of this piece walks that lifecycle, one stage at a time.
 
-At the center of the contract is a small **state machine,** written in a language called [FizzBee](https://fizzbee.io). It's in the TLA+ family of formal specification languages, but with a Python-ish syntax that reads approachably. Here's the actual rule from **The Clinic**, the clinic-appointment assistant that's one of two runnable example agents in the kit (and a clean, shareable stand-in for the production systems I can't put on the page), verbatim:
+## Design — capture the workflow, and prove it
+
+**Why a state machine, and why you don't have to think in one.** You're probably not starting from a blank page. You're staring at a workflow that already exists and creaks: a tangle of Zapier zaps, a Workato recipe, or some bespoke in-house automation that's been patched for years and that everyone is afraid to touch. And you probably don't think of that workflow as a *state machine.* Almost no one does.
+
+You don't have to. That workflow already *is* a state machine, whether anyone ever drew it: it has states, transitions between them, and states it must never enter. The machine is latent in the process; someone just has to capture it.
+
+And that someone isn't you, at least not by hand. It works like hiring a lawyer: you don't arrive knowing the statutes or how to word the clauses; you describe what you need, you go back and forth, and the lawyer turns the conversation into a contract that holds up. Here it is the same shape. You express the workflow's intent to an AI coding assistant, refine it through Q&A, and the assistant, which knows the contract's schema, drafts the whole thing, the FizzBee state machine included. Your job is to know the workflow. The assistant's job is to render it as a contract. FizzBee's job is to capture its essence precisely, in a form a machine can check.
+
+So let's look at what it drafts. Here, verbatim, is the heart of **The Clinic**'s contract: its state machine, written in [FizzBee](https://fizzbee.io), a formal-methods language in the TLA+ family with an approachable, Python-ish syntax. (The Clinic is one of the kit's two runnable examples, a shareable stand-in for the production systems I can't show.)
 
 ```fizz
 atomic action VerifyPatient:
@@ -71,19 +75,29 @@ Now the payoff. A **model checker** takes that machine and explores *every reach
 3/3 contract(s) passed model checking.
 ```
 
-This is the question a prose prompt can never answer: *"can it ever reach a bad state?"* Now it's answered. Not with "probably not." With **"no, and here's the exhaustive proof."** The model checker proves it at design time, before an LLM or a user is anywhere near it: the agent cannot reach a state it must never be in.
+This is the question a prose prompt can never answer: *can it ever reach a bad state?* The failures that actually hurt an agent are not bad answers, they are bad *states*: booked before verified, double-booked, access granted without authorization. And you cannot test your way to *ever*. The space of conversations is effectively infinite and the model is nondeterministic, so no suite of examples ever covers the one path that bites you in production. A model checker does what testing cannot: it walks *every reachable state* and either proves the forbidden ones unreachable or hands you the exact steps that reach one. It is the adversarial read every contract needs, the one that finds the loophole nobody thought to look for. So the answer is no longer "probably not." It is **"no, and here's the exhaustive proof,"** at design time, before an LLM or a user is anywhere near it. That proof is the keystone of the whole method: structure alone, YAML or a tidy prompt, makes an agent *neater*; only a proof makes it *provable*.
 
 And this is not a toy that only passes because I wrote it to pass. My second example is the Trials of the Holy Grail (yes, the Monty Python one, knights and the Bridge of Death and the Knights Who Say "Ni!") with a Quest Marshal that should grant the Grail quest only after *both* trials are passed. **Its first draft failed model-checking.** The checker found a sequence I never would have: a knight could re-attempt a trial he'd already passed, fail it *after* the Grail was granted, and blow the invariant. The tool handed me the exact step-by-step trace to the bad state. The fix, making a passed trial "sticky," took two minutes. That's a real bug, caught by exhaustive search, before any human or any model ever touched the agent. Prose could never have caught it.
 
-And here is the part that quietly changes your day. That counterexample is not a stack trace you squint at; it is machine-readable feedback. Point your AI coding assistant at a failing `fizz` run and it reads the trace, repairs the contract, and re-runs, closing the loop on its own until the design is green. Verification stops being a chore and becomes a tight author-check-fix cycle.
+And here is the part that quietly changes your day. That counterexample is not a stack trace you squint at; it is machine-readable feedback. Point your AI coding assistant at a failing `fizz` run and it reads the trace, repairs the contract, and re-runs, closing the loop on its own until the design is green. Verification stops being a chore and becomes a tight author-check-fix cycle. It is the lawyer again, mid-draft: the model checker flags the exact clause that would fail, and your assistant redlines the contract and refiles, until it holds.
 
 ![The Design loop: you and your AI coding assistant author the contract; fizz checks it and returns PASS or a counterexample naming the exact path to a bad state; the assistant reads the counterexample, repairs the contract, and re-runs until it passes.](images/design-loop.png)
 
-So how do the FizzBee half and the Promise Theory half actually fit together? They are not two tools bolted side by side. They are the *same guarantee*, read by different consumers. Follow one, `patient_verified`, through the contract.
+**Where to draw the line.** I am *not* telling you to formalize your whole agent. That way lies madness. The most useful rule I found is about where the formal part stops:
 
-**The model checker reads it as a proof.** The invariant `PatientVerifiedBeforeWorkflow` says no workflow may run for an unverified patient, and the checker proves that holds in every reachable state.
+> **Formalize structure and ordering. Leave judgment and phrasing to prose.**
 
-**The builder reads it as a promise.** In the contract's `<promises>` section, the same guarantee appears as a declared offer, carrying a condition with the *same token*:
+"Verify before you book," "never double-book," "at most one task suspended at a time" are structural. They are about ordering and safety, and they belong in the model-checked state machine, because prose lets them drift.
+
+But "is this message a greeting or a booking request?" is not a formal property and never will be. Neither is "how do I phrase this hand-off warmly?" That is judgment. It stays in prose, in a section of the contract I call step-guidance, right beside the formal parts but clearly quarantined from them.
+
+Don't try to formalize the fuzzy stuff; you'll fail and hate your life. Don't leave the structural stuff to prose; it'll drift and hurt you. Getting that line right is most of the skill.
+
+So how do the FizzBee half and the Promise Theory half actually fit together? They are not two tools bolted side by side. They are the *same guarantee*, showing up at each stage of the lifecycle. Follow one, `patient_verified`, from Design through Run.
+
+**In Design, the model checker reads it as a proof.** The invariant `PatientVerifiedBeforeWorkflow` says no workflow may run for an unverified patient, and the checker proves that holds in every reachable state.
+
+**In Build, the builder reads it as a promise.** In the contract's `<promises>` section, the same guarantee appears as a declared offer, carrying a condition with the *same token*:
 
 ```xml
 <offer id="relay_to_matching_offer" type="workflow" to="patient">
@@ -95,36 +109,24 @@ So how do the FizzBee half and the Promise Theory half actually fit together? Th
 
 That `patient_verified` is not a naming coincidence. It is literally the variable the model checker just reasoned about. This is the hinge of the whole design. Promise Theory does not compete with the state machine; it *names* what the invariant means, a promise made to a promisee, in a vocabulary that other agents can declare they depend on.
 
-**The LLM reads it as an instruction.** The same guarantee once more, in the prose it follows at runtime: never start a workflow before the patient is verified.
+**At Run, the LLM reads it as an instruction.** The same guarantee once more, in the prose it follows at runtime: never start a workflow before the patient is verified.
 
-One guarantee. One vocabulary. Three readers. That is the answer to the question I get most often: FizzBee and Promise Theory are not two systems you have to keep in sync. They are two readings of one contract, tied together by a single shared name, with FizzBee supplying the proof and Promise Theory the meaning and the glue that lets agents compose. That shared document is the whole point.
+One guarantee, one vocabulary, carried through every stage. That is the answer to the question I get most often: FizzBee and Promise Theory are not two systems you keep in sync. They are two readings of one contract, tied by a single shared name, with FizzBee supplying the proof and Promise Theory the meaning that lets agents compose. That shared document is the whole point.
 
 
 Now, "same bytes." In the usual setup (a state machine coded in one place, a prompt written in another) the machine and the instructions are *two different artifacts that drift.* You fix one, forget the other, and find out in production. Here, the state machine the checker proves and the instructions the model reads are **the same document.** They can't drift, because there's nothing to drift from.
 
 That property isn't new, and it isn't really mine. A single declarative source of truth, with everything else derived from it, is the discipline behind intent-based networking, which I came up through years ago (that story is in the first piece). Here the source is a contract rather than a network design, but the rule is identical: change the one source, and everything downstream follows. Nothing drifts.
 
-## Formalize the structure, leave judgment to prose
+## Build — give the contract teeth
 
-I am *not* telling you to formalize your whole agent. That way lies madness. The single most useful rule I found is about where to draw the line:
+Design handed you a proven contract. Build turns it into a running agent, and here is the catch that separates a real contract from theater.
 
-> **Formalize structure and ordering. Leave judgment and phrasing to prose.**
-
-"Verify before you book," "never double-book," "at most one task suspended at a time" are structural. They're about ordering and safety, and they belong in the model-checked state machine, because prose lets them drift.
-
-But "is this message a greeting or a booking request?" is not a formal property and never will be. Neither is "how do I phrase this hand-off warmly?" That's judgment. It stays in prose, in a section of the contract I call step-guidance, right beside the formal parts but clearly quarantined from them.
-
-Don't try to formalize the fuzzy stuff; you'll fail and hate your life. Don't leave the structural stuff to prose; it'll drift and hurt you. Getting that line right is most of the skill.
-
-## The part you cannot skip
-
-Now the biggest caveat, because it's the thing that separates a real contract from theater.
-
-**Model-checking proves the specification. It does not prove the LLM follows the specification.**
+**Model-checking proves the specification. It does not prove the LLM follows it.**
 
 The proof certifies that the *state machine* can't reach a bad state. It says nothing about whether your stochastic model actually stays on the legal path. The model can still misread eligibility, skip a guard, or fabricate an argument. If you model-check your contract, ship it as a prompt, and stop there, you've bought false confidence, which is worse than none.
 
-Promise Theory explains why in one line: *a promise from an unreliable promiser is worthless to you without independent assessment.* And this is exactly what "Junos guarantees at the OS level" was doing all along: it never trusted the automation reaching in to make changes; it enforced the boundary underneath, no matter what that automation tried. So every safety invariant gets a twin. Take the no-double-book rule:
+This is where a contract needs *teeth.* A legal contract nobody will enforce is just a wish, and a proven agent contract with nothing behind it is no different. Promise Theory says it in one line: *a promise from an unreliable promiser is worthless to you without independent assessment.* And this is exactly what "Junos guarantees at the OS level" was doing all along: it never trusted the automation reaching in to make changes; it enforced the boundary underneath, no matter what that automation tried. So every safety invariant gets a twin. Take the no-double-book rule:
 
 ```fizz
 always assertion NoDoubleBook:
@@ -135,13 +137,25 @@ That invariant is the LLM's *promise:* "I'll never book a taken slot." The **ass
 
 This LLM-promise-plus-code-assessment pair is, to me, the atomic unit of the whole method. **Never a stochastic promise standing alone. Always a stochastic promise backed by a deterministic guarantee.** The model check proves the map is coherent; the code polices the territory. You need both, and the code half is not optional. The model check is what makes the design *provable*; the enforcement code is what makes the running agent *trustworthy*.
 
+![The Build stage: your AI coding assistant reads the contract and produces the running agent, its framework wiring plus the enforcement code that gives every promise teeth.](images/build-stage.png)
+
+## Run — the agent acts, inside its guarantees
+
+Now the agent is live, and the runtime posture is the opposite of hope. A request comes in; the LLM follows the contract's prose and proposes an action, a tool call, a hand-off. Before anything happens, the enforcement code assesses that proposal against the invariants. Keep the promise, and it runs. Break one, and it is refused.
+
+That refusal is not an error to swallow. It is a first-class outcome: a structured result naming the condition that failed ("slot no longer available," "patient not verified"), which the agent relays to the user or recovers from. Autonomy includes the right to say no, and a clean no beats a confident, wrong yes.
+
+So the LLM stays free to *propose* anything, and being stochastic, sometimes it will. It can never *do* the wrong thing, because the deterministic layer beneath it will not pass a broken promise. This is the lawyer's contract in force: drafted and proven in Design, given teeth in Build, and now, at Run, any move that would breach it simply does not happen.
+
+![The Run stage: a user request reaches the LLM in any framework, which proposes an action; the enforcement code assesses it against the contract and either executes it or returns a structured refusal. The agent acts freely, but never past its guarantees.](images/run-stage.png)
+
 ## From one agent to a system of agents
 
 Everything so far makes a *single* agent trustworthy. But The Clinic isn't one agent. It's a small society of them behind one friendly face: an orchestrator that verifies you and routes your request, a booking subagent, a subagent that cancels and reschedules, plus non-LLM service agents for the schedule, the insurance check, and the patient registry.
 
-Draw a boundary around that whole society and treat it as one agent making a single promise to the patient (*"I'll book your appointment"*), and you have what Promise Theory calls a **superagent**: one face to the outside, a promise graph within. Mark Burgess's rule is that *"we may choose the boundary of an agent wherever we please,"* and that freedom is the point. The patient talks to one agent; inside, it's a society.
+Draw a boundary around that whole society and treat it as one agent making a single promise to the patient (*"I'll book your appointment"*), and you have what Promise Theory calls a **superagent**: one face to the outside, a promise graph within. Mark Burgess's rule is that *"we may choose the boundary of an agent wherever we please,"* and that freedom is the point. The patient talks to one agent; inside, it's a society. Think of a firm: one name on the door, many parties bound by their own agreements inside.
 
-This is where I think Promise Theory earns its keep most, because multi-agent systems rot in the same place every time: **hidden dependencies.** One agent writes some shared state, another silently reads it, and nobody declared the handoff. It works until it doesn't. (Networking people: this is the "pinprick of death" all over again, a thousand tiny uncoordinated changes.)
+This is where I think Promise Theory earns its keep most, because multi-agent systems rot in the same place every time: **hidden dependencies.** One agent writes some shared state, another silently reads it, and nobody put the handshake in writing. It works until it doesn't. (Networking people: this is the "pinprick of death" all over again, a thousand tiny uncoordinated changes.)
 
 Promise Theory drags every one of those dependencies into the open using two polarities. An agent makes an **offer** (`+`), "I will provide this," or a **use** (`−`), "I will accept and use that." Both are promises; the `−` is not mere dependence, it's an agent promising to accept what another offers. And the rule that does the work: cooperation only *binds* when a `+` offer meets a matching `−` use. An offer nobody uses, or a use nothing offers, is a **design defect you can detect mechanically.**
 
@@ -159,7 +173,7 @@ Notice the body names its own division of labor: the LLM promises it, the schedu
 
 Three consequences fall out of this, and they're why I now design this way:
 
-**The orchestrator owns nothing.** This one took me a while to fit my brain. Under the autonomy axiom, the orchestrator *cannot* promise that a subagent will book anything. It can only promise *its own* behavior: verify the patient, classify intent, relay to the subagent whose offer matches, remember at most one suspended task, relay the result. Routing stops being a *command* and becomes **selection among published offers.** The orchestrator never reaches inside a subagent to make it act; it uses the subagent's conditional offer, and the subagent's own guards are the real gate. If the subagent refuses, the orchestrator relays the refusal; it doesn't override it. (That's RBAC thinking, "who can do what," grown into a full graph.)
+**The orchestrator owns nothing.** This one took me a while to fit my brain. Under the autonomy axiom, the orchestrator *cannot* promise that a subagent will book anything. It can only promise *its own* behavior: verify the patient, classify intent, relay to the subagent whose offer matches, remember at most one suspended task, relay the result. Routing stops being a *command* and becomes **selection among published offers.** The orchestrator is a general contractor who cannot pour the concrete or force a subcontractor's hand; it can only rely on the offer each subagent signed, and that subagent's own guards are the real gate. If the subagent refuses, the orchestrator relays the refusal; it doesn't override it. In Promise Theory terms, every agent signs only for itself. (That's RBAC thinking, "who can do what," grown into a full graph.)
 
 **Shared state becomes an agent.** Instead of a blackboard the orchestrator scribbles on and the subagents peek at, the patient registry is its *own* agent that publishes the verified patient; consumers declare that they rely on it. The invisible dependency becomes a declared, checkable binding, impossible to forget when you add a third workflow six months later.
 
@@ -171,16 +185,17 @@ I believe engineers building serious systems must have **choice and control**: c
 
 ## What you actually walk away with
 
-I don't want to leave you with a vibe. Here's the distilled standard I now hold my own agents to. If you build nothing else from this article, run your current design past these:
+I don't want to leave you with a vibe. Here's the distilled standard I hold my own systems to, mapped to the lifecycle we just walked. If you build nothing else from this piece, run your design past these:
 
 1. **Treat every model as an autonomous agent.** Design for elicited promises and mandatory assessment, not compliance. This ends the "why won't it obey?" spiral, because you stop expecting obedience.
-2. **Make each agent's self-promises a model-checked contract.** Formalize ordering and safety as a state machine; prove it exhaustively offline. Keep judgment in prose, quarantined so it can't corrupt the guarantees.
-3. **Every condition names who satisfies it.** No hidden dependencies. A condition is either self-assessed or met by a named agent's offer.
-4. **Pair every stochastic promise with a deterministic guarantee.** The enforcement code isn't belt-and-suspenders. It's the whole point. Never ship the contract without it.
-5. **Declare what you rely on; forbid unmatched edges.** Every use meets an offer. Relying on something nobody promised is a build failure.
-6. **Derive the outside promise from the inside.** A superagent, a society of agents behind one face, must generate what it advertises to the world from what its members actually offer, so it can never overstate what it delivers.
+2. **Make each agent's self-promises a model-checked contract.** *(Design.)* Formalize ordering and safety as a state machine; prove it exhaustively offline. Keep judgment in prose, quarantined so it can't corrupt the guarantees.
+3. **Every condition names who satisfies it.** *(Design.)* No hidden dependencies. A condition is either self-assessed or met by a named agent's offer.
+4. **Pair every stochastic promise with a deterministic guarantee.** *(Build.)* The enforcement code isn't belt-and-suspenders. It's the whole point. Never ship the contract without it.
+5. **Make refusal first-class.** *(Run.)* A structured "no" that names the unmet condition is a normal outcome, relayed and recorded, not an exception to swallow.
+6. **Declare what you rely on; forbid unmatched edges.** *(Compose.)* Every use meets an offer. Relying on something nobody promised is a build failure.
+7. **Derive the outside promise from the inside.** *(Compose.)* A superagent, a society of agents behind one face, must generate what it advertises to the world from what its members actually offer, so it can never overstate what it delivers.
 
-Points 1–2 make a single agent trustworthy; that's where most teams stop, if they get there at all. Points 3–6 make a *system* trustworthy. And I genuinely believe this is where agentic engineering is heading, whether or not anyone uses the word "promise," because the premise underneath it is simply *true:* the model is an autonomous stochastic agent, and autonomous agents can only be promised, then assessed.
+Points 1 through 5 make a single agent trustworthy, from Design through Run; points 6 and 7 make a *system* trustworthy as you compose. And I genuinely believe this is where agentic engineering is heading, whether or not anyone uses the word "promise," because the premise underneath it is simply *true:* the model is an autonomous stochastic agent, and autonomous agents can only be promised, then assessed.
 
 ## When *not* to do this
 
@@ -194,7 +209,7 @@ So **skip it** for one-shot Q&A, a single-tool lookup, or a throwaway prototype 
 
 ## Looking back over the bridge
 
-We've walked the whole method now: the contract that three readers share, the model check that proves the bad states unreachable, the enforcement code that keeps a promise against a stochastic promiser, and the promise graph that scales it all up to a superagent.
+We've walked the whole method now: the contract that every stage reads, the model check that proves the bad states unreachable, the enforcement code that keeps a promise against a stochastic promiser, and the promise graph that scales it all up to a superagent.
 
 Strip away the machinery and one shape remains, and it's the same shape I first met in 2013. An autonomous actor, handed scoped authority, made safe not by trust but by a guarantee underneath. Then the actor was a config-management agent and the guarantee lived in the OS. Now the actor is an LLM and the guarantee lives in a model-checked contract and its enforcement code. Same idea. New actor. That's the whole reason I'm confident this is a real shift and not a fashion: I've watched this exact pattern cross a boundary from a neighboring discipline once already, and I've spent thirteen years living inside the field it remade.
 
