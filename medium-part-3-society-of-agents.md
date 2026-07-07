@@ -1,12 +1,12 @@
-# A Society of Agents: How to Compose a System You Can Prove
+# Games Without Frontiers
 
-### The runnable method at system scale: many agents composed through a promise graph, verified offline, so a whole *system* of agents can't make a promise it has no way to keep.
+### How to compose a system you can prove. The runnable method at system scale: many agents composed through a promise graph, verified offline, so a whole *system* can't make a promise it has no way to keep.
 
 *By Jeremy Schulman · Part 3 of 3*
 
 ---
 
-This is the third and final piece. Part 1, [Promises, Promises — Why Should You Believe?](#), argued the *why*: you cannot command an LLM, only elicit a promise and then *assess* it. Part 2, [Contracts, Not Prompts](#), showed the *how* for a single agent: capture the workflow as a contract and Design, Build, and Run it, so it provably cannot reach a state it must never be in.
+This is the third and final piece. Part 1, [Promises, Promises — Why Do I Believe?](#), argued the *why*: you cannot command an LLM, only elicit a promise and then *assess* it. Part 2, [Everybody Wants to Rule the World](#), showed the *how* for a single agent: capture the workflow as a contract and Design, Build, and Run it, so it provably cannot reach a state it must never be in.
 
 But one agent is rarely the whole story. The workflows worth automating are carried by *many* agents cooperating, and that is exactly where most multi-agent designs quietly fall apart. This piece is about composing them without lying to yourself, so that a whole *system* of agents, not just one, can't make a promise it has no way to keep.
 

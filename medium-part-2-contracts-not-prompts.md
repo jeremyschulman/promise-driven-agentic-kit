@@ -1,12 +1,12 @@
-# Contracts, Not Prompts: How to Build an Agent You Can Prove
+# Everybody Wants to Rule the World
 
-### The runnable method for a single agent: a contract you can prove at design time and enforce at runtime, so the agent can't reach a state it must never be in.
+### How to build an agent you can prove. The runnable method for a single agent: a contract you can prove at design time and enforce at runtime, so it can't reach a state it must never be in.
 
 *By Jeremy Schulman · Part 2 of 3*
 
 ---
 
-This is the second of three pieces. The first, [Promises, Promises — Why Should You Believe?](#), argued the *why*: you cannot command an LLM, you can only elicit a promise and then *assess* it. *Trust, but verify.* This piece shows you the *how*.
+This is the second of three pieces. The first, [Promises, Promises — Why Do I Believe?](#), argued the *why*: you cannot command an LLM, you can only elicit a promise and then *assess* it. *Trust, but verify.* This piece shows you the *how*.
 
 This approach is for software engineers building **complex, multi-agent
 workflow** solutions: systems where many AI agents cooperate to carry a real
@@ -143,4 +143,4 @@ So the LLM stays free to *propose* anything, and being stochastic, sometimes it 
 
 That is one agent you can prove, and one you can trust, from Design through Run.
 
-But a single agent is rarely the whole system. Look back at that state machine: the moment the orchestrator reaches `RouteToWorkflow`, it hands off to a *subagent* — a booking agent, or one that cancels and reschedules — and each of those is its own contract, with its own state machine and its own invariants, exactly like the one we just built. The Clinic is really a *society* of agents behind one friendly face. Getting many of them to cooperate without lying to each other is where most designs quietly fall apart, and where the promise graph finally earns its keep. That is the finale: [A Society of Agents: How to Compose a System You Can Prove](#).
+But a single agent is rarely the whole system. Look back at that state machine: the moment the orchestrator reaches `RouteToWorkflow`, it hands off to a *subagent* — a booking agent, or one that cancels and reschedules — and each of those is its own contract, with its own state machine and its own invariants, exactly like the one we just built. The Clinic is really a *society* of agents behind one friendly face. Getting many of them to cooperate without lying to each other is where most designs quietly fall apart, and where the promise graph finally earns its keep. That is the finale: [Games Without Frontiers — How to Compose a System You Can Prove](#).

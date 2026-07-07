@@ -1,4 +1,4 @@
-# Promises, Promises — Why Should You Believe?
+# Promises, Promises — Why Do I Believe?
 
 ### Twenty years ago Mark Burgess forged the foundations of the DevOps Era.  His Promise Theory is about to do the same for the Agentic Era.
 
@@ -22,8 +22,8 @@ Does this sound like you?
 > *As a software engineer evolving our business-process automation into the era of AI, I need to build systems where many AI agents work together to carry out complex, multi-step workflows, reliably enough to run the business on.*
 
 If so then keep reading. This first piece makes the case. 
-The two that follow show you the way, starting with [Contracts, Not Prompts: How to Build an Agent You Can Prove](#) 
-and wrapping up with [A Society of Agents: How to Compose a System You Can Prove](#).
+The two that follow show you the way, starting with [Everybody Wants to Rule the World — How to Build an Agent You Can Prove](#) 
+and wrapping up with [Games Without Frontiers — How to Compose a System You Can Prove](#).
 
 **TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
 
@@ -344,7 +344,7 @@ idea and completely inert until you can answer: where does the promise *live?*
 What file is it in? How do you check it? How does it survive contact with a real
 framework and a real deploy?
 
-So I put together what I'm calling the **promise-driven-agentic-kit**: a set of files that help a software engineer turn these ideas into a real agentic solution, in Python. You don't so much *run* it as *build* with it. The companion to this piece, **[Contracts, Not Prompts: How to Build an Agent You Can Prove](#)**, walks the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state machine that proves The Clinic can never book before you're verified; and the enforcement code that keeps a stochastic promiser honest.
+So I put together what I'm calling the **promise-driven-agentic-kit**: a set of files that help a software engineer turn these ideas into a real agentic solution, in Python. You don't so much *run* it as *build* with it. The companion to this piece, **[Everybody Wants to Rule the World — How to Build an Agent You Can Prove](#)**, walks the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state machine that proves The Clinic can never book before you're verified; and the enforcement code that keeps a stochastic promiser honest.
 
 For now, hold onto the instinct I asked you to keep at the very top. Why should you believe an LLM's promise? You shouldn't, not on its own. You elicit the promise, and then you verify it. *Trust, but verify.* Here, that isn't a proverb. It's the whole method, and it's buildable. Let me prove it to you.
 
