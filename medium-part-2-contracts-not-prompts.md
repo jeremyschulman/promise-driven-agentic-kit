@@ -12,7 +12,8 @@ This approach is for software engineers building **complex, multi-agent
 workflow** solutions: systems where many AI agents cooperate to carry a real
 business process from end to end. If you are developing a single-turn chatbot,
 this approach is overkill. For the types of autonomous BPA solutions I build, it
-is essential.
+is essential. This piece teaches the method on a single agent — the clearest way
+to see it work; wiring many of them into one system is the finale, Part 3.
 
 Does this sound like you?
 
@@ -27,7 +28,7 @@ either in the "artisanal" way or with your favorite code assistant.
 
 **TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
 
-The repo includes an example, **The Clinic**.  I will show you the appointment
+The repo includes an example, **The Clinic**. I will show you the appointment
 agent that provably cannot book before it verifies a patient, or double-book a
 slot. Not because a prompt asked nicely, but because the design makes those
 states unreachable, and I can prove it before I deploy.
@@ -46,7 +47,7 @@ You're probably not starting a design from a blank page. Engineers borrowed a wo
 
 You don't have to think in one, though. That design — which manifests as the workflow you run today — already *is* a state machine, whether anyone ever drew it: it has states, transitions between them, and states it must never enter. The machine is latent in the process; someone just has to capture it. That's the real nature of this work: it's brownfield modernization. The AI era doesn't get to start over, it inherits the process that already runs the business — and this method is how you re-express that process, faithfully, as something you can prove.
 
-And that someone doesn't need to be you, at least not by hand. Capturing the design can work like hiring a lawyer: you don't arrive knowing the statutes or how to word the clauses; you describe what you need, you go back and forth, and the lawyer turns the conversation into a contract that holds up. Here it is the same shape. You express the workflow's intent to an AI coding assistant, refine it through Q&A, and the assistant, which knows the contract's schema, drafts the whole thing, the FizzBee state machine included. Your job is to know the workflow. The assistant's job is to render it as a contract. FizzBee's job is to capture its essence precisely, in a form a machine can check.
+And that someone doesn't need to be you, at least not by hand. Capturing the design can work like hiring a lawyer: you don't arrive knowing the statutes or how to word the clauses; you describe what you need, you go back and forth, and the lawyer turns the conversation into a contract that holds up. Here, it's the same shape. You express the workflow's intent to an AI coding assistant, refine it through Q&A, and the assistant, which knows the contract's schema, drafts the whole thing, the FizzBee state machine included. Your job is to know the workflow. The assistant's job is to render it as a contract. FizzBee's job is to capture its essence precisely, in a form a machine can check.
 
 So let's look at what the assistant drafts. Take the orchestrator — **The Clinic**'s front desk. On its own it's a ten-action state machine; here it is in full:
 
@@ -105,9 +106,11 @@ That property isn't new, and it isn't really mine. A single declarative source o
 
 ## Build — Give the Contract Teeth
 
-Design handed you a proven contract. Build turns it into a running agent, and here is the catch that separates a real contract from theater.
+Design handed you a proven contract. Build turns it into a running agent.
 
 ![The Build stage: your AI coding assistant reads the contract and produces the running agent, its framework wiring plus the enforcement code that gives every promise teeth.](images/build-stage.png)
+
+But here's the catch that separates a real contract from theater.
 
 **Model-checking proves the specification. It does not prove the LLM follows it.**
 

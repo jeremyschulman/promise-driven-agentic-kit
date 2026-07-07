@@ -8,11 +8,11 @@
 
 This is the third and final piece. Part 1, [Promises, Promises — Why Should You Believe?](#), argued the *why*: you cannot command an LLM, only elicit a promise and then *assess* it. Part 2, [Contracts, Not Prompts](#), showed the *how* for a single agent: capture the workflow as a contract and Design, Build, and Run it, so it provably cannot reach a state it must never be in.
 
-But a single agent is rarely the system. The workflows worth automating are carried by *many* agents cooperating, and that is exactly where most multi-agent designs quietly fall apart. This piece is about composing them without lying to yourself, so that a whole *system* of agents, not just one, can't make a promise it has no way to keep.
+But one agent is rarely the whole story. The workflows worth automating are carried by *many* agents cooperating, and that is exactly where most multi-agent designs quietly fall apart. This piece is about composing them without lying to yourself, so that a whole *system* of agents, not just one, can't make a promise it has no way to keep.
 
 ## From One Agent to a System of Agents
 
-Take The Clinic. It presents as one agent, but it's a small society of them behind one friendly face: an orchestrator that verifies you and routes your request, a booking subagent, a subagent that cancels and reschedules, plus non-LLM service agents for the schedule, the insurance check, and the patient registry.
+Take The Clinic. It presents as one agent, but inside it's a small society: an orchestrator that verifies you and routes your request, a booking subagent, a subagent that cancels and reschedules, plus non-LLM service agents for the schedule, the insurance check, and the patient registry.
 
 Draw a boundary around that whole society and treat it as one agent making a single promise to the patient (*"I'll book your appointment"*), and you have what Promise Theory calls a **superagent**: one face to the outside, a promise graph within. Mark Burgess's rule is that *"we may choose the boundary of an agent wherever we please,"* and that freedom is the point. The patient talks to one agent; inside, it's a society. Think of a firm: one name on the door, many parties bound by their own agreements inside.
 
@@ -74,7 +74,7 @@ So **skip it** for one-shot Q&A, a single-tool lookup, or a throwaway prototype 
 
 **Reach for it** when you've got multi-step workflows, ordering or safety constraints that truly must hold, actions involving money or identity or anything irreversible, and a system you need to evolve without quietly regressing. That's precisely the situation where "probably not, but I can't prove it" isn't good enough, and it's the situation I keep finding myself in.
 
-## Looking Back Over the Bridge
+## Promise Made, Promise Kept
 
 We've walked the whole method now: the contract that every stage reads, the model check that proves the bad states unreachable, the enforcement code that keeps a promise against a stochastic promiser, and the promise graph that scales it all up to a superagent.
 
@@ -88,7 +88,7 @@ So here's my ask: go try it. Take a small, stateful agent you already have, one 
 
 So, why should you believe? You shouldn't. Not a promise from a stochastic machine, and honestly, not one from me either. This is where *trust, but verify* earns its keep, with one word removed: you come to trust an agent *by* verifying it, in code, over and over. Trust *by* verify. You can't command an LLM. You can only get a promise out of it, and then prove it's kept. That was the "Ah, Ha!" This is the "Cha, Ching!"
 
-I've bet on this shape before. I'm betting on it again, and this time, I'd love for you to build it with me.
+I opened this series by promising to blow your mind — and in the same breath, told you not to believe me. That wasn't modesty; it was the whole thesis. I've bet on this shape once before, when it crossed over from a neighboring field before mine was ready for it, and I watched it remake an industry. I'm betting on it again — but don't take the bet on faith; you've just read three pieces on exactly why you shouldn't. Take the proof for yourself.
 
 ---
 
