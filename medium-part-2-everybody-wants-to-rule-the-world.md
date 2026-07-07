@@ -11,6 +11,8 @@ Does this sound like you?
 
 > *As a software engineer evolving our business-process automation into the era of AI, I need to build systems where many AI agents work together to carry out complex, multi-step workflows, reliably enough to run the business on.*
 
+It's a grand ambition — and it runs straight into the wall this whole series is about: you can't *rule* an autonomous agent any more than you can rule the world. You don't command it. You strike a deal, put it in writing, and hold it to the terms.
+
 This is the second of three pieces. The first, [Promises, Promises — Why Do I Believe?](#), argued the *why*: you cannot command an LLM, you can only elicit a promise and then *assess* it. *Trust, but verify.* This piece shows you the *how*.
 
 This approach is for engineers building **complex, multi-agent workflows** — systems where many AI agents cooperate to carry a real business process end to end. If you're shipping a single-turn chatbot, it's overkill; for the autonomous BPA I build, where reliability is the whole game, it's essential. We'll learn the method on a *single* agent first, because that's the clearest way to see the machinery work — then wire many of them into one system in the finale, Part 3.
@@ -25,7 +27,7 @@ Here's the move that made everything click. Instead of a prose prompt, an agent'
 
 One document, three stages, same bytes. That last part matters more than it sounds, and I'll come back to it. Three isn't a magic number, either — it's just where I've taken this so far. Anything downstream that drifts from your code today could read the same contract instead: a generated design doc, an integration test plan, an onboarding guide. I haven't built those yet, but the single source is what makes them possible. The rest of this piece walks the three stages I *have* built, one at a time.
 
-## True Colors (Design)
+## True Colors
 
 You're probably not starting a design from a blank page. Engineers borrowed a word for this from construction: it's a *brownfield* — an existing, load-bearing, slightly contaminated thing — not a *greenfield* you build clean. Sometimes that brownfield is software: a tangle of Zapier zaps, a Workato recipe, some bespoke automation patched for years that everyone's afraid to touch. More often, though, it isn't software at all — it's a process a person runs by hand, following a runbook that lives in a wiki page or a senior employee's head. Either way, there's already a *design* buried in there — you've just never drawn it out. And you almost certainly don't think of that design as a *state machine.* Almost no one does.
 
@@ -88,7 +90,7 @@ Now, "same bytes." In the usual setup (a state machine coded in one place, a pro
 
 That property isn't new, and it isn't really mine. A single declarative source of truth, with everything else derived from it, is the discipline behind intent-based networking, which I came up through years ago (that story is in the first piece). Here the source is a contract rather than a network design, but the rule is identical: change the one source, and everything downstream follows. Nothing drifts.
 
-## You Spin Me Round (Like a Record) (Build)
+## You Spin Me Round (Like a Record)
 
 Design handed you a proven contract. Build turns it into a running agent.
 
@@ -115,7 +117,7 @@ The model can promise all day; this code is what decides whether the promise was
 This LLM-promise-plus-code-assessment pair is, to me, the atomic unit of the whole method. **Never a stochastic promise standing alone. Always a stochastic promise backed by a deterministic guarantee.** The model check proves the map is coherent; the code polices the territory. You need both, and the code half is not optional. The model check is what makes the design *provable*; the enforcement code is what makes the running agent *trustworthy*.
 
 
-## Run — The Agent Acts, Inside Its Guarantees
+## The Safety Dance
 
 Now the agent is live, and the runtime posture is the opposite of hope. A request comes in; the LLM follows the contract's prose and proposes an action, a tool call, a hand-off. Before anything happens, the enforcement code assesses that proposal against the invariants. Keep the promise, and it runs. Break one, and it is refused.
 
@@ -125,8 +127,16 @@ That refusal is not an error to swallow. It is a first-class outcome: a structur
 
 So the LLM stays free to *propose* anything, and being stochastic, sometimes it will. It can never *do* the wrong thing, because the deterministic layer beneath it will not pass a broken promise. This is the lawyer's contract in force: drafted and proven in Design, given teeth in Build, and now, at Run, any move that would breach it simply does not happen.
 
-## One Agent You Can Prove
+## One Thing Leads to Another
 
-That is one agent you can prove, and one you can trust, from Design through Run.
+Everybody wants to rule the world. With an autonomous agent, you don't get to — and that's the point. You don't rule it; you prove it. That's one agent, not commanded but *proven*, and one you can trust, from Design through Run.
 
 But a single agent is rarely the whole system. Look back at that state machine: the moment the orchestrator reaches `RouteToWorkflow`, it hands off to a *subagent* — a booking agent, or one that cancels and reschedules — and each of those is its own contract, with its own state machine and its own invariants, exactly like the one we just built. The Clinic is really a *society* of agents behind one friendly face. Getting many of them to cooperate without lying to each other is where most designs quietly fall apart, and where the promise graph finally earns its keep. That is the finale: [Games Without Frontiers — How to Compose a System You Can Prove](#).
+
+---
+
+*With thanks to Mark Burgess, whose Promise Theory underpins the contract's promises, and to the [FizzBee](https://fizzbee.io) project, whose model checker turns a design into a proof.*
+
+---
+
+*Liner notes: this piece takes its name from "Everybody Wants to Rule the World" (Tears for Fears, 1985), and its section titles nod to "The Road to Hell" (Chris Rea, 1989), "True Colors" (Cyndi Lauper, 1986), "You Spin Me Round (Like a Record)" (Dead or Alive, 1985), "The Safety Dance" (Men Without Hats, 1982), and "One Thing Leads to Another" (The Fixx, 1983). Each part of this series is named for an 80s song — a small mixtape playing under the trilogy.*

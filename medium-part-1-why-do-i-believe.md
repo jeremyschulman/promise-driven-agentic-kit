@@ -128,7 +128,7 @@ I called it "Bridging the Two Worlds." I've stood between worlds my whole
 career, which is probably why, years later, Mark's border-crossing ideas would
 feel like coming home.
 
-## The Crystal Ball - 2013
+## The Future's So Bright, I Gotta Wear Shades
 
 At PuppetConf in 2013, I gave a talk on running Puppet natively on Junos switches. Afterward John Willis — a leader of the DevOps movement — came up, genuinely excited about it. That's how we met, and how he became a mentor: the one who gave me the "Ah, Ha!" to "Cha, Ching!" phrase. He pulled me aside and, in effect, handed me a crystal ball: *this* is what the next ten years of your career look like, if you commit to the network-automation movement. I committed.
 
@@ -143,7 +143,7 @@ know what the early days of a real shift feel like from the inside.
 
 And I've got that _funny feeling_ again, right now.
 
-## Learning to Fall, With a Net
+## Catch Me I'm Falling
 
 There's a team-building ritual where you close your eyes, cross your arms, and drop straight backward — trusting the people behind you to catch you. A promise to catch, and pure faith they'll keep it. I don't take that bet with complex systems. I do the version where I ensure there's a net. Everything I learned in 2013 was about building that net.
 
@@ -252,7 +252,7 @@ But I still couldn't be *absolutely sure* about anything. I had better odds, not
 guarantee, and 2013 had already taught me that better odds are not the same as a
 promise you can keep.
 
-## A Serendipitous Conversation - 2026
+## A Serendipitous Conversation
 
 The next piece fell into place in 2026, and it was pure luck. I was at a
 conference where John Willis was speaking. I had an engaging conversation with
@@ -267,7 +267,7 @@ strong sense that there was *something there.*
 I went looking at formal method languages and found [FizzBee](https://fizzbee.io).
 I had braced for TLA+, the venerable formal-methods language from Leslie Lamport (the same computer scientist who gave us LaTeX, and it reads that way).
 FizzBee was different. It looked and read like Python. And as I worked through
-its concepts I had this "lightbulb moment". *I think this feels like Promise
+its concepts, something clicked. *I think this feels like Promise
 Theory.* I was only passingly familiar with Promise Theory at that point, but I knew
 enough to feel the resonance. So I went to learn more.
 
@@ -315,9 +315,9 @@ That's the reframe, and it changed how I build. Teams that treat prompts as comm
 
 If you take one idea from this article, take this one: **you can't command an LLM. You can only elicit a promise and then assess whether it was kept.** I've started calling the whole approach that follows from it **promise-and-assess.** It's the direct descendant of "hand over scoped authority, guarantee no harm underneath."
 
-## The Gunpowder Effect
+## She Blinded Me with Science
 
-Then the "Ah, Ha!" went off like a cannon in my head: three ideas I'd been circling separately snapped into one. Declarative XML made an agent's intent legible — to me, to the model, and to a checker. A formal-methods language could *prove* a design never reaches a bad state. And Promise Theory was the connective tissue: a shared language, understood by people and tools alike, that let me compose many agents into one system. Gunpowder is three inert ingredients that do nothing apart and level a wall together. This was that. The XML became a *contract.* Formal methods made it *provable.* Promise Theory made it *composable.*
+Then the "Ah, Ha!" struck like lightning: three ideas I'd been circling separately snapped into one. Declarative XML made an agent's intent legible — to me, to the model, and to a checker. A formal-methods language could *prove* a design never reaches a bad state. And Promise Theory was the connective tissue: a shared language, understood by people and tools alike, that let me compose many agents into one system. Gunpowder is three inert ingredients that do nothing apart and level a wall together. This was that. The XML became a *contract.* Formal methods made it *provable.* Promise Theory made it *composable.*
 
 But a spark isn't a running system. And this is where most write-ups about
 Promise Theory and AI stop: they land the reframe, quote the axioms, and leave
@@ -340,3 +340,7 @@ For now, hold onto the instinct I asked you to keep at the very top. Why should 
 *With deep gratitude to Mark Burgess, whose Promise Theory is the foundation everything here is built on. If this piece did its job, go to the source: his* [Book of Promises](http://markburgess.org/BookOfPromises.pdf) *(the full* Promise Theory: Principles and Applications*, with Jan Bergstra, free to read online), and the more approachable* Thinking in Promises *(O'Reilly).*
 
 *I've not yet had the pleasure of meeting Mark; by the time these words find their proper audience, I hope that's changed.*
+
+---
+
+*Liner notes: this piece takes its name from "Promises, Promises" (Naked Eyes, 1983), and its section titles nod to "The Future's So Bright, I Gotta Wear Shades" (Timbuk3, 1986), "Catch Me I'm Falling" (Pretty Poison, 1987), "She Blinded Me with Science" (Thomas Dolby, 1982), and "Here I Go Again" (Whitesnake, 1987). Each part of this series is named for an 80s song — a small mixtape playing under the trilogy.*
