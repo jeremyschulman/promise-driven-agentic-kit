@@ -46,7 +46,7 @@ You're probably not starting a design from a blank page. Engineers borrowed a wo
 
 You don't have to think in one, though. That design — which manifests as the workflow you run today — already *is* a state machine, whether anyone ever drew it: it has states, transitions between them, and states it must never enter. The machine is latent in the process; someone just has to capture it. That's the real nature of this work: it's brownfield modernization. The AI era doesn't get to start over, it inherits the process that already runs the business — and this method is how you re-express that process, faithfully, as something you can prove.
 
-And that someone doesn't need to be you, at least not by hand. Capturing the design works like hiring a lawyer: you don't arrive knowing the statutes or how to word the clauses; you describe what you need, you go back and forth, and the lawyer turns the conversation into a contract that holds up. Here it is the same shape. You express the workflow's intent to an AI coding assistant, refine it through Q&A, and the assistant, which knows the contract's schema, drafts the whole thing, the FizzBee state machine included. Your job is to know the workflow. The assistant's job is to render it as a contract. FizzBee's job is to capture its essence precisely, in a form a machine can check.
+And that someone doesn't need to be you, at least not by hand. Capturing the design can work like hiring a lawyer: you don't arrive knowing the statutes or how to word the clauses; you describe what you need, you go back and forth, and the lawyer turns the conversation into a contract that holds up. Here it is the same shape. You express the workflow's intent to an AI coding assistant, refine it through Q&A, and the assistant, which knows the contract's schema, drafts the whole thing, the FizzBee state machine included. Your job is to know the workflow. The assistant's job is to render it as a contract. FizzBee's job is to capture its essence precisely, in a form a machine can check.
 
 So let's look at what the assistant drafts. Take the orchestrator — **The Clinic**'s front desk. On its own it's a ten-action state machine; here it is in full:
 
@@ -107,6 +107,8 @@ That property isn't new, and it isn't really mine. A single declarative source o
 
 Design handed you a proven contract. Build turns it into a running agent, and here is the catch that separates a real contract from theater.
 
+![The Build stage: your AI coding assistant reads the contract and produces the running agent, its framework wiring plus the enforcement code that gives every promise teeth.](images/build-stage.png)
+
 **Model-checking proves the specification. It does not prove the LLM follows it.**
 
 The proof certifies that the *state machine* can't reach a bad state. It says nothing about whether your stochastic model actually stays on the legal path. The model can still misread eligibility, skip a guard, or fabricate an argument. If you model-check your contract, ship it as a prompt, and stop there, you've bought false confidence, which is worse than none.
@@ -123,17 +125,18 @@ The model can promise all day; this code is what decides whether the promise was
 
 This LLM-promise-plus-code-assessment pair is, to me, the atomic unit of the whole method. **Never a stochastic promise standing alone. Always a stochastic promise backed by a deterministic guarantee.** The model check proves the map is coherent; the code polices the territory. You need both, and the code half is not optional. The model check is what makes the design *provable*; the enforcement code is what makes the running agent *trustworthy*.
 
-![The Build stage: your AI coding assistant reads the contract and produces the running agent, its framework wiring plus the enforcement code that gives every promise teeth.](images/build-stage.png)
 
 ## Run — The Agent Acts, Inside Its Guarantees
 
 Now the agent is live, and the runtime posture is the opposite of hope. A request comes in; the LLM follows the contract's prose and proposes an action, a tool call, a hand-off. Before anything happens, the enforcement code assesses that proposal against the invariants. Keep the promise, and it runs. Break one, and it is refused.
 
+![The Run stage: a user request reaches the LLM in any framework, which proposes an action; the enforcement code assesses it against the contract and either executes it or returns a structured refusal. The agent acts freely, but never past its guarantees.](images/run-stage.png)
+
 That refusal is not an error to swallow. It is a first-class outcome: a structured result naming the condition that failed ("slot no longer available," "patient not verified"), which the agent relays to the user or recovers from. Autonomy includes the right to say no, and a clean no beats a confident, wrong yes.
 
 So the LLM stays free to *propose* anything, and being stochastic, sometimes it will. It can never *do* the wrong thing, because the deterministic layer beneath it will not pass a broken promise. This is the lawyer's contract in force: drafted and proven in Design, given teeth in Build, and now, at Run, any move that would breach it simply does not happen.
 
-![The Run stage: a user request reaches the LLM in any framework, which proposes an action; the enforcement code assesses it against the contract and either executes it or returns a structured refusal. The agent acts freely, but never past its guarantees.](images/run-stage.png)
+## One Agent You Can Prove
 
 That is one agent you can prove, and one you can trust, from Design through Run.
 
