@@ -5,35 +5,19 @@
 *By Jeremy Schulman · Part 2 of 3*
 
 ---
-
-This is the second of three pieces. The first, [Promises, Promises — Why Do I Believe?](#), argued the *why*: you cannot command an LLM, you can only elicit a promise and then *assess* it. *Trust, but verify.* This piece shows you the *how*.
-
-This approach is for software engineers building **complex, multi-agent
-workflow** solutions: systems where many AI agents cooperate to carry a real
-business process from end to end. If you are developing a single-turn chatbot,
-this approach is overkill. For the types of autonomous BPA solutions I build, it
-is essential. This piece teaches the method on a single agent — the clearest way
-to see it work; wiring many of them into one system is the finale, Part 3.
+**TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
 
 Does this sound like you?
 
 > *As a software engineer evolving our business-process automation into the era of AI, I need to build systems where many AI agents work together to carry out complex, multi-step workflows, reliably enough to run the business on.*
 
-Reliability is the whole game. 
+This is the second of three pieces. The first, [Promises, Promises — Why Do I Believe?](#), argued the *why*: you cannot command an LLM, you can only elicit a promise and then *assess* it. *Trust, but verify.* This piece shows you the *how*.
 
-This article introduces a kit you build *with*, not one you run. It is not
-_yet another agentic framework_ (YAAF). There are some code examples you can
-run and play around with. The idea is that you use this kit to code agents,
-either in the "artisanal" way or with your favorite code assistant.
+This approach is for engineers building **complex, multi-agent workflows** — systems where many AI agents cooperate to carry a real business process end to end. If you're shipping a single-turn chatbot, it's overkill; for the autonomous BPA I build, where reliability is the whole game, it's essential. We'll learn the method on a *single* agent first, because that's the clearest way to see the machinery work — then wire many of them into one system in the finale, Part 3.
 
-**TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
+What follows is built around a kit you build *with*, not one you run — and emphatically not *yet another agentic framework* (YAAF). It ships runnable examples you can poke at, and you use it to author agents either the artisanal way or with your favorite coding assistant. The one I'll keep coming back to is **The Clinic**: an appointment agent that *provably cannot* book before it verifies a patient, or double-book a slot — not because a prompt asked nicely, but because the design makes those states unreachable, and I can prove it before I deploy.
 
-The repo includes an example, **The Clinic**. I will show you the appointment
-agent that provably cannot book before it verifies a patient, or double-book a
-slot. Not because a prompt asked nicely, but because the design makes those
-states unreachable, and I can prove it before I deploy.
-
-## From Intent to a Contract You Can Prove
+## The Road to Hell (Is Paved With Good Intentions)
 
 Here's the move that made everything click. Instead of a prose prompt, an agent's *entire* instruction set becomes a single document. Let's say we call it a **contract** — I'm terrible at naming things, but it fits for now. Not *intent*, tempting as that word is where I come from: you don't impose intent on an autonomous agent, you strike a deal and hold it to the terms. You author it once, then carry that same document through every stage of building the system: Design, Build, and Run.
 
@@ -41,7 +25,7 @@ Here's the move that made everything click. Instead of a prose prompt, an agent'
 
 One document, three stages, same bytes. That last part matters more than it sounds, and I'll come back to it. Three isn't a magic number, either — it's just where I've taken this so far. Anything downstream that drifts from your code today could read the same contract instead: a generated design doc, an integration test plan, an onboarding guide. I haven't built those yet, but the single source is what makes them possible. The rest of this piece walks the three stages I *have* built, one at a time.
 
-## Design — Capture the Workflow, and Prove It
+## True Colors (Design)
 
 You're probably not starting a design from a blank page. Engineers borrowed a word for this from construction: it's a *brownfield* — an existing, load-bearing, slightly contaminated thing — not a *greenfield* you build clean. Sometimes that brownfield is software: a tangle of Zapier zaps, a Workato recipe, some bespoke automation patched for years that everyone's afraid to touch. More often, though, it isn't software at all — it's a process a person runs by hand, following a runbook that lives in a wiki page or a senior employee's head. Either way, there's already a *design* buried in there — you've just never drawn it out. And you almost certainly don't think of that design as a *state machine.* Almost no one does.
 
@@ -104,15 +88,17 @@ Now, "same bytes." In the usual setup (a state machine coded in one place, a pro
 
 That property isn't new, and it isn't really mine. A single declarative source of truth, with everything else derived from it, is the discipline behind intent-based networking, which I came up through years ago (that story is in the first piece). Here the source is a contract rather than a network design, but the rule is identical: change the one source, and everything downstream follows. Nothing drifts.
 
-## Build — Give the Contract Teeth
+## You Spin Me Round (Like a Record) (Build)
 
 Design handed you a proven contract. Build turns it into a running agent.
 
 ![The Build stage: your AI coding assistant reads the contract and produces the running agent, its framework wiring plus the enforcement code that gives every promise teeth.](images/build-stage.png)
 
+Point your assistant at that proven contract and it gets to work — and not just on the agent. It writes the framework wiring, the enforcement code, *and* the `pytest` suite that exercises them, then runs the tests, reads what failed, fixes the code, and runs them again, round and round until the whole suite is green. It's the deterministic cousin of the Design loop: there, the assistant spun on the model checker's counterexamples; here, it spins on failing tests. Same motion, one layer down — author, run, repair, repeat.
+
 But here's the catch that separates a real contract from theater.
 
-**Model-checking proves the specification. It does not prove the LLM follows it.**
+**Model-checking proves the specification, and passing tests prove the code does what you wrote. Neither proves the LLM follows it.**
 
 The proof certifies that the *state machine* can't reach a bad state. It says nothing about whether your stochastic model actually stays on the legal path. The model can still misread eligibility, skip a guard, or fabricate an argument. If you model-check your contract, ship it as a prompt, and stop there, you've bought false confidence, which is worse than none.
 
