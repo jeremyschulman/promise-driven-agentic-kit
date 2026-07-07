@@ -1,16 +1,18 @@
-# A Society of Agents: How to Compose a System You Can Prove
+# Games Without Frontiers
 
-### The runnable method at system scale: many agents composed through a promise graph, verified offline, so a whole *system* of agents can't make a promise it has no way to keep.
+### How to compose a system you can prove. The runnable method at system scale: many agents composed through a promise graph, verified offline, so a whole *system* can't make a promise it has no way to keep.
 
 *By Jeremy Schulman · Part 3 of 3*
 
 ---
 
-This is the third and final piece. Part 1, [Promises, Promises — Why Should You Believe?](#), argued the *why*: you cannot command an LLM, only elicit a promise and then *assess* it. Part 2, [Contracts, Not Prompts](#), showed the *how* for a single agent: capture the workflow as a contract and Design, Build, and Run it, so it provably cannot reach a state it must never be in.
+**TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
+
+This is the third and final piece. Part 1, [Promises, Promises — Why Do I Believe?](#), argued the *why*: you cannot command an LLM, only elicit a promise and then *assess* it. Part 2, [Everybody Wants to Rule the World](#), showed the *how* for a single agent: capture the workflow as a contract and Design, Build, and Run it, so it provably cannot reach a state it must never be in.
 
 But one agent is rarely the whole story. The workflows worth automating are carried by *many* agents cooperating, and that is exactly where most multi-agent designs quietly fall apart. This piece is about composing them without lying to yourself, so that a whole *system* of agents, not just one, can't make a promise it has no way to keep.
 
-## From One Agent to a System of Agents
+## We Are Family
 
 Take The Clinic. It presents as one agent, but inside it's a small society: an orchestrator that verifies you and routes your request, a booking subagent, a subagent that cancels and reschedules, plus non-LLM service agents for the schedule, the insurance check, and the patient registry.
 
@@ -50,7 +52,7 @@ So the wager scales. For one agent it was *"can this reach a bad state?"* For th
 
 I believe engineers building serious systems must have **choice and control**: choice of tools, frameworks, and languages, and control over how they build, deploy, and evolve. Any method worth adopting has to honor that instead of locking you in. So the property I care about most here isn't a feature at all; it's that the method asks nothing of your stack. The two examples prove it: The Clinic and the Trials of the Holy Grail run on **entirely different frameworks** (The Clinic on Google's ADK, the Trials on Pydantic AI) yet they share the *same* contracts and the *same* enforcement code. The only meaningful difference between them is a single file wiring each to its runtime. Everything that makes them *safe* is identical and framework-independent. The method lives in the contracts and the assessment code, not in anybody's framework-of-the-month. Choose your tools; keep your guarantees.
 
-## What You Actually Walk Away With
+## Don't You (Forget About Me)
 
 I don't want to leave you with a vibe. Here's the distilled standard I hold my own systems to, mapped to the lifecycle across the series. If you build nothing else from these pieces, run your design past these:
 
@@ -64,7 +66,7 @@ I don't want to leave you with a vibe. Here's the distilled standard I hold my o
 
 Points 1 through 5 make a single agent trustworthy, from Design through Run; points 6 and 7 make a *system* trustworthy as you compose. And I genuinely believe this is where agentic engineering is heading, whether or not anyone uses the word "promise," because the premise underneath it is simply *true:* the model is an autonomous stochastic agent, and autonomous agents can only be promised, then assessed.
 
-## When *Not* to Do This
+## Should I Stay or Should I Go
 
 I'd be doing you a disservice if I pretended this is free. It isn't, and knowing where it *doesn't* pay off is part of using it well.
 
@@ -74,7 +76,7 @@ So **skip it** for one-shot Q&A, a single-tool lookup, or a throwaway prototype 
 
 **Reach for it** when you've got multi-step workflows, ordering or safety constraints that truly must hold, actions involving money or identity or anything irreversible, and a system you need to evolve without quietly regressing. That's precisely the situation where "probably not, but I can't prove it" isn't good enough, and it's the situation I keep finding myself in.
 
-## Promise Made, Promise Kept
+## The Promise
 
 We've walked the whole method now: the contract that every stage reads, the model check that proves the bad states unreachable, the enforcement code that keeps a promise against a stochastic promiser, and the promise graph that scales it all up to a superagent.
 
@@ -86,7 +88,7 @@ I packaged all of this as the **promise-driven-agentic-kit**. It isn't an app yo
 
 So here's my ask: go try it. Take a small, stateful agent you already have, one where a wrong turn actually costs something, and write its rules as a contract instead of a prompt. Run the model checker. Watch it find the state you didn't think of. Then come tell me what it caught.
 
-So, why should you believe? You shouldn't. Not a promise from a stochastic machine, and honestly, not one from me either. This is where *trust, but verify* earns its keep, with one word removed: you come to trust an agent *by* verifying it, in code, over and over. Trust *by* verify. You can't command an LLM. You can only get a promise out of it, and then prove it's kept. That was the "Ah, Ha!" This is the "Cha, Ching!"
+So, why should you believe? You shouldn't. Not a promise from a stochastic machine, and honestly, not one from me either. This is where *trust, but verify* earns its keep, with one word swapped: you come to trust an agent *by* verifying it, in code, over and over. Trust *by* verify. You can't command an LLM. You can only get a promise out of it, and then prove it's kept. That was the "Ah, Ha!" This is the "Cha, Ching!"
 
 I opened this series by promising to blow your mind — and in the same breath, told you not to believe me. That wasn't modesty; it was the whole thesis. I've bet on this shape once before, when it crossed over from a neighboring field before mine was ready for it, and I watched it remake an industry. I'm betting on it again — but don't take the bet on faith; you've just read three pieces on exactly why you shouldn't. Take the proof for yourself.
 
@@ -95,3 +97,7 @@ I opened this series by promising to blow your mind — and in the same breath, 
 *The [promise-driven-agentic-kit](#) is open source under Apache-2.0. Start with the whitepaper, then open The Clinic example. Corrections and extensions welcome; this is a living kit, and I mean that.*
 
 *With deep gratitude to Mark Burgess, whose Promise Theory is the foundation everything here is built on: his* [Book of Promises](http://markburgess.org/BookOfPromises.pdf) *(the full* Promise Theory: Principles and Applications*, with Jan Bergstra, free to read online) and the more approachable* Thinking in Promises *(O'Reilly). Thanks, too, to the FizzBee project for the model checker that makes the proofs run.*
+
+---
+
+*Liner notes: this piece takes its name from "Games Without Frontiers" (Peter Gabriel, 1980), and its section titles nod to "We Are Family" (Sister Sledge, 1979), "Don't You (Forget About Me)" (Simple Minds, 1985), "Should I Stay or Should I Go" (The Clash, 1982), and "The Promise" (When in Rome, 1988). Each part of this series is named for an 80s song — a small mixtape playing under the trilogy.*
