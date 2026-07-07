@@ -40,7 +40,7 @@ Here's the move that made everything click. Instead of a prose prompt, an agent'
 
 One document, three stages, same bytes. That last part matters more than it sounds, and I'll come back to it. Three isn't a magic number, either — it's just where I've taken this so far. Anything downstream that drifts from your code today could read the same contract instead: a generated design doc, an integration test plan, an onboarding guide. I haven't built those yet, but the single source is what makes them possible. The rest of this piece walks the three stages I *have* built, one at a time.
 
-## Design — capture the workflow, and prove it
+## Design — Capture the Workflow, and Prove It
 
 You're probably not starting a design from a blank page. Engineers borrowed a word for this from construction: it's a *brownfield* — an existing, load-bearing, slightly contaminated thing — not a *greenfield* you build clean. Sometimes that brownfield is software: a tangle of Zapier zaps, a Workato recipe, some bespoke automation patched for years that everyone's afraid to touch. More often, though, it isn't software at all — it's a process a person runs by hand, following a runbook that lives in a wiki page or a senior employee's head. Either way, there's already a *design* buried in there — you've just never drawn it out. And you almost certainly don't think of that design as a *state machine.* Almost no one does.
 
@@ -54,15 +54,7 @@ So let's look at what the assistant drafts. Take the orchestrator — **The Clin
 
 We'll zoom in on just one of those ten actions and the single invariant it protects. Here, verbatim, is that slice, written in [FizzBee](https://fizzbee.io), a formal-methods language in the TLA+ family with an approachable, Python-ish syntax. (The Clinic is one of the kit's two runnable examples, a shareable stand-in for the production systems I can't show.)
 
-```fizz
-atomic action VerifyPatient:
-    require not patient_verified
-    require active_workflow == NO_WORKFLOW
-    patient_verified = oneof [True, False]
-
-always assertion PatientVerifiedBeforeWorkflow:
-    return active_workflow == NO_WORKFLOW or patient_verified
-```
+![FizzBee source from the orchestrator: the VerifyPatient action, guarded so it can only run for an unverified patient with no active workflow, and the PatientVerifiedBeforeWorkflow invariant, which says no workflow runs unless the patient is verified.](images/code-fizz-verify.png)
 
 You don't need to know FizzBee to read that. In plain English:
 
@@ -72,12 +64,7 @@ You don't need to know FizzBee to read that. In plain English:
 
 Now the payoff. A **model checker** takes that machine and explores *every reachable combination of states* the actions can produce, and confirms no invariant is ever broken. I run it offline, in CI, before anything ships:
 
-```
-[PASS] book_appointment
-[PASS] clinic_orchestrator
-[PASS] manage_appointment
-3/3 contract(s) passed model checking.
-```
+![Model-checker output: PASS for book_appointment, clinic_orchestrator, and manage_appointment — 3 of 3 contracts passed model checking.](images/code-check-pass.png)
 
 This is the question a prose prompt can never answer: *can the agent ever reach a bad state?* The failures that actually hurt an agent are not bad answers, they are bad *states*: booked before verified, double-booked, access granted without authorization. And you cannot test your way to *ever*. The space of conversations is effectively infinite and the model is nondeterministic, so no suite of examples ever covers the one path that bites you in production. A model checker does what testing cannot: it walks *every reachable state* and either proves the forbidden ones unreachable or hands you the exact steps that reach one. It is the adversarial read every contract needs, the one that finds the loophole nobody thought to look for. So the answer is no longer "probably not." It is **"no, and here's the exhaustive proof,"** at design time, before an LLM or a user is anywhere near it. That proof is the keystone of the whole method: structure alone, YAML or a tidy prompt, makes an agent *neater*; only a proof makes it *provable*.
 
@@ -103,13 +90,7 @@ So how do the FizzBee half and the Promise Theory half actually fit together? On
 
 **In Build, the builder reads it as a promise.** In the contract's `<promises>` section, the same guarantee appears as a declared offer, carrying a condition with the *same token*:
 
-```xml
-<offer id="relay_to_matching_offer" type="workflow" to="patient">
-  <body>Relay a booking, cancel, or reschedule request to the subagent whose
-    published offer matches.</body>
-  <condition ref="patient_verified"/>
-</offer>
-```
+![The relay_to_matching_offer offer from the contract's promises section: it relays a booking, cancel, or reschedule request to the subagent whose published offer matches, carrying a condition that refs patient_verified.](images/code-offer-relay.png)
 
 That `patient_verified` is not a naming coincidence. It is literally the variable the model checker just reasoned about. This is the hinge of the whole design. Promise Theory does not compete with the state machine; it *names* what the invariant means, a promise made to a promisee, in a vocabulary that other agents can declare they depend on.
 
@@ -122,7 +103,7 @@ Now, "same bytes." In the usual setup (a state machine coded in one place, a pro
 
 That property isn't new, and it isn't really mine. A single declarative source of truth, with everything else derived from it, is the discipline behind intent-based networking, which I came up through years ago (that story is in the first piece). Here the source is a contract rather than a network design, but the rule is identical: change the one source, and everything downstream follows. Nothing drifts.
 
-## Build — give the contract teeth
+## Build — Give the Contract Teeth
 
 Design handed you a proven contract. Build turns it into a running agent, and here is the catch that separates a real contract from theater.
 
@@ -132,23 +113,11 @@ The proof certifies that the *state machine* can't reach a bad state. It says no
 
 This is where a contract needs *teeth.* A legal contract nobody will enforce is just a wish; what gives it force isn't the signatures on the page, it's knowing a court will hold you to them. A proven agent contract with nothing behind it is no different. Promise Theory says it in one line: *a promise from an unreliable promiser is worthless to you without independent assessment.* So every safety invariant gets a twin, the code that plays the court. Take the no-double-book rule:
 
-```fizz
-always assertion NoDoubleBook:
-    return (not appointment_booked) or slot_available
-```
+![FizzBee invariant NoDoubleBook from the booking agent: an appointment is booked only if the slot was available.](images/code-fizz-nodoublebook.png)
 
 That invariant is the LLM's *promise:* "I'll never book a taken slot." The **assessment** is real code, in the scheduling service itself, which refuses to commit a slot that isn't open, no matter what the model says:
 
-```python
-# NoDoubleBook — kept in code, no matter what the model says
-slot = self._store.slots.get(slot_id)
-if slot is None or slot.provider_id != provider_id:
-    return refusal("unknown_slot", "slot_available", "That slot does not exist.")
-if slot.status != "open":
-    return refusal("slot_taken", "slot_available",
-                   "That slot was taken since it was offered. Choose another.")
-slot.status = "booked"
-```
+![Python enforcement in services/schedule.py: the NoDoubleBook code twin. It looks up the slot and refuses to commit unless the slot exists and is still open, returning a structured refusal otherwise.](images/code-py-enforce.png)
 
 The model can promise all day; this code is what decides whether the promise was kept, and returns a structured refusal when it wasn't. (That `refusal(...)` is the same first-class "no" that surfaces at Run, below.)
 
@@ -156,7 +125,7 @@ This LLM-promise-plus-code-assessment pair is, to me, the atomic unit of the who
 
 ![The Build stage: your AI coding assistant reads the contract and produces the running agent, its framework wiring plus the enforcement code that gives every promise teeth.](images/build-stage.png)
 
-## Run — the agent acts, inside its guarantees
+## Run — The Agent Acts, Inside Its Guarantees
 
 Now the agent is live, and the runtime posture is the opposite of hope. A request comes in; the LLM follows the contract's prose and proposes an action, a tool call, a hand-off. Before anything happens, the enforcement code assesses that proposal against the invariants. Keep the promise, and it runs. Break one, and it is refused.
 

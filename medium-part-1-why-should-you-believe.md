@@ -56,7 +56,7 @@ bad states *unreachable*, and I can prove it, exhaustively, before I ever deploy
 
 That *"and I can prove it"* is the whole game. It's the thing a prose prompt can never give you. And make no mistake, something big is happening: agentic software is going through a paradigm shift. Let me tell you how I got here.
 
-## I've seen this before
+## I've Seen This Before
 
 Let me try an opening on you: *This post is going to talk about building agentic systems in a whole new way. The concepts in it will change your life. They changed mine.*
 
@@ -119,7 +119,7 @@ In 2014 I left Juniper to chase the idea further, and joined the startup that be
 
 So I've spent more than a decade designing around two hard-won instincts: put a deterministic guarantee underneath the actor, and start from a single declarative source of truth. An LLM agent is just the newest, strangest, most capable actor I've ever been asked to hand the keys to, and when I turned to building agents I gravitated toward that same shape. It *felt* right. But I'm a practitioner, not a theorist. Feeling right isn't the same as knowing, and the only way to know is to build it and watch what happens. So I started building. And at first, I got it embarrassingly wrong.
 
-## The wall: I forgot my own lesson
+## The Wall: I Forgot My Own Lesson
 
 Here's the kind of instruction I started out writing. I'd bet you've written one just like it:
 
@@ -139,7 +139,7 @@ With a prose prompt, the most honest answer I could give was: *"Probably not. Bu
 
 I hate that answer. It's the "oh crap, is it the network?" of agent design: the sinking feeling that something's wrong and you have no way to know whether your own system is the cause. I'd forgotten what made 2013 work: you don't make the actor trustworthy by asking nicely. You put a guarantee underneath it. So I went looking for the agentic version of that guarantee.
 
-## A practitioner's workaround
+## A Practitioner's Workaround
 
 I'm a practitioner. I live at the intersection of emerging technology and business acceleration, which means I rarely start from theory. I start by trying things and keeping what works.
 
@@ -151,13 +151,13 @@ That change did something I didn't expect. It wasn't only that the agent worked 
 
 But I still couldn't *prove* anything. I had better odds, not a guarantee, and 2013 had already taught me that better odds are not the same as a promise you can keep.
 
-## A serendipitous conversation
+## A Serendipitous Conversation
 
 The next piece fell into place in 2026, and it was pure luck. I was at a conference where John Willis was speaking, and I fell into conversation with an associate professor from Brown University who was presenting on *formal methods*: the mathematics of proving that a system can never misbehave. I asked him a question that wouldn't let go of me. Could you write an agent's instructions in the symbolic language of formal methods? It is so concise, so exact. We talked, and I left with more questions than answers, but with a strong sense that there was *something there.*
 
 Someone pointed me to [FizzBee](https://fizzbee.io). I had braced for TLA+, the venerable formal-methods language from Leslie Lamport (the same computer scientist who gave us LaTeX, and it reads that way). FizzBee was different. It looked and read like Python. And as I worked through its concepts, a bell went off: *this feels like Promise Theory.* I only half-knew Promise Theory at that point, but I knew enough to feel the resonance. So I went to learn it.
 
-## The reframe: an LLM is an autonomous agent
+## The Reframe: An LLM Is an Autonomous Agent
 
 What I found explained everything I'd stumbled into. [**Promise Theory**](http://markburgess.org/promises.html), developed by [Mark Burgess](http://markburgess.org/) and formalized with Jan Bergstra, didn't rescue me; my XML experiment had already done that. What it gave me was the *why* beneath the practice, and the vocabulary to do on purpose what I'd been doing by feel. It's about two decades old, and, this is not a coincidence, it comes from the very same configuration-management and distributed-systems world that gave us Puppet and Infrastructure as Code in the first place. The neighboring discipline came to my rescue twice in one career, and both times, it turned out, through the same man's ideas.
 
@@ -183,7 +183,7 @@ That's the reframe, and it changed how I build. Teams that treat prompts as comm
 
 If you take one idea from this article, take this one: **you can't command an LLM. You can only elicit a promise and then assess whether it was kept.** I've started calling the whole approach that follows from it **promise-and-assess.** It's the direct descendant of "hand over scoped authority, guarantee no harm underneath."
 
-## The gunpowder effect
+## The Gunpowder Effect
 
 That's when it detonated. Three ideas I'd been circling separately snapped into one: the declarative XML that made an agent's intent legible, a formal-methods language that could *prove* a state machine never reaches a bad state, and Promise Theory, which explained what I was actually doing and how to compose many agents without lying to myself about control. Gunpowder is three inert ingredients that do nothing apart and level a wall together. This was that. The XML became a *contract.* Formal methods made it *provable.* Promise Theory made it *composable*, and honest.
 

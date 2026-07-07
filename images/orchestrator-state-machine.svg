@@ -1,102 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 720" font-family="Helvetica, Arial, sans-serif">
-  <rect x="0" y="0" width="1320" height="720" fill="#ffffff"/>
-
-  <text x="660" y="46" text-anchor="middle" font-size="27" font-weight="700" fill="#1f2937">The Orchestrator's State Machine</text>
-  <text x="660" y="74" text-anchor="middle" font-size="15" fill="#6b7280">The Clinic's front desk — ten actions, three invariants. The FizzBee below is one action and the one invariant it serves.</text>
-
-  <defs>
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#9ca3af"/>
-    </marker>
-    <marker id="arrhi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#4338ca"/>
-    </marker>
-    <marker id="arrred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#dc2626"/>
-    </marker>
-  </defs>
-
-  <!-- ===== FORBIDDEN EDGE (behind nodes) ===== -->
-  <path d="M354 176 C 620 86, 1030 128, 1046 326" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="7 5" fill="none" marker-end="url(#arrred)"/>
-  <circle cx="676" cy="98" r="15" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
-  <line x1="667" y1="89" x2="685" y2="107" stroke="#dc2626" stroke-width="2.5"/>
-  <line x1="685" y1="89" x2="667" y2="107" stroke="#dc2626" stroke-width="2.5"/>
-  <text x="716" y="156" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">PatientVerifiedBeforeWorkflow</text>
-  <text x="716" y="174" text-anchor="middle" font-size="13" fill="#dc2626">makes this path unreachable</text>
-
-  <!-- ===== EDGES ===== -->
-  <!-- start -->
-  <circle cx="92" cy="187" r="7" fill="#374151"/>
-  <path d="M99 187 L 134 187" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-  <text x="106" y="177" font-size="12" fill="#6b7280">Init</text>
-
-  <!-- VerifyPatient fail self-loop -->
-  <path d="M222 150 C 216 112, 292 112, 286 150" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-  <text x="254" y="104" text-anchor="middle" font-size="11.5" fill="#6b7280">VerifyPatient (fail) · retry</text>
-
-  <!-- VerifyPatient ok (highlight) -->
-  <path d="M248 224 C 305 300, 385 302, 470 332" stroke="#4338ca" stroke-width="3.2" fill="none" marker-end="url(#arrhi)"/>
-  <text x="336" y="278" text-anchor="middle" font-size="14.5" font-weight="700" fill="#4338ca">VerifyPatient</text>
-  <text x="336" y="295" text-anchor="middle" font-size="12" fill="#6366f1">(success)</text>
-
-  <!-- Idle RespondDirect self-loop (top) -->
-  <path d="M498 330 C 478 290, 614 290, 594 330" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-  <text x="546" y="282" text-anchor="middle" font-size="11.5" fill="#6b7280">DetectIntent &#8594; RespondDirect</text>
-
-  <!-- Idle -> Active : DetectIntent + RouteToWorkflow -->
-  <path d="M682 352 L 926 352" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-  <text x="804" y="330" text-anchor="middle" font-size="12.5" fill="#374151">DetectIntent &#8594;</text>
-  <text x="804" y="345" text-anchor="middle" font-size="12.5" fill="#374151">RouteToWorkflow</text>
-
-  <!-- Active -> Idle : CompleteWorkflow -->
-  <path d="M926 392 C 850 430, 760 424, 684 396" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-  <text x="800" y="440" text-anchor="middle" font-size="12" fill="#6b7280">CompleteWorkflow</text>
-
-  <!-- Idle -> Active : ResumeWorkflow (dashed, conditional) -->
-  <path d="M560 410 C 700 478, 900 478, 1044 412" stroke="#9ca3af" stroke-width="1.8" stroke-dasharray="6 4" fill="none" marker-end="url(#arr)"/>
-  <text x="802" y="496" text-anchor="middle" font-size="11" fill="#9ca3af">ResumeWorkflow (when one was suspended)</text>
-
-  <!-- Active -> Pivot : RequestPivot -->
-  <path d="M1012 412 L 1012 516" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-  <text x="1000" y="468" text-anchor="end" font-size="12" fill="#6b7280">RequestPivot</text>
-
-  <!-- Pivot -> Active : DenyPivot -->
-  <path d="M1082 516 L 1082 412" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-  <text x="1094" y="468" font-size="12" fill="#6b7280">DenyPivot</text>
-
-  <!-- Pivot -> Idle : ConfirmPivot (suspend) -->
-  <path d="M928 542 C 700 548, 632 448, 586 412" stroke="#9ca3af" stroke-width="2" fill="none" marker-end="url(#arr)"/>
-  <text x="742" y="566" text-anchor="middle" font-size="12" fill="#6b7280">ConfirmPivot (suspend current workflow)</text>
-
-  <!-- ===== NODES ===== -->
-  <!-- Unverified -->
-  <rect x="138" y="150" width="214" height="74" rx="12" fill="#f9fafb" stroke="#2563eb" stroke-width="2"/>
-  <text x="245" y="184" text-anchor="middle" font-size="17" font-weight="700" fill="#1f2937">Unverified</text>
-  <text x="245" y="205" text-anchor="middle" font-size="12" fill="#6b7280">patient not yet verified</text>
-
-  <!-- Verified Idle (hub) -->
-  <rect x="430" y="330" width="252" height="80" rx="12" fill="#eef2ff" stroke="#4338ca" stroke-width="2.5"/>
-  <text x="556" y="364" text-anchor="middle" font-size="17" font-weight="700" fill="#312e81">Verified · Idle</text>
-  <text x="556" y="386" text-anchor="middle" font-size="12" fill="#6b7280">verified, no workflow running</text>
-
-  <!-- Workflow Active -->
-  <rect x="930" y="330" width="232" height="80" rx="12" fill="#f9fafb" stroke="#2563eb" stroke-width="2"/>
-  <text x="1046" y="364" text-anchor="middle" font-size="17" font-weight="700" fill="#1f2937">Workflow Active</text>
-  <text x="1046" y="386" text-anchor="middle" font-size="12" fill="#6b7280">a subagent is running</text>
-
-  <!-- Pivot Pending -->
-  <rect x="930" y="520" width="232" height="76" rx="12" fill="#f9fafb" stroke="#2563eb" stroke-width="2"/>
-  <text x="1046" y="553" text-anchor="middle" font-size="17" font-weight="700" fill="#1f2937">Pivot Pending</text>
-  <text x="1046" y="574" text-anchor="middle" font-size="12" fill="#6b7280">user wants to switch tasks</text>
-
-  <!-- ===== INVARIANT LEGEND ===== -->
-  <rect x="138" y="628" width="500" height="84" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
-  <text x="156" y="652" font-size="12.5" font-weight="700" letter-spacing="0.5" fill="#9ca3af">INVARIANTS · proven for every reachable state</text>
-  <circle cx="164" cy="673" r="4" fill="#4338ca"/>
-  <text x="176" y="678" font-size="13" font-weight="700" fill="#312e81">PatientVerifiedBeforeWorkflow</text>
-  <text x="430" y="678" font-size="12" fill="#6b7280">← the one shown below</text>
-  <circle cx="164" cy="697" r="4" fill="#9ca3af"/>
-  <text x="176" y="702" font-size="13" fill="#374151">RuleOfOne</text>
-  <circle cx="330" cy="697" r="4" fill="#9ca3af"/>
-  <text x="342" y="702" font-size="13" fill="#374151">PivotRequiresActiveWorkflow</text>
+<rect x="0" y="0" width="1320" height="720" fill="#ffffff"/>
+<text x="660" y="46" text-anchor="middle" font-size="27" font-weight="700" fill="#1f2937">The Orchestrator's State Machine</text>
+<text x="660" y="74" text-anchor="middle" font-size="15" fill="#6b7280">The Clinic's front desk — ten actions, three invariants. The FizzBee below is one action and the one invariant it serves.</text>
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#9ca3af"/></marker>
+<marker id="arrhi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4338ca"/></marker>
+<marker id="arrred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#dc2626"/></marker>
+</defs>
+<path d="M 352.0 187.0 L 1030.0 187.0 Q 1046.0 187.0 1046.0 203.0 L 1046.0 328.0" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 5" marker-end="url(#arrred)"/>
+<circle cx="620" cy="187" r="15" fill="#ffffff" stroke="#dc2626" stroke-width="2.5"/>
+<line x1="611" y1="178" x2="629" y2="196" stroke="#dc2626" stroke-width="2.5"/>
+<line x1="629" y1="178" x2="611" y2="196" stroke="#dc2626" stroke-width="2.5"/>
+<text x="720" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">PatientVerifiedBeforeWorkflow</text>
+<text x="720" y="168" text-anchor="middle" font-size="13" fill="#dc2626">makes this path unreachable</text>
+<path d="M 99.0 187.0 L 138.0 187.0" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+<text x="112" y="177" text-anchor="start" font-size="12" fill="#6b7280">Init</text>
+<path d="M 214.0 150.0 L 214.0 132.0 Q 214.0 116.0 230.0 116.0 L 270.0 116.0 Q 286.0 116.0 286.0 132.0 L 286.0 150.0" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+<text x="250" y="106" text-anchor="middle" font-size="11.5" fill="#6b7280">VerifyPatient (fail) · retry</text>
+<path d="M 245.0 224.0 L 245.0 354.0 Q 245.0 370.0 261.0 370.0 L 428.0 370.0" fill="none" stroke="#4338ca" stroke-width="3.2" stroke-linecap="round" marker-end="url(#arrhi)"/>
+<text x="262" y="306" text-anchor="start" font-size="14.5" font-weight="700" fill="#4338ca">VerifyPatient</text>
+<text x="262" y="324" text-anchor="start" font-size="12" fill="#6366f1">(success)</text>
+<path d="M 496.0 330.0 L 496.0 315.0 Q 496.0 300.0 511.0 300.0 L 601.0 300.0 Q 616.0 300.0 616.0 315.0 L 616.0 330.0" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+<text x="556" y="290" text-anchor="middle" font-size="11.5" fill="#6b7280">DetectIntent → RespondDirect</text>
+<path d="M 682.0 358.0 L 930.0 358.0" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+<rect x="692" y="350" width="228" height="20" rx="5" fill="#ffffff" opacity="0.92"/>
+<text x="806" y="362" text-anchor="middle" font-size="12" fill="#374151">DetectIntent → RouteToWorkflow</text>
+<path d="M 930.0 384.0 L 682.0 384.0" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+<rect x="742" y="376" width="127" height="20" rx="5" fill="#ffffff" opacity="0.92"/>
+<text x="806" y="388" text-anchor="middle" font-size="12" fill="#6b7280">CompleteWorkflow</text>
+<path d="M 520.0 410.0 L 520.0 450.0 Q 520.0 466.0 536.0 466.0 L 984.0 466.0 Q 1000.0 466.0 1000.0 450.0 L 1000.0 410.0" fill="none" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#arr)"/>
+<rect x="632" y="459" width="256" height="19" rx="5" fill="#ffffff" opacity="0.92"/>
+<text x="760" y="470" text-anchor="middle" font-size="11" fill="#9ca3af">ResumeWorkflow (if one was suspended)</text>
+<path d="M 1030.0 410.0 L 1030.0 520.0" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+<path d="M 1062.0 520.0 L 1062.0 410.0" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+<text x="1080" y="455" text-anchor="start" font-size="12" fill="#6b7280">RequestPivot</text>
+<text x="1080" y="485" text-anchor="start" font-size="12" fill="#6b7280">DenyPivot</text>
+<path d="M 930.0 558.0 L 616.0 558.0 Q 600.0 558.0 600.0 542.0 L 600.0 410.0" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+<text x="742" y="576" text-anchor="middle" font-size="12" fill="#6b7280">ConfirmPivot (suspend current workflow)</text>
+<rect x="138" y="150" width="214" height="74" rx="12" fill="#f9fafb" stroke="#2563eb" stroke-width="2"/>
+<text x="245.0" y="184" text-anchor="middle" font-size="17" font-weight="700" fill="#1f2937">Unverified</text>
+<text x="245.0" y="205" text-anchor="middle" font-size="12" fill="#6b7280">patient not yet verified</text>
+<rect x="430" y="330" width="252" height="80" rx="12" fill="#eef2ff" stroke="#4338ca" stroke-width="2.5"/>
+<text x="556.0" y="364" text-anchor="middle" font-size="17" font-weight="700" fill="#312e81">Verified · Idle</text>
+<text x="556.0" y="385" text-anchor="middle" font-size="12" fill="#6b7280">verified, no workflow running</text>
+<rect x="930" y="330" width="232" height="80" rx="12" fill="#f9fafb" stroke="#2563eb" stroke-width="2"/>
+<text x="1046.0" y="364" text-anchor="middle" font-size="17" font-weight="700" fill="#1f2937">Workflow Active</text>
+<text x="1046.0" y="385" text-anchor="middle" font-size="12" fill="#6b7280">a subagent is running</text>
+<rect x="930" y="520" width="232" height="76" rx="12" fill="#f9fafb" stroke="#2563eb" stroke-width="2"/>
+<text x="1046.0" y="554" text-anchor="middle" font-size="17" font-weight="700" fill="#1f2937">Pivot Pending</text>
+<text x="1046.0" y="575" text-anchor="middle" font-size="12" fill="#6b7280">user wants to switch tasks</text>
+<rect x="138" y="628" width="500" height="84" rx="10" fill="#ffffff" stroke="#e5e7eb" stroke-width="1.5"/>
+<text x="156" y="652" text-anchor="start" font-size="12.5" font-weight="700" fill="#9ca3af">INVARIANTS · proven for every reachable state</text>
+<circle cx="164" cy="673" r="4" fill="#4338ca"/>
+<text x="176" y="678" text-anchor="start" font-size="13" font-weight="700" fill="#312e81">PatientVerifiedBeforeWorkflow</text>
+<text x="430" y="678" text-anchor="start" font-size="12" fill="#6b7280">← the one shown below</text>
+<circle cx="164" cy="697" r="4" fill="#9ca3af"/>
+<text x="176" y="702" text-anchor="start" font-size="13" fill="#374151">RuleOfOne</text>
+<circle cx="330" cy="697" r="4" fill="#9ca3af"/>
+<text x="342" y="702" text-anchor="start" font-size="13" fill="#374151">PivotRequiresActiveWorkflow</text>
 </svg>

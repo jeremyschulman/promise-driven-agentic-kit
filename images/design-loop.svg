@@ -37,11 +37,11 @@
   <text x="450" y="266" font-size="14" fill="#1f2937">state and returns a verdict.</text>
 
   <!-- CHECK -> PASS -->
-  <path d="M730 196 C 780 188, 800 182, 816 178" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#ar)"/>
-  <text x="748" y="172" font-size="12" font-weight="700" fill="#059669">PASS</text>
+  <path d="M730 187 L 816 187" stroke="#059669" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#ar)"/>
+  <text x="762" y="179" font-size="12" font-weight="700" fill="#059669">PASS</text>
   <!-- CHECK -> FIX -->
-  <path d="M730 262 C 780 285, 800 300, 816 318" stroke="#e11d48" stroke-width="2" fill="none" marker-end="url(#ar)"/>
-  <text x="748" y="312" font-size="12" font-weight="700" fill="#e11d48">FAIL</text>
+  <path d="M730 262 L 766 262 Q 778 262 778 274 L 778 381 Q 778 393 790 393 L 816 393" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#ar)"/>
+  <text x="744" y="255" font-size="12" font-weight="700" fill="#e11d48">FAIL</text>
 
   <!-- PASS terminal -->
   <rect x="820" y="150" width="410" height="74" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
@@ -61,6 +61,6 @@
   <text x="858" y="470" font-size="13" font-family="Menlo, Consolas, monospace" fill="#e11d48">&#8594; violates NoDoubleBook</text>
 
   <!-- loop back FIX -> AUTHOR -->
-  <path d="M900 500 C 900 590, 200 590, 200 316" stroke="#6366f1" stroke-width="2.5" fill="none" marker-end="url(#arI)"/>
+  <path d="M900 500 L 900 574 Q 900 590 884 590 L 216 590 Q 200 590 200 574 L 200 314" stroke="#6366f1" stroke-width="2.5" fill="none" stroke-linecap="round" marker-end="url(#arI)"/>
   <text x="550" y="583" text-anchor="middle" font-size="14" font-weight="700" fill="#6366f1">the assistant repairs the contract, then re-runs, until it's green</text>
 </svg>

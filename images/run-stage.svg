@@ -38,9 +38,9 @@
   <text x="632" y="334" font-size="14" fill="#1f2937">anything runs.</text>
 
   <!-- branches -->
-  <path d="M910 258 C 936 244, 946 238, 956 234" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#oa)"/>
-  <text x="922" y="232" font-size="12" font-weight="700" fill="#059669">keeps promise</text>
-  <path d="M910 336 C 936 350, 946 356, 956 362" stroke="#e11d48" stroke-width="2" fill="none" marker-end="url(#oa)"/>
+  <path d="M910 258 L 925 258 Q 935 258 935 248 L 935 244 Q 935 234 945 234 L 956 234" stroke="#059669" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#oa)"/>
+  <text x="922" y="228" font-size="12" font-weight="700" fill="#059669">keeps promise</text>
+  <path d="M910 336 L 925 336 Q 935 336 935 346 L 935 352 Q 935 362 945 362 L 956 362" stroke="#e11d48" stroke-width="2" fill="none" stroke-linecap="round" marker-end="url(#oa)"/>
   <text x="918" y="372" font-size="12" font-weight="700" fill="#e11d48">breaks promise</text>
 
   <!-- EXECUTE -->

@@ -10,7 +10,7 @@ This is the third and final piece. Part 1, [Promises, Promises — Why Should Yo
 
 But a single agent is rarely the system. The workflows worth automating are carried by *many* agents cooperating, and that is exactly where most multi-agent designs quietly fall apart. This piece is about composing them without lying to yourself, so that a whole *system* of agents, not just one, can't make a promise it has no way to keep.
 
-## From one agent to a system of agents
+## From One Agent to a System of Agents
 
 Take The Clinic. It presents as one agent, but it's a small society of them behind one friendly face: an orchestrator that verifies you and routes your request, a booking subagent, a subagent that cancels and reschedules, plus non-LLM service agents for the schedule, the insurance check, and the patient registry.
 
@@ -28,13 +28,7 @@ Trace one request through it. A patient says *"book me an appointment."* The orc
 
 Each agent publishes a small manifest of its offers and uses. Here's the booking agent promising not to double-book, written as an offer:
 
-```xml
-<offer id="never_double_book" type="invariant" to="patient clinic-compliance">
-  <body>A slot is never booked twice; the commit is refused by the provider
-    schedule if the slot was taken since it was offered (NoDoubleBook, kept in
-    code regardless of the model).</body>
-</offer>
-```
+![The never_double_book offer from the booking agent's promises: a slot is never booked twice; the commit is refused by the provider schedule if the slot was taken since it was offered — NoDoubleBook, kept in code regardless of the model.](images/code-offer-neverdoublebook.png)
 
 Notice the body names its own division of labor: the LLM promises it, the schedule service *keeps* it. Promise-and-assess, made explicit for anyone reading the manifest.
 
@@ -48,20 +42,7 @@ Three consequences fall out of this, and they're why I now design this way:
 
 Concretely, that check is just matching names across contracts. The schedule *publishes* its open slots, and the booking agent *declares* it depends on them — same `id`, a `+` meeting a `−`:
 
-```xml
-<!-- provider_schedule publishes (+) -->
-<offer id="open_slots" type="session-state" to="book_appointment manage_appointment clinic_orchestrator">
-  <body>The currently open slots per provider. A slot is bookable only while
-    it appears here.</body>
-  <condition ref="slots_exist" assessed="self"/>
-</offer>
-
-<!-- book_appointment declares it relies on them (−) -->
-<use id="open_slots" from="provider_schedule" quenches="slot_available">
-  <body>The provider's currently open slots; a slot is only bookable while
-    it appears here.</body>
-</use>
-```
+![A matched offer/use pair across two contracts. provider_schedule publishes open_slots as an offer (+); book_appointment declares a use (−) of the same open_slots, which quenches its slot_available condition. Same id, matched across two files.](images/code-openslots-pair.png)
 
 Miss that match — a `−` with no `+` to meet it — and the build goes red before a single request arrives.
 
@@ -69,7 +50,7 @@ So the wager scales. For one agent it was *"can this reach a bad state?"* For th
 
 I believe engineers building serious systems must have **choice and control**: choice of tools, frameworks, and languages, and control over how they build, deploy, and evolve. Any method worth adopting has to honor that instead of locking you in. So the property I care about most here isn't a feature at all; it's that the method asks nothing of your stack. The two examples prove it: The Clinic and the Trials of the Holy Grail run on **entirely different frameworks** (The Clinic on Google's ADK, the Trials on Pydantic AI) yet they share the *same* contracts and the *same* enforcement code. The only meaningful difference between them is a single file wiring each to its runtime. Everything that makes them *safe* is identical and framework-independent. The method lives in the contracts and the assessment code, not in anybody's framework-of-the-month. Choose your tools; keep your guarantees.
 
-## What you actually walk away with
+## What You Actually Walk Away With
 
 I don't want to leave you with a vibe. Here's the distilled standard I hold my own systems to, mapped to the lifecycle across the series. If you build nothing else from these pieces, run your design past these:
 
@@ -83,7 +64,7 @@ I don't want to leave you with a vibe. Here's the distilled standard I hold my o
 
 Points 1 through 5 make a single agent trustworthy, from Design through Run; points 6 and 7 make a *system* trustworthy as you compose. And I genuinely believe this is where agentic engineering is heading, whether or not anyone uses the word "promise," because the premise underneath it is simply *true:* the model is an autonomous stochastic agent, and autonomous agents can only be promised, then assessed.
 
-## When *not* to do this
+## When *Not* to Do This
 
 I'd be doing you a disservice if I pretended this is free. It isn't, and knowing where it *doesn't* pay off is part of using it well.
 
@@ -93,7 +74,7 @@ So **skip it** for one-shot Q&A, a single-tool lookup, or a throwaway prototype 
 
 **Reach for it** when you've got multi-step workflows, ordering or safety constraints that truly must hold, actions involving money or identity or anything irreversible, and a system you need to evolve without quietly regressing. That's precisely the situation where "probably not, but I can't prove it" isn't good enough, and it's the situation I keep finding myself in.
 
-## Looking back over the bridge
+## Looking Back Over the Bridge
 
 We've walked the whole method now: the contract that every stage reads, the model check that proves the bad states unreachable, the enforcement code that keeps a promise against a stochastic promiser, and the promise graph that scales it all up to a superagent.
 

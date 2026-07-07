@@ -12,9 +12,9 @@
     </marker>
   </defs>
   <g stroke="#9ca3af" stroke-width="2" fill="none">
-    <path d="M640 184 C 400 210, 230 214, 230 248" marker-end="url(#a)"/>
+    <path d="M640 184 L 640 202 Q 640 216 626 216 L 244 216 Q 230 216 230 230 L 230 248" marker-end="url(#a)"/>
     <path d="M640 184 L 640 248" marker-end="url(#a)"/>
-    <path d="M640 184 C 880 210, 1050 214, 1050 248" marker-end="url(#a)"/>
+    <path d="M640 184 L 640 202 Q 640 216 654 216 L 1036 216 Q 1050 216 1050 230 L 1050 248" marker-end="url(#a)"/>
   </g>
 
   <!-- ===== DESIGN ===== -->
