@@ -31,7 +31,7 @@ back to that fear; where it went is part of the story.
 Let's get going! This first piece makes the case. The two that follow show you the way, starting with [Everybody Wants to Rule the World — How to Build an Agent You Can Prove](#)
 and wrapping up with [Games Without Frontiers — How to Compose a System You Can Prove](#).
 
-## Keeping the Promise of Autonomous BPA
+## Mr. Roboto
 
 For almost two years I've been building and running in production something the
 enterprise world has long, and frankly boringly, called **business process
@@ -222,7 +222,7 @@ your own system is the cause. I'd forgotten what made 2013 work: you don't make
 the actor trustworthy by asking nicely. You put a guarantee underneath it. So I
 went looking for the agentic version of that guarantee.
 
-## A Practical Discovery
+## A Kind of Magic
 
 I'm a practitioner. I like to live at the intersection of emerging technology and
 business acceleration, which means I rarely start from theory. I start by trying
@@ -343,4 +343,4 @@ For now, hold onto the instinct I asked you to keep at the very top. Why should 
 
 ---
 
-*Liner notes: this piece takes its name from "Promises, Promises" (Naked Eyes, 1983), and its section titles nod to "The Future's So Bright, I Gotta Wear Shades" (Timbuk3, 1986), "Catch Me I'm Falling" (Pretty Poison, 1987), "She Blinded Me with Science" (Thomas Dolby, 1982), and "Here I Go Again" (Whitesnake, 1987). Each part of this series is named for an 80s song — a small mixtape playing under the trilogy.*
+*Liner notes: this piece takes its name from "Promises, Promises" (Naked Eyes, 1983), and its section titles nod to "Mr. Roboto" (Styx, 1983), "The Future's So Bright, I Gotta Wear Shades" (Timbuk3, 1986), "Catch Me I'm Falling" (Pretty Poison, 1987), "A Kind of Magic" (Queen, 1986), "She Blinded Me with Science" (Thomas Dolby, 1982), and "Here I Go Again" (Whitesnake, 1987). Each part of this series is named for an 80s song — a small mixtape playing under the trilogy.*
