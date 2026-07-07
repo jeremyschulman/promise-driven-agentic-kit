@@ -1,12 +1,18 @@
 # Promises, Promises — Why Do I Believe?
 
-### Twenty years ago Mark Burgess forged the foundations of the DevOps Era.  His Promise Theory is about to do the same for the Agentic Era.
+### Twenty years ago Mark Burgess forged the foundations of the DevOps Era. His Promise Theory is poised to do the same for the Agentic Era.
 
 *By Jeremy Schulman · Part 1 of 3*
 
 ---
 
-I promise to blow your mind.  I know how that lands.  I like to say this from time to time.  You have no reason yet to
+**TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
+
+Does this sound like you?
+
+> *As a software engineer evolving our business-process automation into the era of AI, I need to build systems where many AI agents work together to carry out complex, multi-step workflows, reliably enough to run the business on.*
+
+If so, I promise to blow your mind. I know how that lands. You have no reason yet to
 believe me. Good. *Trust, but verify.* Hold onto that instinct; it's the whole
 point, and we'll get there.
 
@@ -17,17 +23,15 @@ about. This is not about another shiny demo or agentic development framework. I
 want to share with you an entirely different _approach_ to building
 sophisticated agentic solutions.
 
-Does this sound like you?
+And a confession before we start: I came to agentic AI recently, at the start of 2025, as new
+to it as you may be — and afraid of the same thing everyone is. What if the
+agent goes rogue and takes down something I can't afford to lose? We'll come
+back to that fear; where it went is part of the story.
 
-> *As a software engineer evolving our business-process automation into the era of AI, I need to build systems where many AI agents work together to carry out complex, multi-step workflows, reliably enough to run the business on.*
-
-If so then keep reading. This first piece makes the case. 
-The two that follow show you the way, starting with [Everybody Wants to Rule the World — How to Build an Agent You Can Prove](#) 
+Let's get going! This first piece makes the case. The two that follow show you the way, starting with [Everybody Wants to Rule the World — How to Build an Agent You Can Prove](#)
 and wrapping up with [Games Without Frontiers — How to Compose a System You Can Prove](#).
 
-**TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
-
-## The Promise of Autonomous BPA
+## Keeping the Promise of Autonomous BPA
 
 For almost two years I've been building and running in production something the
 enterprise world has long, and frankly boringly, called **business process
@@ -54,10 +58,7 @@ and provide you the means to try this out for yourself.
 So let me start with the assumption I think we're all quietly building on, and
 why it's broken: **that if we just write the instructions carefully enough, the
 machine will do as it's told.** It won't. It can't. **You cannot command an LLM.
-You can only elicit a promise and then verify it.** I submit to you, the teams who accept that
-*first*, who stop trying to command their agents and start doing something
-fundamentally different, are going to build the systems everyone else spends the
-next few years catching up to.
+You can only elicit a promise and then verify it.** And the teams who accept that *first* — who stop trying to command their agents and start doing something fundamentally different — are going to build the systems everyone else spends the next few years catching up to.
 
 One of the two example agents I'll show you (in the Github repo), which I call
 **The Clinic**, takes an input *"I'm Ada Lovelace, book me a dermatology visit"*
@@ -118,7 +119,7 @@ And it was obvious, standing there, that the same wave was about to hit
 networking whether the networking industry was ready or not.
 
 Part of why I could see it coming was my unique role. I had my feet in two
-worlds. I reported into the Junos engineering software team.  My real job was
+worlds. I reported into the Junos engineering software team. My real job was
 out in the field with the sales team, using my deep knowledge of Junos
 automation to help sell the value of Junos. I found I have this weird
 split-brain: software engineering and business go-to-market. Working across that
@@ -127,14 +128,11 @@ I called it "Bridging the Two Worlds." I've stood between worlds my whole
 career, which is probably why, years later, Mark's border-crossing ideas would
 feel like coming home.
 
-## A Serendipitous Conversation - 2013
+## The Crystal Ball - 2013
 
-I wasn't guessing, and I wasn't alone. At PuppetConf in 2013, John Willis, a
-leader of the DevOps movement who became a mentor and gave me that "Ah, Ha!" to
-"Cha, Ching!" phrase, pulled me aside and, in effect, handed me a crystal ball:
-*this* is what the next ten years of your career look like, he said, if you
-commit to the network-automation movement. I committed. And I had good company:
-Scott Robohn, my first manager at Juniper back in 2008, would go on to co-found
+At PuppetConf in 2013, I gave a talk on running Puppet natively on Junos switches. Afterward John Willis — a leader of the DevOps movement — came up, genuinely excited about it. That's how we met, and how he became a mentor: the one who gave me the "Ah, Ha!" to "Cha, Ching!" phrase. He pulled me aside and, in effect, handed me a crystal ball: *this* is what the next ten years of your career look like, if you commit to the network-automation movement. I committed.
+
+And I had good company: Scott Robohn, my first manager at Juniper back in 2008, would go on to co-found
 the Network Automation Forum. My friend Peter Sprygada and I co-wrote the Puppet
 "netdev" module together; Peter went on to become the driving force behind
 Ansible's network automation, the reason so much of the world's network
@@ -145,11 +143,12 @@ know what the early days of a real shift feel like from the inside.
 
 And I've got that _funny feeling_ again, right now.
 
+## Learning to Fall, With a Net
+
+There's a team-building ritual where you close your eyes, cross your arms, and drop straight backward — trusting the people behind you to catch you. A promise to catch, and pure faith they'll keep it. I don't take that bet with complex systems. I do the version where I ensure there's a net. Everything I learned in 2013 was about building that net.
+
 Here's a key insight from the Puppet story I want you to hold onto, because it
-turns out to be the whole point of *this* article. The motivation to run
-**Puppet**, the sysadmins' own automation tool, natively on the switch, so that
-when they rolled out an application, the network changes it needed rolled out
-*with* it: no ticket, no waiting on the networking team. And if the rollout went
+turns out to be the whole point of *this* article. The motivation was to run Puppet, the sysadmins' own automation tool, natively on the switch: when they rolled out an application, the network changes it needed rolled out *with* it — no ticket, no waiting on the networking team. And if the rollout went
 sideways, a single rollback reverted the application *and* the network together,
 as one unit. That was the truly game-changing part for the customer. The reason
 this radical approach worked, the reason the networking team could hand over
@@ -165,7 +164,7 @@ guarantees it cannot cause harm, no matter what it tries.** You don't trust the
 actor. You trust the guarantee.
 
 In 2014 I left Juniper to chase the idea further, and joined the startup that
-became **Apstra**, which pioneered *intent-based networking.* The thesis was
+became Apstra, which pioneered *intent-based networking.* The thesis was
 simple, and to me revelatory: start with a single declarative **intent**, a
 description of what the network should *be* that you can programmatically reason
 about. From that one intent you derive two things: (1) the configuration that
@@ -184,7 +183,7 @@ agents I gravitated toward that same shape. It *felt* right. But I'm a
 practitioner, not a theorist. Feeling right isn't the same as knowing, and the
 only way to know is to build it and watch what happens. I started building.
 
-## The Wall: I Forgot My Own Lesson
+## Fumble Around and Find Out
 
 Here's the kind of instruction I started out writing. I'd bet you've written one just like it:
 
@@ -223,7 +222,7 @@ your own system is the cause. I'd forgotten what made 2013 work: you don't make
 the actor trustworthy by asking nicely. You put a guarantee underneath it. So I
 went looking for the agentic version of that guarantee.
 
-## A Practitioner's Workaround
+## A Practical Discovery
 
 I'm a practitioner. I like to live at the intersection of emerging technology and
 business acceleration, which means I rarely start from theory. I start by trying
@@ -256,8 +255,8 @@ promise you can keep.
 ## A Serendipitous Conversation - 2026
 
 The next piece fell into place in 2026, and it was pure luck. I was at a
-conference where John Willis was speaking.  I had an engaging conversation with
-an associate professor from Brown University.  He was presenting on *formal
+conference where John Willis was speaking. I had an engaging conversation with
+an associate professor from Brown University. He was presenting on *formal
 methods*: the mathematics of proving that a system can never misbehave. I asked
 him a question that started to nag at me. *Could you write an agent's
 instructions in the symbolic language of formal methods?* It is so concise, so
@@ -265,36 +264,20 @@ exact, maybe, perhaps, an LLM would be more effective using that form of
 language. We talked, and I left with more questions than answers, but with a
 strong sense that there was *something there.*
 
-I went looking at formal method languages and found [FizzBee](https://fizzbee.io). 
-I had braced for TLA+, the venerable formal-methods language from Leslie Lamport (the same computer scientist who gave us LaTeX, and it reads that way). 
+I went looking at formal method languages and found [FizzBee](https://fizzbee.io).
+I had braced for TLA+, the venerable formal-methods language from Leslie Lamport (the same computer scientist who gave us LaTeX, and it reads that way).
 FizzBee was different. It looked and read like Python. And as I worked through
 its concepts I had this "lightbulb moment". *I think this feels like Promise
 Theory.* I was only passingly familiar with Promise Theory at that point, but I knew
 enough to feel the resonance. So I went to learn more.
 
-## A Foundation, Not Another Framework
+## Finding a Shared Language
 
-What I found validated my feelings. By the time I started reading up on [**Promise Theory**](http://markburgess.org/promises.html) — 
-developed by [Mark Burgess](http://markburgess.org/) and formalized with Jan Bergstra — 
-my XML + FizzBee experiment was already working. That's exactly why it hit so hard: here
-was a proven, decades-old body of theory describing, in precise terms, the very
-thing I'd stumbled into by feel. I wanted to put these ideas into code without inventing yet another framework or a home-grown methodology. I wanted to build on something proven and well understood, so this idea I had would stand on solid ground instead of reading as just one more thing someone
-made up. Promise Theory was that ground — and, not by coincidence, it comes from
-the very same configuration-management and distributed-systems world that gave
-us Puppet and Infrastructure as Code in the first place. Puppet and Chef stood
-on the shoulders of giants; Mark was one of them.
+What I found validated my feelings. By the time I started reading up on [**Promise Theory**](http://markburgess.org/promises.html) — developed by [Mark Burgess](http://markburgess.org/) and formalized with Jan Bergstra — my XML + FizzBee experiment was already working. That's exactly why it hit so hard: here was a proven, decades-old body of theory describing, in precise terms, the very thing I'd stumbled into by feel.
 
-There was a second reason I cared about just as much: a shared language.
-Framework builders fall into a familiar trap — they invent yet another
-domain-specific language, and every DSL is one more vocabulary the whole team
-has to learn and carry in their heads, pure cognitive load. I didn't want to add
-to that pile. So rather than coin my own terms, I put Promise Theory's
-vocabulary *in the code* — agents, promises, offers, and uses, named the way
-Burgess names them. When an engineer opens a contract, they meet established
-terms, not jargon I invented. When a tool draws a diagram from that contract, it
-renders in the same vocabulary. People and tools end up sharing one mental
-model, speaking one language about what the system actually does. That shared
-language, as much as the proofs, is why I reached for Promise Theory.
+But the part I cared about most was language. Everything I build, I want to express in one shared language — because the fewer private vocabularies a system carries, the less cognitive load and operational friction it puts on everyone and everything that touches it: the engineers, the LLM, the tools. Coining my own framework or DSL does the opposite; it's one more language the whole team, and the model, has to learn.
+
+So rather than invent terms, I put Promise Theory's vocabulary *in the code* — agents, promises, offers, and uses, named the way Burgess names them. When an engineer opens a contract, they meet established terms, not jargon I made up; when a tool renders a diagram from it, it speaks the same vocabulary. People and tools end up sharing one mental model. And because Promise Theory is proven and decades old, I wasn't inventing that language, I was standing on it. Puppet and Chef stood on the shoulders of giants; Mark was one of them. The proofs are what make an agent *trustworthy*; the shared language is what keeps the whole thing legible.
 
 And this matters more now than it would have a few years ago. A DSL was always a shortcut *for humans* — Puppet and Chef built their languages so an engineer hand-crafting a manifest or a recipe had less to remember. But I'm not hand-crafting anymore; an AI coding assistant writes most of this with me, and it already speaks XML and XSD fluently, with terms plain enough — agents, promises, offers, uses — that it isn't flying blind. Invent a brand-new DSL and I'd be handing the model a language it has never seen, defeating the very thing that makes AI-assisted development work. So I did the opposite: the contract is plain XML, its structure pinned by an XSD — not a new grammar, just a shape the model has read a million times. I hand it the schema; it writes fluent, correct contracts back. Reusing what the model already knows isn't a compromise. It's the point.
 
@@ -345,6 +328,10 @@ What file is it in? How do you check it? How does it survive contact with a real
 framework and a real deploy?
 
 So I put together what I'm calling the **promise-driven-agentic-kit**: a set of files that help a software engineer turn these ideas into a real agentic solution, in Python. You don't so much *run* it as *build* with it. The companion to this piece, **[Everybody Wants to Rule the World — How to Build an Agent You Can Prove](#)**, walks the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state machine that proves The Clinic can never book before you're verified; and the enforcement code that keeps a stochastic promiser honest.
+
+## Here I Go Again
+
+That fear from the start — the rogue agent, the blast radius — here's where it went. A year ago I meant to hand-write every line myself, using AI assist only in small, supervised doses. Today I let an AI coding assistant write essentially all of it, because a proven contract underneath makes that safe. If the arc feels familiar, it should: it's the same one I watched a generation of network engineers walk — "you'll get the CLI out of my cold, dead hands" in one breath, "okay, fine, automate it" a decade later. Fear turns to trust the moment a guarantee shows up underneath. That's the real journey — mine, theirs, and maybe now yours.
 
 For now, hold onto the instinct I asked you to keep at the very top. Why should you believe an LLM's promise? You shouldn't, not on its own. You elicit the promise, and then you verify it. *Trust, but verify.* Here, that isn't a proverb. It's the whole method, and it's buildable. Let me prove it to you.
 
