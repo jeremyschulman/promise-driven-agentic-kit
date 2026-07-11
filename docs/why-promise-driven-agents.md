@@ -601,6 +601,10 @@ That is not a domain-specific result. It is what any serious agentic system will
 
 # Appendix A — Glossary: Promise Theory term ↔ kit artifact
 
+This appendix is a compact mapping for the whitepaper. The standalone
+[Glossary and Naming Conventions](glossary/README.md) provides the practitioner
+definitions, identifier rules, and distinctions used across the kit.
+
 | Promise Theory | In the examples (clinic / grail) |
 |---|---|
 | Agent (autonomous) | Each LLM agent, the services (schedule, eligibility, registry), the human user, the model |

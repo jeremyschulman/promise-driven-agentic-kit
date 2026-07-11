@@ -9,6 +9,7 @@ the relevant guide.
 | I want to... | Start with | Continue with |
 | --- | --- | --- |
 | Understand the method quickly | [From Contract to Enforcement](contract-assessment/README.md) | [The assurance model](assurance-model/README.md) |
+| Look up a term or identifier convention | [Glossary and Naming Conventions](glossary/README.md) | [Contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
 | Decide what should be an agent | [Choosing a Participant and Document Type](participant-types/README.md) | [Composing Promises](promise-graph/README.md) |
 | Author or change an agent contract | [Authoring an Agent Contract](authoring-workflow/README.md) | [Contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
 | Evolve an existing contract safely | [Evolving an Agent Contract](contract-evolution/README.md) | [The assurance model](assurance-model/README.md) |
@@ -56,6 +57,9 @@ The documentation follows the same lifecycle as the method:
   compatibility strategies.
 - [Five Questions, Five Kinds of Evidence](assurance-model/README.md) explains what each
   verification layer establishes and, equally importantly, what it does not establish.
+- [Glossary and Naming Conventions](glossary/README.md) aligns Promise Theory, XML,
+  behavior-model, Python-enforcement, and evidence terms and defines stable identity
+  chains.
 
 ## Reference material
 
@@ -64,4 +68,5 @@ The documentation follows the same lifecycle as the method:
 - [Shared Promise Theory vocabulary](../schema/promise-common.xsd)
 - [Contract anatomy reference](../skills/authoring-agent-contracts/references/contract-anatomy.md)
 - [Authoring checklist](../skills/authoring-agent-contracts/references/authoring-checklist.md)
+- [Glossary and naming conventions](glossary/README.md)
 - [Complete worked examples](../examples/)

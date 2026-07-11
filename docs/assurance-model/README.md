@@ -4,6 +4,9 @@ The kit does not have one master verification step. It has five layers that answ
 different questions across **Design → Build → Run**. Confidence comes from preserving
 the evidence chain, not from treating one green check as proof of the whole system.
 
+For precise definitions of the evidence and identity terms used here, see the
+[Glossary and Naming Conventions](../glossary/README.md).
+
 [![Five assurance layers across Design, Build, and Run](assurance-layers.png)](assurance-layers.svg)
 
 ## The assurance layers

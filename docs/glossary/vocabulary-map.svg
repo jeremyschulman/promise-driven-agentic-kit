@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1060" viewBox="0 0 1800 1060" role="img" aria-labelledby="title desc">
+  <title id="title">One vocabulary across four architectural regions</title>
+  <desc id="desc">A vocabulary map connects Promise Theory concepts to XML contract structures, Python enforcement, and evidence using safety, condition, and capability identity lines.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#17202b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b94743"/>
+    </marker>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3f7f56"/>
+    </marker>
+    <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2d6eb1"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .phase { font-size: 16px; font-weight: 700; letter-spacing: 1px; }
+      .column-title { font-size: 27px; font-weight: 700; }
+      .column-copy { font-size: 17px; fill: #627181; }
+      .card-title { font-size: 21px; font-weight: 700; }
+      .body { font-size: 17px; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 16px; }
+      .mono-small { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 14px; }
+      .tag { font-size: 14px; font-weight: 700; }
+      .legend { font-size: 15px; font-weight: 600; }
+      .band-title { font-size: 27px; font-weight: 700; fill: #ffffff; }
+      .band-copy { font-size: 19px; fill: #dce5ec; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1060" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">One vocabulary across four architectural regions</text>
+  <text x="60" y="108" class="subtitle">Shared identifiers preserve meaning from theory and declared intent to executable decisions and reviewable evidence.</text>
+
+  <line x1="1250" y1="72" x2="1300" y2="72" stroke="#b94743" stroke-width="5"/>
+  <text x="1312" y="78" class="legend">Safety identity</text>
+  <line x1="1452" y1="72" x2="1502" y2="72" stroke="#3f7f56" stroke-width="5"/>
+  <text x="1514" y="78" class="legend">Condition identity</text>
+  <line x1="1250" y1="102" x2="1300" y2="102" stroke="#2d6eb1" stroke-width="5"/>
+  <text x="1312" y="108" class="legend">Capability identity</text>
+
+  <rect x="60" y="142" width="395" height="58" rx="8" fill="#ece9f4"/>
+  <text x="257" y="178" class="phase" text-anchor="middle" fill="#5c4b79">WHY · PROMISE THEORY</text>
+  <rect x="485" y="142" width="395" height="58" rx="8" fill="#e5edf7"/>
+  <text x="682" y="178" class="phase" text-anchor="middle" fill="#2c5c8c">DESIGN · XML CONTRACT</text>
+  <rect x="910" y="142" width="395" height="58" rx="8" fill="#e7f2ea"/>
+  <text x="1107" y="178" class="phase" text-anchor="middle" fill="#356b48">BUILD + RUN · PYTHON BOUNDARY</text>
+  <rect x="1335" y="142" width="405" height="58" rx="8" fill="#faecd8"/>
+  <text x="1537" y="178" class="phase" text-anchor="middle" fill="#85591e">ASSESS · EVIDENCE</text>
+
+  <!-- Promise Theory -->
+  <g filter="url(#shadow)"><rect x="60" y="224" width="395" height="628" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="88" y="267" class="column-title">Intent and cooperation</text>
+  <text x="88" y="296" class="column-copy">Names explain why the relationships exist.</text>
+
+  <rect x="88" y="326" width="339" height="112" rx="6" fill="#f1eef7"/>
+  <text x="108" y="358" class="card-title">Promise</text>
+  <text x="108" y="389" class="body">A promiser declares intent to a promisee.</text>
+  <text x="108" y="417" class="body">Autonomy remains; keeping is assessed.</text>
+
+  <rect x="88" y="458" width="339" height="120" rx="6" fill="#eef4fb"/>
+  <text x="108" y="490" class="card-title">Offer (+) and use (-)</text>
+  <text x="108" y="521" class="body">Compatible promises create cooperation.</text>
+  <text x="108" y="549" class="body">Provider and consumer stay autonomous.</text>
+
+  <rect x="88" y="598" width="339" height="120" rx="6" fill="#edf5ef"/>
+  <text x="108" y="630" class="card-title">Conditional promise b | c</text>
+  <text x="108" y="661" class="body">The body applies only when fact c holds.</text>
+  <text x="108" y="689" class="body">An accepted dependency may quench c.</text>
+
+  <rect x="88" y="738" width="339" height="86" rx="6" fill="#fbf0df"/>
+  <text x="108" y="770" class="card-title">Assessment</text>
+  <text x="108" y="801" class="body">A local judgment supported by evidence.</text>
+
+  <!-- XML Contract -->
+  <g filter="url(#shadow)"><rect x="485" y="224" width="395" height="628" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="513" y="267" class="column-title">Declared intent</text>
+  <text x="513" y="296" class="column-copy">The document separates distinct identities.</text>
+
+  <rect x="513" y="326" width="339" height="112" rx="6" fill="#f8e9e7"/>
+  <text x="533" y="358" class="card-title">Safety property</text>
+  <text x="533" y="389" class="mono">always assertion NoUnsafeCommit</text>
+  <text x="533" y="417" class="mono">&lt;rule id="NoUnsafeCommit"&gt;</text>
+
+  <rect x="513" y="458" width="339" height="120" rx="6" fill="#eaf4ed"/>
+  <text x="533" y="490" class="card-title">Condition and quenching</text>
+  <text x="533" y="519" class="mono-small">&lt;condition ref="precondition_met"/&gt;</text>
+  <text x="533" y="544" class="mono-small">&lt;use ...</text>
+  <text x="533" y="568" class="mono-small">  quenches="precondition_met"/&gt;</text>
+
+  <rect x="513" y="598" width="339" height="120" rx="6" fill="#eaf1fa"/>
+  <text x="533" y="630" class="card-title">Promise and capability</text>
+  <text x="533" y="661" class="mono">&lt;offer id="safe_action" ...&gt;</text>
+  <text x="533" y="690" class="mono">&lt;tool name="commit_action"/&gt;</text>
+
+  <rect x="513" y="738" width="339" height="86" rx="6" fill="#fbf0df"/>
+  <text x="533" y="770" class="card-title">Runtime communication</text>
+  <text x="533" y="801" class="mono">&lt;responses&gt; ... &lt;/responses&gt;</text>
+
+  <!-- Python boundary -->
+  <g filter="url(#shadow)"><rect x="910" y="224" width="395" height="628" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="938" y="267" class="column-title">Executable authority</text>
+  <text x="938" y="296" class="column-copy">Code reassesses facts at commitment time.</text>
+
+  <rect x="938" y="326" width="339" height="112" rx="6" fill="#f8e9e7"/>
+  <text x="958" y="358" class="card-title">Guard duty</text>
+  <text x="958" y="389" class="mono">if not precondition_met:</text>
+  <text x="958" y="417" class="mono">    return refusal(...)</text>
+
+  <rect x="938" y="458" width="339" height="120" rx="6" fill="#eaf4ed"/>
+  <text x="958" y="490" class="card-title">Authoritative fact</text>
+  <text x="958" y="521" class="body">Read current service state.</text>
+  <text x="958" y="549" class="body">Never trust the LLM's earlier assertion.</text>
+
+  <rect x="938" y="598" width="339" height="120" rx="6" fill="#eaf1fa"/>
+  <text x="958" y="630" class="card-title">Bound callable</text>
+  <text x="958" y="661" class="mono">def commit_action(...):</text>
+  <text x="958" y="690" class="body">Accept or refuse the real operation.</text>
+
+  <rect x="938" y="738" width="339" height="86" rx="6" fill="#fbf0df"/>
+  <text x="958" y="770" class="card-title">Decision result</text>
+  <text x="958" y="801" class="mono">receipt | structured_refusal</text>
+
+  <!-- Evidence -->
+  <g filter="url(#shadow)"><rect x="1335" y="224" width="405" height="628" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="1363" y="267" class="column-title">Claims and limits</text>
+  <text x="1363" y="296" class="column-copy">Each result supports a different assessment.</text>
+
+  <rect x="1363" y="326" width="349" height="112" rx="6" fill="#f8e9e7"/>
+  <text x="1383" y="358" class="card-title">Safety evidence</text>
+  <text x="1383" y="389" class="body">Model result or counterexample</text>
+  <text x="1383" y="417" class="body">plus enforcement-twin test</text>
+
+  <rect x="1363" y="458" width="349" height="120" rx="6" fill="#eaf4ed"/>
+  <text x="1383" y="490" class="card-title">Condition evidence</text>
+  <text x="1383" y="521" class="mono">"unmet": "precondition_met"</text>
+  <text x="1383" y="550" class="body">or authoritative fact snapshot</text>
+
+  <rect x="1363" y="598" width="349" height="120" rx="6" fill="#eaf1fa"/>
+  <text x="1383" y="630" class="card-title">Capability evidence</text>
+  <text x="1383" y="661" class="body">Promise-graph binding result</text>
+  <text x="1383" y="690" class="body">plus test or commit receipt</text>
+
+  <rect x="1363" y="738" width="349" height="86" rx="6" fill="#fbf0df"/>
+  <text x="1383" y="770" class="card-title">Runtime assessment</text>
+  <text x="1383" y="801" class="body">May this operation commit now?</text>
+
+  <!-- Identity circuits -->
+  <path d="M852 382 H890 Q900 382 900 372 V350 Q900 340 910 340 H928" fill="none" stroke="#b94743" stroke-width="4" marker-end="url(#red-arrow)"/>
+  <path d="M1277 382 H1325 Q1335 382 1335 372 V350 Q1335 340 1345 340 H1353" fill="none" stroke="#b94743" stroke-width="4" marker-end="url(#red-arrow)"/>
+
+  <path d="M852 520 H890 Q900 520 900 510 V482 Q900 472 910 472 H928" fill="none" stroke="#3f7f56" stroke-width="4" marker-end="url(#green-arrow)"/>
+  <path d="M1277 520 H1325 Q1335 520 1335 510 V482 Q1335 472 1345 472 H1353" fill="none" stroke="#3f7f56" stroke-width="4" marker-end="url(#green-arrow)"/>
+
+  <path d="M852 662 H890 Q900 662 900 652 V622 Q900 612 910 612 H928" fill="none" stroke="#2d6eb1" stroke-width="4" marker-end="url(#blue-arrow)"/>
+  <path d="M1277 662 H1325 Q1335 662 1335 652 V622 Q1335 612 1345 612 H1353" fill="none" stroke="#2d6eb1" stroke-width="4" marker-end="url(#blue-arrow)"/>
+
+  <rect x="60" y="892" width="1680" height="112" rx="8" fill="#223547"/>
+  <text x="92" y="938" class="band-title">Shared names create traceability; they do not make the artifacts equivalent.</text>
+  <text x="92" y="974" class="band-copy">An invariant, XML rule, Python guard, test, and receipt support one safety story while retaining different responsibilities and evidence limits.</text>
+</svg>

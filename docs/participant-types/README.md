@@ -8,6 +8,9 @@ outside world.
 The document type follows the participant's runtime role, not its implementation
 language or marketing label.
 
+For precise definitions of agent, autonomy, external party, enforcement boundary, and
+superagent, see the [Glossary and Naming Conventions](../glossary/README.md).
+
 [![Decision tree for choosing an LLM contract, deterministic manifest, external party, implementation detail, or superagent boundary](participant-decision-tree.png)](participant-decision-tree.svg)
 
 ## The decisive questions
@@ -309,4 +312,3 @@ and uses, see [Composing Promises](../promise-graph/README.md).
   source.
 - [`participant-decision-tree.png`](participant-decision-tree.png) is the rendered copy
   for Markdown, articles, and presentations.
-

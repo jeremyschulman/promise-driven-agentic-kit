@@ -10,6 +10,9 @@ The graph spans both document families. LLM agents contribute the `<promises>` s
 of `agent_*.xml`; deterministic services and boundaries contribute the `<promises>`
 section of `manifest_*.xml`. Their offers and uses form one checked cooperation graph.
 
+The [Glossary and Naming Conventions](../glossary/README.md) distinguishes offer/use
+identities from condition tokens and defines the Promise Theory terms used here.
+
 [![A conditional promise composed from an offer, a matching use, and a quenched condition](promise-graph-anatomy.png)](promise-graph-anatomy.svg)
 
 ## Four roles in the figure
