@@ -210,7 +210,9 @@ Continue with [Authoring an Agent Contract](../authoring-workflow/README.md) for
 step-by-step construction process, or [Five Questions, Five Kinds of Evidence](../assurance-model/README.md)
 for the precise claim and limitation of each verification layer. For the structure and
 semantics of the Run-stage record, continue with
-[Runtime Assessment and Evidence](../runtime-assessment/README.md).
+[Runtime Assessment and Evidence](../runtime-assessment/README.md). To see the same
+relationships in a complete runnable package, continue with the
+[Clinic Appointments end-to-end case study](../case-studies/clinic-appointments/README.md).
 
 ## Image sources
 

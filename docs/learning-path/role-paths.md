@@ -13,7 +13,8 @@ need several paths.
 3. [Composing Promises](../promise-graph/README.md)
 4. [Debugging a FizzBee Counterexample](../counterexample-debugging/README.md)
 5. [90-minute guided workshop](workshop.md)
-6. [Authoring checklist](../../skills/authoring-agent-contracts/references/authoring-checklist.md)
+6. [Clinic Appointments end-to-end case study](../case-studies/clinic-appointments/README.md)
+7. [Authoring checklist](../../skills/authoring-agent-contracts/references/authoring-checklist.md)
 
 **Completion evidence:** Produce one contract package whose forbidden and permitted
 paths pass the complete gate.
@@ -43,7 +44,8 @@ limits of formal claims.
 3. [Debugging a FizzBee Counterexample](../counterexample-debugging/README.md)
 4. [Five Questions, Five Kinds of Evidence](../assurance-model/README.md)
 5. [Worked package review](../reviewing-contract-packages/worked-review.md)
-6. Both complete examples under [`examples/`](../../examples/)
+6. [Clinic Appointments end-to-end case study](../case-studies/clinic-appointments/README.md)
+7. Both complete examples under [`examples/`](../../examples/)
 
 **Completion evidence:** Review an invariant and state precisely what the successful
 model result establishes, which assumptions remain, and which runtime duties require

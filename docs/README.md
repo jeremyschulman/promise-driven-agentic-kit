@@ -9,6 +9,7 @@ the relevant guide.
 | I want to... | Start with | Continue with |
 | --- | --- | --- |
 | Learn the methodology in a guided sequence | [Practitioner Learning Path](learning-path/README.md) | [90-minute workshop](learning-path/workshop.md) |
+| Trace one complete implementation end to end | [Clinic Appointments Case Study](case-studies/clinic-appointments/README.md) | [Clinic artifact index](case-studies/clinic-appointments/artifact-index.md) |
 | Understand the method quickly | [From Contract to Enforcement](contract-assessment/README.md) | [The assurance model](assurance-model/README.md) |
 | Review a complete contract package | [Reviewing a Contract Package](reviewing-contract-packages/README.md) | [Worked review exercise](reviewing-contract-packages/worked-review.md) |
 | Design runtime evidence and assessment records | [Runtime Assessment and Evidence](runtime-assessment/README.md) | [The assurance model](assurance-model/README.md) |
@@ -55,6 +56,17 @@ The documentation follows the same lifecycle as the method:
 - [Knowledge Check](learning-path/knowledge-check.md) tests responsibility boundaries
   and links each misconception to the right guide.
 
+## Case studies
+
+- [Case Studies](case-studies/README.md) indexes complete implementation
+  reconstructions.
+- [Clinic Appointments: An End-to-End Case Study](case-studies/clinic-appointments/README.md)
+  reconstructs one complete example from safety case and participant boundaries through
+  contracts, FizzBee, promise composition, ADK wiring, Python enforcement, tests,
+  runtime success and refusal paths, evidence, limitations, and evolution.
+- [Clinic artifact index](case-studies/clinic-appointments/artifact-index.md) maps every
+  architectural responsibility to the actual runnable example file.
+
 ## Practical guides
 
 - [From Contract to Enforcement](contract-assessment/README.md) explains the six XML
@@ -94,4 +106,5 @@ The documentation follows the same lifecycle as the method:
 - [Generic assessment-record schema](runtime-assessment/assessment-record.schema.json)
 - [Contract-package review report template](reviewing-contract-packages/review-report-template.md)
 - [Practitioner learning path](learning-path/README.md)
+- [Clinic end-to-end case study](case-studies/clinic-appointments/README.md)
 - [Complete worked examples](../examples/)

@@ -32,6 +32,9 @@ gap at the software boundary; judgment remains in prose where it belongs.
 - **Learn the method:** [Practitioner Learning Path](docs/learning-path/README.md)
   provides a 30-minute orientation, 90-minute workshop, knowledge check, and
   role-specific reading paths.
+- **Trace a complete implementation:** [Clinic Appointments: An End-to-End Case Study](docs/case-studies/clinic-appointments/README.md)
+  follows architecture, contracts, model checking, promise composition, ADK wiring,
+  Python enforcement, tests, and runtime outcomes step by step.
 - **See the method:** [From Contract to Enforcement](docs/contract-assessment/README.md)
   maps all six XML sections through Design, Build, Run, Python assessment, and
   executable evidence.
