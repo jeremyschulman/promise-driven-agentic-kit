@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050" role="img" aria-labelledby="title desc">
   <title id="title">One contract, six coordinated sections</title>
-  <desc id="desc">A general architecture diagram showing the six XML contract sections, their readers, and the Python assessment and enforcement boundary.</desc>
+  <desc id="desc">A general architecture diagram showing the six sections in an XML agent contract, their readers, and the Python assessment and enforcement boundary.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L10,5 L0,10 z" fill="#51606f"/>
@@ -51,13 +51,13 @@
   <rect x="804" y="239" width="108" height="28" rx="14" fill="#d9edf6"/>
   <text x="858" y="258" class="label" text-anchor="middle" fill="#235e76">PROSE</text>
 
-  <!-- Contract -->
+  <!-- Verifiable behavior -->
   <rect x="88" y="313" width="854" height="94" rx="6" fill="#edf3fb"/>
   <rect x="88" y="313" width="8" height="94" rx="4" fill="#2563a6"/>
-  <text x="116" y="344" class="section">&lt;contract&gt;</text>
-  <text x="315" y="343" class="body">State, actions, guards, and invariants</text>
-  <text x="315" y="371" class="small">FizzBee explores every modeled path; the LLM reads the same actions.</text>
-  <text x="315" y="394" class="code" fill="#2563a6">always assertion NoUnsafeCommit</text>
+  <text x="116" y="344" class="section">&lt;verifiable-behavior&gt;</text>
+  <text x="390" y="343" class="body">State, actions, guards, and invariants</text>
+  <text x="390" y="371" class="small">FizzBee explores every modeled path; the LLM reads the same actions.</text>
+  <text x="390" y="394" class="code" fill="#2563a6">always assertion NoUnsafeCommit</text>
   <rect x="804" y="326" width="108" height="28" rx="14" fill="#dce8f7"/>
   <text x="858" y="345" class="label" text-anchor="middle" fill="#234f83">FORMAL</text>
 
@@ -109,7 +109,7 @@
   <path d="M1071 237 l7 7 14-16" fill="none" stroke="#2563a6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   <text x="1115" y="229" class="reader-title">FizzBee model checker</text>
   <text x="1115" y="255" class="reader-copy">Can any modeled path violate an invariant?</text>
-  <text x="1065" y="294" class="small">Reads: &lt;contract&gt;</text>
+  <text x="1065" y="294" class="small">Reads: &lt;verifiable-behavior&gt;</text>
   <rect x="1065" y="309" width="410" height="1" fill="#dde3e9"/>
   <text x="1065" y="329" class="small">Output: proof or counterexample trace</text>
 

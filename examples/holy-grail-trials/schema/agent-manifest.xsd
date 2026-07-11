@@ -9,7 +9,7 @@
   A manifest declares an agent that is NOT a conversational LLM — a
   protocol boundary, a shared-state store, a vision/OCR service, or the
   superagent envelope the outside world sees. It therefore has NO
-  FizzBee <contract> and NO per-step <step-guidance>: there is no
+  FizzBee <verifiable-behavior> and NO per-step <step-guidance>: there is no
   runtime prose for an LLM to read. It publishes only its promises so
   the promise-graph verifier can wire it into the network.
 

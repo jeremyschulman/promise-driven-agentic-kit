@@ -5,7 +5,7 @@
   Shared building blocks for the two contract-document families:
 
     - agent-contract.xsd   validates  agent_*.xml    (LLM agents:
-                           FizzBee contract + promise manifest + prose)
+                           FizzBee behavior model + promise manifest + prose)
     - agent-manifest.xsd   validates  manifest_*.xml (non-LLM agents:
                            promise manifest only, no FizzBee)
 
@@ -115,7 +115,7 @@
       <xs:documentation>
         A precondition on an offer. `ref` names a state predicate —
         by convention the same name as a FizzBee guard variable in the
-        &lt;contract&gt; block (e.g. patient_verified), so the
+        &lt;verifiable-behavior&gt; section (e.g. patient_verified), so the
         prose promise and the model-checked spec use one vocabulary.
         A condition is either quenched by some agent's
         `use ... quenches="ref"` or self-assessed (assessed="self").

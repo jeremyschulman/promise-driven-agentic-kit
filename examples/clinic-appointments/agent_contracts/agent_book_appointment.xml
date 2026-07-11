@@ -20,7 +20,7 @@
     time silently.
   </objective>
 
-  <contract>
+  <verifiable-behavior>
     <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
 ---
 deadlock_detection: false
@@ -96,7 +96,7 @@ always assertion NoDoubleBook:
 always assertion ConfirmBeforeBooking:
     return (not appointment_booked) or booking_confirmed
     </fizzbee>
-  </contract>
+  </verifiable-behavior>
 
   <promises>
     <description>Book one clinic appointment for the verified patient: resolve provider, verify insurance eligibility (or self-pay), find an open slot, confirm it, and commit. Never double-books a taken slot and never books before eligibility and confirmation are settled; offers alternates when the slot is gone.</description>

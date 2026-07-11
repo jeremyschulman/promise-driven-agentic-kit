@@ -19,7 +19,7 @@ The clinic agent is a multi-agent system. Its agents, as they exist in the examp
 | 5 | **`insurance_eligibility`** | service (non-LLM) | `manifest_insurance_eligibility.xml` + `services/eligibility.py` |
 | 6 | **`patient_registry`** | state (non-LLM) | `manifest_patient_registry.xml` + `services/registry.py` |
 
-Each publishes a **promise manifest** (the `<promises>` block) and — for the LLM agents — a model-checked FizzBee `<contract>`. The non-LLM agents have no state machine (they are deterministic) but are full participants in the promise graph.
+Each publishes a **promise manifest** (the `<promises>` block) and — for the LLM agents — a model-checked FizzBee `<verifiable-behavior>` section. The non-LLM agents have no state machine (they are deterministic) but are full participants in the promise graph.
 
 ## 2. Ground rules from Promise Theory
 

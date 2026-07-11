@@ -21,7 +21,7 @@
     been taken.
   </objective>
 
-  <contract>
+  <verifiable-behavior>
     <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
 ---
 deadlock_detection: false
@@ -63,7 +63,7 @@ always assertion NoDispenseBeforePayment:
 always assertion NoDispenseWithoutOrder:
     return (not drink_dispensed) or order_taken
     </fizzbee>
-  </contract>
+  </verifiable-behavior>
 
   <promises>
     <description>Takes a drink order, confirms payment, and dispenses the drink via the espresso machine. Never dispenses before payment is confirmed.</description>

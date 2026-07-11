@@ -21,7 +21,7 @@
     most one trial, only with the knight's explicit confirmation.
   </objective>
 
-  <contract>
+  <verifiable-behavior>
     <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
 ---
 deadlock_detection: false
@@ -155,7 +155,7 @@ always assertion RuleOfOne:
 always assertion PivotRequiresActiveTrial:
     return (not pending_pivot) or (active_trial != NO_TRIAL)
     </fizzbee>
-  </contract>
+  </verifiable-behavior>
 
   <promises>
     <description>The Marshal of the Trials of the Holy Grail. Verifies a Knight of the Round Table, routes them to the Bridge of Death and the Knights Who Say Ni, tracks their progress, and grants the Grail quest only once both trials are passed. No trial begins for an unverified knight.</description>

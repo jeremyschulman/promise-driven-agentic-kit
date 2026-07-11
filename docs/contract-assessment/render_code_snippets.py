@@ -102,7 +102,7 @@ if __name__ == "__main__":
     )
     render(
         "contract-intent-fizzbee.svg",
-        "<contract>",
+        "<verifiable-behavior>",
         FIZZBEE_CODE,
         width=58,
         lexer="python",

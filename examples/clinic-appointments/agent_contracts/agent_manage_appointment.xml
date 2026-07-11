@@ -18,7 +18,7 @@
     that is not open.
   </objective>
 
-  <contract>
+  <verifiable-behavior>
     <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
 ---
 deadlock_detection: false
@@ -78,7 +78,7 @@ always assertion ChangeRequiresConfirmation:
 always assertion RescheduleNoDoubleBook:
     return (not change_applied) or (action_kind == KIND_CANCEL) or new_slot_available
     </fizzbee>
-  </contract>
+  </verifiable-behavior>
 
   <promises>
     <description>Cancel or reschedule one existing appointment for the verified patient. Acts only on appointments the patient owns, only after they confirm the change, and never reschedules onto a slot that is not open.</description>

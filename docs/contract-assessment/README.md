@@ -10,8 +10,9 @@ use different descriptive registers, and their connections are expressed through
 several kinds of identifiers. The figures in this guide provide two views of the same
 architecture:
 
-1. **The overview** explains the responsibility of each contract section, which part
-   of the system consumes it, and where that happens in the development lifecycle.
+1. **The overview** explains the responsibility of each section in the agent
+   contract, which part of the system consumes it, and where that happens in the
+   development lifecycle.
 2. **The trace** follows one generic safety promise through Design, Build, and Run:
    from the XML model to generated Python enforcement, executable test evidence, and
    runtime assessment.
@@ -40,7 +41,7 @@ each consequential operation against authoritative state.
 
 ## Figure 1: one contract, six coordinated sections
 
-[![Overview of the six contract sections and their consumers](contract-assessment-overview.png)](contract-assessment-overview.svg)
+[![Overview of the six sections in an agent contract and their consumers](contract-assessment-overview.png)](contract-assessment-overview.svg)
 
 The figure isolates the kit's three direct machine readers: the model checker, the
 agent constructor, and the runtime LLM. The lifecycle map above adds the AI coding
@@ -51,10 +52,14 @@ The six sections are not six versions of the same information. Each carries the 
 of statement best suited to its purpose. Every section is authored during Design; the
 **Used in** column identifies the later stages where its contents are actively consumed.
 
+Here, **agent contract** names the entire XML artifact. The
+`<verifiable-behavior>` section names only the behavior model that can be exhaustively
+checked, avoiding a second, nested use of the word *contract*.
+
 | Section | Primary question | Register | Principal consumer | Used in |
 | --- | --- | --- | --- | --- |
 | `<objective>` | What is this agent for? | Prose | Coding assistant and LLM | Build, Run |
-| `<contract>` | Which states are reachable, and what must always hold? | Formal FizzBee | Model checker, coding assistant, and LLM | Design, Build, Run |
+| `<verifiable-behavior>` | Which states are reachable, and what must always hold? | Formal FizzBee | Model checker, coding assistant, and LLM | Design, Build, Run |
 | `<promises>` | What does this agent offer, use, and depend on? | Declarative Promise Theory | Promise-graph verifier, coding assistant, constructor, and LLM | Design, Build, Run |
 | `<step-guidance>` | How should each action be judged and carried out? | Prose with action bindings | Coding assistant and LLM | Build, Run |
 | `<enforcement>` | Which invariants have independent code safeguards? | Declarative traceability | Coding assistant, reviewers, and LLM | Build, Run |

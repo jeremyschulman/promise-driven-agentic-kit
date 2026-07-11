@@ -143,7 +143,7 @@ Each LLM agent's *entire* instruction set is a single XML document. Its shape is
 ```
 <agent-instructions workflow="…" version="…">
   <objective>       — what this agent is for (natural language)
-  <contract>        — the FizzBee state machine: state, actions, guards, invariants
+  <verifiable-behavior> — the FizzBee state machine: state, actions, guards, invariants
   <promises>        — the Promise Theory manifest: description, tools, +offers, −uses
   <step-guidance>   — per-action prose: LLM judgment, tool bindings, phrasing
   <enforcement>     — invariants the server enforces in code, independent of the LLM
@@ -159,7 +159,7 @@ flowchart TB
     MC["Model checker (fizz)<br/>proves invariants over<br/>every reachable state"]
     CON["Agent construction<br/>description, bound tools,<br/>promise graph"]
     LLM["LLM at runtime<br/>operating instructions"]
-    DOC -->|"the contract section"| MC
+    DOC -->|"the verifiable-behavior section"| MC
     DOC -->|"the promises section"| CON
     DOC -->|"the whole document, verbatim"| LLM
     MC -.->|"pre-assessment:<br/>promise is self-consistent"| DOC
@@ -167,9 +167,9 @@ flowchart TB
 
 This "one artifact, three readers" property is the distinctive engineering feature. In the more common alternatives — a LangGraph state machine plus a separate prompt, say — the machine and the instructions are *different artifacts that drift*. Here they are the same bytes.
 
-## 3.2 The `<contract>`: a model-checkable state machine
+## 3.2 `<verifiable-behavior>`: the model-checkable state machine
 
-The center of gravity is `<contract>`, a block of pure [FizzBee](https://fizzbee.io) — a specification language in the TLA+/PlusCal lineage[^lamport] with Python-like syntax. Here is the verification rule from the clinic orchestrator, verbatim from [`agent_clinic_orchestrator.xml`](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml):
+The model-checkable center of gravity is `<verifiable-behavior>`, a block of pure [FizzBee](https://fizzbee.io) — a specification language in the TLA+/PlusCal lineage[^lamport] with Python-like syntax. Here is the verification rule from the clinic orchestrator, verbatim from [`agent_clinic_orchestrator.xml`](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml):
 
 ```python
 atomic action VerifyPatient:

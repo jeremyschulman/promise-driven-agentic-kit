@@ -7,7 +7,7 @@
   matches. Read-only intents (list my appointments, check eligibility, banter)
   are handled directly. Remembers at most one suspended workflow (rule of one).
 
-  Structure: <objective> <contract> (model-checked FizzBee) <promises>
+  Structure: <objective> <verifiable-behavior> (model-checked FizzBee) <promises>
   <step-guidance> <enforcement> <responses>.  mode="runtime-instructions":
   oneof means the AGENT picks one path at runtime, not "explore all".
 -->
@@ -23,7 +23,7 @@
     mid-task, suspend at most one workflow, only with explicit confirmation.
   </objective>
 
-  <contract>
+  <verifiable-behavior>
     <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
 ---
 deadlock_detection: false
@@ -121,7 +121,7 @@ always assertion RuleOfOne:
 always assertion PivotRequiresActiveWorkflow:
     return (not pending_pivot) or (active_workflow != NO_WORKFLOW)
     </fizzbee>
-  </contract>
+  </verifiable-behavior>
 
   <promises>
     <description>The clinic's front desk. Verifies the patient's identity, classifies each request, and routes booking, cancellation, and rescheduling to the right subagent. Answers "what are my appointments" and eligibility questions directly. Never starts a workflow before the patient is verified.</description>
