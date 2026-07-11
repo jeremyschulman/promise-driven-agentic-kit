@@ -28,8 +28,8 @@ to it as you may be — and afraid of the same thing everyone is. What if the
 agent goes rogue and takes down something I can't afford to lose? We'll come
 back to that fear; where it went is part of the story.
 
-Let's get going! This first piece makes the case. The two that follow show you the way, starting with [Everybody Wants to Rule the World — How to Build an Agent You Can Prove](#)
-and wrapping up with [Games Without Frontiers — How to Compose a System You Can Prove](#).
+Let's get going! This first piece makes the case. The two that follow show you the way, starting with [Everybody Wants to Rule the World — How to Build an Agent You Can Prove](medium-part-2-everybody-wants-to-rule-the-world.md)
+and wrapping up with [Games Without Frontiers — How to Compose a System You Can Prove](medium-part-3-games-without-frontiers.md).
 
 ## Mr. Roboto
 
@@ -327,7 +327,7 @@ idea and completely inert until you can answer: where does the promise *live?*
 What file is it in? How do you check it? How does it survive contact with a real
 framework and a real deploy?
 
-So I put together what I'm calling the **promise-driven-agentic-kit**: a set of files that help a software engineer turn these ideas into a real agentic solution, in Python. You don't so much *run* it as *build* with it. The companion to this piece, **[Everybody Wants to Rule the World — How to Build an Agent You Can Prove](#)**, walks the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state machine that proves The Clinic can never book before you're verified; and the enforcement code that keeps a stochastic promiser honest.
+So I put together what I'm calling the **promise-driven-agentic-kit**: a set of files that help a software engineer turn these ideas into a real agentic solution, in Python. You don't so much *run* it as *build* with it. The companion to this piece, **[Everybody Wants to Rule the World — How to Build an Agent You Can Prove](medium-part-2-everybody-wants-to-rule-the-world.md)**, walks the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state machine that proves The Clinic can never book before you're verified; and the enforcement code that keeps a stochastic promiser honest.
 
 ## Here I Go Again
 

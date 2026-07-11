@@ -8,7 +8,7 @@
 
 **TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
 
-This is the third and final piece. Part 1, [Promises, Promises — Why Do I Believe?](#), argued the *why*: you cannot command an LLM, only elicit a promise and then *assess* it. Part 2, [Everybody Wants to Rule the World](#), showed the *how* for a single agent: capture the workflow as a contract and Design, Build, and Run it, so it provably cannot reach a state it must never be in.
+This is the third and final piece. Part 1, [Promises, Promises — Why Do I Believe?](medium-part-1-why-do-i-believe.md), argued the *why*: you cannot command an LLM, only elicit a promise and then *assess* it. Part 2, [Everybody Wants to Rule the World](medium-part-2-everybody-wants-to-rule-the-world.md), showed the *how* for a single agent: capture the workflow as a contract and Design, Build, and Run it, so it provably cannot reach a state it must never be in.
 
 But one agent is rarely the whole story. The workflows worth automating are carried by *many* agents cooperating, and that is exactly where most multi-agent designs quietly fall apart. This piece is about composing them without lying to yourself, so that a whole *system* of agents, not just one, can't make a promise it has no way to keep.
 
@@ -94,7 +94,7 @@ I opened this series by promising to blow your mind — and in the same breath, 
 
 ---
 
-*The [promise-driven-agentic-kit](#) is open source under Apache-2.0. Start with the whitepaper, then open The Clinic example. Corrections and extensions welcome; this is a living kit, and I mean that.*
+*The [promise-driven-agentic-kit](../../README.md) is open source under Apache-2.0. Start with the [whitepaper](../why-promise-driven-agents.md), then open [The Clinic example](../../examples/clinic-appointments/). Corrections and extensions welcome; this is a living kit, and I mean that.*
 
 *With deep gratitude to Mark Burgess, whose Promise Theory is the foundation everything here is built on: his* [Book of Promises](http://markburgess.org/BookOfPromises.pdf) *(the full* Promise Theory: Principles and Applications*, with Jan Bergstra, free to read online) and the more approachable* Thinking in Promises *(O'Reilly). Thanks, too, to the FizzBee project for the model checker that makes the proofs run.*
 

@@ -1,6 +1,6 @@
 # The Design Loop (Mermaid source)
 
-Renders natively on GitHub. For Medium, export a PNG (e.g. via [mermaid.live](https://mermaid.live)) or use `images/design-loop.png`.
+Renders natively on GitHub. For Medium, export a PNG (e.g. via [mermaid.live](https://mermaid.live)) or use [`design-loop.png`](design-loop.png).
 
 ```mermaid
 flowchart LR
