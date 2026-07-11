@@ -205,6 +205,10 @@ reachability, and cooperation. **Build** generates the code and checks its enfor
 behavior with tests. **Run** reassesses every consequential operation against
 authoritative state.
 
+Continue with [Authoring an Agent Contract](../authoring-workflow/README.md) for the
+step-by-step construction process, or [Five Questions, Five Kinds of Evidence](../assurance-model/README.md)
+for the precise claim and limitation of each verification layer.
+
 ## Image sources
 
 The SVG files are the editable sources; the PNG files are rendered copies for Markdown,

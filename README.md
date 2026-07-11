@@ -31,6 +31,8 @@ gap at the software boundary; judgment remains in prose where it belongs.
 - **See the method:** [From Contract to Enforcement](docs/contract-assessment/README.md)
   maps all six XML sections through Design, Build, Run, Python assessment, and
   executable evidence.
+- **Author a contract:** [Authoring an Agent Contract](docs/authoring-workflow/README.md)
+  walks from an intended promise to XML, Python enforcement, tests, and a green gate.
 - **Understand the theory:** [The Promise-Driven Agent](docs/why-promise-driven-agents.md)
   develops the Promise Theory foundation and an eight-point rubric for agentic
   systems.
@@ -41,7 +43,7 @@ gap at the software boundary; judgment remains in prose where it belongs.
 
 | Folder | Purpose | Link |
 | --- | --- | --- |
-| `docs` | The methodology: the whitepaper, the illustrated [contract-to-enforcement guide](docs/contract-assessment/README.md), [contracts-not-prompts](docs/contracts-not-prompts.md), the [Promise Theory architecture analysis](docs/promise-theory-architecture.md), and a draft [three-part Medium series](docs/medium-articles/). | [docs/](docs/) |
+| `docs` | The methodology, practical authoring and assurance guides, illustrations, whitepaper, architecture analysis, and draft Medium series. | [Documentation map](docs/README.md) |
 | `schema` | XSD schemas defining and validating the two contract-document formats — `agent_*.xml` (LLM agents) and `manifest_*.xml` (non-LLM agents). Each is heavily annotated and doubles as a spec. | [schema/](schema/) |
 | `skeleton` | A [copier](https://copier.readthedocs.io/) template that scaffolds a brand-new contract-driven agent repo (uv-managed) with a working toy "barista" agent and the full three-part verification gate — green out of the box. | [skeleton/](skeleton/) |
 | `skills` | An agentic-coding skill (`authoring-agent-contracts`) that walks an engineer through writing, validating, and model-checking a new contract. Repos scaffolded from `skeleton/` already bundle it under `.claude/skills/`; for other projects, copy it into your `.claude/skills/` (or `~/.claude/skills/`). | [skills/](skills/) |
