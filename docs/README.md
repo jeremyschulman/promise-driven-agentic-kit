@@ -9,6 +9,7 @@ the relevant guide.
 | I want to... | Start with | Continue with |
 | --- | --- | --- |
 | Understand the method quickly | [From Contract to Enforcement](contract-assessment/README.md) | [The assurance model](assurance-model/README.md) |
+| Decide what should be an agent | [Choosing a Participant and Document Type](participant-types/README.md) | [Composing Promises](promise-graph/README.md) |
 | Author or change an agent contract | [Authoring an Agent Contract](authoring-workflow/README.md) | [Contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
 | Evolve an existing contract safely | [Evolving an Agent Contract](contract-evolution/README.md) | [The assurance model](assurance-model/README.md) |
 | Diagnose a failed model check | [Debugging a FizzBee Counterexample](counterexample-debugging/README.md) | [The assurance model](assurance-model/README.md) |
@@ -43,6 +44,9 @@ The documentation follows the same lifecycle as the method:
   sections and traces one invariant into Python enforcement and test evidence.
 - [Authoring an Agent Contract](authoring-workflow/README.md) walks from an intended
   promise to a contract, implementation guard, test twin, and green verification gate.
+- [Choosing a Participant and Document Type](participant-types/README.md) distinguishes
+  LLM contracts, deterministic manifests, shared-state and enforcement roles, external
+  parties, implementation details, and superagent boundaries.
 - [Composing Promises](promise-graph/README.md) explains offer/use binding, condition
   quenching, deterministic participants, external parties, and superagent entailment.
 - [Debugging a FizzBee Counterexample](counterexample-debugging/README.md) turns a

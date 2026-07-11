@@ -11,7 +11,9 @@ The central discipline is simple:
 
 ## Before authoring: choose the participant type
 
-Do not give every participant an LLM contract.
+Do not give every participant an LLM contract. Use
+[Choosing a Participant and Document Type](../participant-types/README.md) when the
+autonomy or document boundary is not yet clear.
 
 | Participant | Document | Use when |
 | --- | --- | --- |

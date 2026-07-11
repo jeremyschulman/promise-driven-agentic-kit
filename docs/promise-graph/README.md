@@ -14,6 +14,9 @@ section of `manifest_*.xml`. Their offers and uses form one checked cooperation 
 
 ## Four roles in the figure
 
+For the decision process behind these roles, see
+[Choosing a Participant and Document Type](../participant-types/README.md).
+
 | Participant | Kind | Responsibility |
 | --- | --- | --- |
 | `workflow_agent` | LLM agent | Offers a conditional capability and declares what it will use from other agents. |
