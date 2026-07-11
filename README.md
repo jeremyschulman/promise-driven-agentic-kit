@@ -20,7 +20,8 @@ The same contract moves through a **Design → Build → Run** lifecycle:
 - **Build:** use the verified contract to implement agent wiring, independent
   Python enforcement, and matching tests.
 - **Run:** give the whole contract to the LLM, then reassess consequential
-  operations against authoritative state before committing them.
+  operations against authoritative state before committing them and preserve
+  promise-specific assessment evidence.
 
 Model checking proves the *specified behavior model*, not the stochastic LLM or
 the Python implementation. Deterministic enforcement and its test twin close that
@@ -28,6 +29,9 @@ gap at the software boundary; judgment remains in prose where it belongs.
 
 ## Start here
 
+- **Learn the method:** [Practitioner Learning Path](docs/learning-path/README.md)
+  provides a 30-minute orientation, 90-minute workshop, knowledge check, and
+  role-specific reading paths.
 - **See the method:** [From Contract to Enforcement](docs/contract-assessment/README.md)
   maps all six XML sections through Design, Build, Run, Python assessment, and
   executable evidence.

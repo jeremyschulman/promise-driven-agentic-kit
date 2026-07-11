@@ -218,7 +218,8 @@ after defects so they do not obscure the decision.
 
 Use the [review-report template](review-report-template.md) for a real package. The
 [worked review exercise](worked-review.md) demonstrates the process on a deliberately
-flawed generic package.
+flawed generic package. It also serves as the final practice in the
+[Practitioner Learning Path](../learning-path/README.md).
 
 ## Approval checklist
 

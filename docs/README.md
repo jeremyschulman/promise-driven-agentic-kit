@@ -8,6 +8,7 @@ the relevant guide.
 
 | I want to... | Start with | Continue with |
 | --- | --- | --- |
+| Learn the methodology in a guided sequence | [Practitioner Learning Path](learning-path/README.md) | [90-minute workshop](learning-path/workshop.md) |
 | Understand the method quickly | [From Contract to Enforcement](contract-assessment/README.md) | [The assurance model](assurance-model/README.md) |
 | Review a complete contract package | [Reviewing a Contract Package](reviewing-contract-packages/README.md) | [Worked review exercise](reviewing-contract-packages/worked-review.md) |
 | Design runtime evidence and assessment records | [Runtime Assessment and Evidence](runtime-assessment/README.md) | [The assurance model](assurance-model/README.md) |
@@ -40,6 +41,19 @@ The documentation follows the same lifecycle as the method:
   introduction.
 - [Promise Theory Architecture](promise-theory-architecture.md) examines composition,
   assessment, trust, and future architectural extensions.
+
+## Learning and adoption
+
+- [Practitioner Learning Path](learning-path/README.md) provides a shared foundation,
+  guided orientation, workshop, knowledge check, and role-specific paths.
+- [30-Minute Orientation](learning-path/orientation.md) establishes the common mental
+  model and assurance vocabulary.
+- [90-Minute Guided Workshop](learning-path/workshop.md) builds one conditional promise
+  through Design, Build, Run, and package review.
+- [Role-Specific Learning Paths](learning-path/role-paths.md) specialize the material
+  for engineers, architects, formal reviewers, operators, and adoption leaders.
+- [Knowledge Check](learning-path/knowledge-check.md) tests responsibility boundaries
+  and links each misconception to the right guide.
 
 ## Practical guides
 
@@ -79,4 +93,5 @@ The documentation follows the same lifecycle as the method:
 - [Glossary and naming conventions](glossary/README.md)
 - [Generic assessment-record schema](runtime-assessment/assessment-record.schema.json)
 - [Contract-package review report template](reviewing-contract-packages/review-report-template.md)
+- [Practitioner learning path](learning-path/README.md)
 - [Complete worked examples](../examples/)
