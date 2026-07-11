@@ -152,7 +152,8 @@ Capability names bind declarations to executable behavior:
 For inter-agent cooperation, a consumer's `<use id="..." from="...">` must resolve to
 an offer with the same ID on the named provider. Tool names and offer/use IDs can be
 the same when that is useful, but they are separate relationships and should not be
-treated as one global namespace.
+treated as one global namespace. [Composing Promises](../promise-graph/README.md)
+develops this graph relationship in detail.
 
 ## Build evidence: The enforcement twin
 

@@ -144,6 +144,7 @@ made to promisees, and uses accepted from providers.
 The provider must publish an `<offer id="evidence">`, or the promise graph must treat
 it as a declared external party. A condition that the agent evaluates itself uses
 `<condition ref="..." assessed="self"/>` instead of an external quenching dependency.
+For the full composition model, see [Composing Promises](../promise-graph/README.md).
 
 ## Design 6: write guidance, enforcement traceability, and responses
 

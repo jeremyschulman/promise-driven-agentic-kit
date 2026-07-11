@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Composing a conditional promise</title>
+  <desc id="desc">A generic promise graph showing an evidence provider offer matched by a workflow agent use, the use quenching a condition on an outgoing safe-action promise, an authority service offering a commit capability, and three graph failures caught before runtime.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#18222d" flood-opacity="0.12"/>
+    </filter>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3d7b52"/>
+    </marker>
+    <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2d6caf"/>
+    </marker>
+    <marker id="purple-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#76528c"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .legend { font-size: 16px; font-weight: 600; }
+      .role { font-size: 14px; font-weight: 700; letter-spacing: 1px; fill: #637282; }
+      .agent { font-size: 27px; font-weight: 700; }
+      .copy { font-size: 18px; fill: #526171; }
+      .label { font-size: 17px; font-weight: 700; }
+      .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 18px; }
+      .code-small { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 16px; }
+      .edge-label { font-size: 16px; font-weight: 700; }
+      .failure-title { font-size: 20px; font-weight: 700; fill: #8c3333; }
+      .failure-copy { font-size: 17px; fill: #604e4e; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1120" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">Composing a conditional promise</text>
+  <text x="60" y="108" class="subtitle">A use first matches a provider's offer, then explains how a condition on an outgoing promise is quenched.</text>
+
+  <line x1="60" y1="151" x2="102" y2="151" stroke="#3d7b52" stroke-width="4"/>
+  <text x="116" y="157" class="legend">offer/use binding · same provider + ID</text>
+  <line x1="470" y1="151" x2="512" y2="151" stroke="#2d6caf" stroke-width="4"/>
+  <text x="526" y="157" class="legend">condition identity · quenches ↔ ref</text>
+  <line x1="882" y1="151" x2="924" y2="151" stroke="#76528c" stroke-width="4"/>
+  <text x="938" y="157" class="legend">promise offered to a promisee</text>
+
+  <!-- Evidence provider -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="245" width="430" height="300" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="60" y="245" width="430" height="82" rx="8" fill="#e8f3eb"/>
+  <rect x="60" y="319" width="430" height="8" fill="#e8f3eb"/>
+  <text x="88" y="274" class="role">DETERMINISTIC AGENT · MANIFEST</text>
+  <text x="88" y="308" class="agent">evidence_provider</text>
+  <text x="88" y="359" class="copy">Publishes an authoritative dependency.</text>
+  <rect x="88" y="386" width="374" height="124" rx="6" fill="#eff7f1"/>
+  <text x="108" y="420" class="label" fill="#356b48">+ OFFER</text>
+  <text x="108" y="451" class="code">id="evidence"</text>
+  <text x="108" y="480" class="code">to="workflow_agent"</text>
+
+  <!-- Workflow agent -->
+  <g filter="url(#shadow)">
+    <rect x="620" y="205" width="650" height="570" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="620" y="205" width="650" height="82" rx="8" fill="#e7f0fb"/>
+  <rect x="620" y="279" width="650" height="8" fill="#e7f0fb"/>
+  <text x="650" y="234" class="role">LLM AGENT · CONTRACT</text>
+  <text x="650" y="268" class="agent">workflow_agent</text>
+
+  <rect x="650" y="310" width="590" height="126" rx="6" fill="#f2edf6"/>
+  <text x="674" y="343" class="label" fill="#68457e">+ CONDITIONAL OFFER</text>
+  <text x="674" y="374" class="code">id="safe_action"  to="requester"</text>
+  <rect x="674" y="390" width="535" height="31" rx="4" fill="#e8def0"/>
+  <text x="690" y="412" class="code-small">condition ref="evidence_ready"</text>
+
+  <rect x="650" y="467" width="590" height="111" rx="6" fill="#eff7f1"/>
+  <text x="674" y="499" class="label" fill="#356b48">− USE · MATCHES PROVIDER OFFER</text>
+  <text x="674" y="529" class="code-small">id="evidence"  from="evidence_provider"</text>
+  <rect x="674" y="540" width="535" height="27" rx="4" fill="#dceee1"/>
+  <text x="690" y="560" class="code-small">quenches="evidence_ready"</text>
+
+  <rect x="650" y="610" width="590" height="105" rx="6" fill="#fff7e8"/>
+  <text x="674" y="642" class="label" fill="#845b19">− USE · CONSEQUENTIAL BOUNDARY</text>
+  <text x="674" y="674" class="code-small">id="commit_operation"</text>
+  <text x="674" y="699" class="code-small">from="authority_service"</text>
+
+  <!-- Requester -->
+  <g filter="url(#shadow)">
+    <rect x="1450" y="270" width="290" height="240" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="1450" y="270" width="290" height="82" rx="8" fill="#f2edf6"/>
+  <rect x="1450" y="344" width="290" height="8" fill="#f2edf6"/>
+  <text x="1478" y="299" class="role">PROMISEE · EXTERNAL PARTY</text>
+  <text x="1478" y="333" class="agent">requester</text>
+  <text x="1478" y="390" class="copy">Receives and assesses:</text>
+  <text x="1478" y="427" class="code">+safe_action</text>
+  <text x="1478" y="459" class="code-small">| evidence_ready</text>
+
+  <!-- Authority service -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="650" width="430" height="240" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="60" y="650" width="430" height="82" rx="8" fill="#fbefd9"/>
+  <rect x="60" y="724" width="430" height="8" fill="#fbefd9"/>
+  <text x="88" y="679" class="role">DETERMINISTIC AGENT · MANIFEST + CODE</text>
+  <text x="88" y="713" class="agent">authority_service</text>
+  <rect x="88" y="755" width="374" height="55" rx="6" fill="#fff7e8"/>
+  <text x="108" y="789" class="code-small">+ offer id="commit_operation"</text>
+  <rect x="88" y="821" width="374" height="45" rx="6" fill="#f8e8e6"/>
+  <text x="108" y="850" class="code-small">+ invariant no_unsafe_commit</text>
+
+  <!-- Binding and promise connectors -->
+  <path d="M490 448 H548 Q564 448 564 464 V507 Q564 523 580 523 H612" fill="none" stroke="#3d7b52" stroke-width="4" stroke-linecap="round" marker-end="url(#green-arrow)"/>
+  <rect x="498" y="403" width="154" height="30" rx="4" fill="#f6f8fa"/>
+  <text x="575" y="424" class="edge-label" text-anchor="middle" fill="#356b48">same provider + ID</text>
+
+  <path d="M490 783 H548 Q564 783 564 767 V674 Q564 658 580 658 H612" fill="none" stroke="#3d7b52" stroke-width="4" stroke-linecap="round" marker-end="url(#green-arrow)"/>
+  <rect x="497" y="798" width="162" height="30" rx="4" fill="#f6f8fa"/>
+  <text x="578" y="819" class="edge-label" text-anchor="middle" fill="#356b48">commit capability</text>
+
+  <path d="M1270 359 H1350 Q1366 359 1366 375 V390 Q1366 406 1382 406 H1442" fill="none" stroke="#76528c" stroke-width="4" stroke-linecap="round" marker-end="url(#purple-arrow)"/>
+  <rect x="1288" y="320" width="168" height="30" rx="4" fill="#f6f8fa"/>
+  <text x="1372" y="341" class="edge-label" text-anchor="middle" fill="#68457e">promise offered</text>
+
+  <!-- Internal quenching connector -->
+  <path d="M1210 553 H1225 Q1240 553 1240 538 V417 Q1240 402 1225 402 H1218" fill="none" stroke="#2d6caf" stroke-width="4" stroke-linecap="round" marker-end="url(#blue-arrow)"/>
+  <rect x="1050" y="442" width="179" height="30" rx="4" fill="#ffffff"/>
+  <text x="1139" y="463" class="edge-label" text-anchor="middle" fill="#245e9b">same condition token</text>
+
+  <!-- Failure band -->
+  <rect x="60" y="938" width="1680" height="132" rx="8" fill="#fbeceb" stroke="#e5b9b7"/>
+  <text x="88" y="975" class="failure-title">GRAPH FAILS BEFORE RUNTIME</text>
+  <line x1="580" y1="956" x2="580" y2="1048" stroke="#e0b8b6"/>
+  <line x1="1130" y1="956" x2="1130" y2="1048" stroke="#e0b8b6"/>
+  <text x="88" y="1011" class="label" fill="#8c3333">UNMATCHED USE</text>
+  <text x="88" y="1040" class="failure-copy">No +evidence offer on evidence_provider.</text>
+  <text x="610" y="1011" class="label" fill="#8c3333">UNQUENCHED CONDITION</text>
+  <text x="610" y="1040" class="failure-copy">No use quenches evidence_ready.</text>
+  <text x="1160" y="1011" class="label" fill="#8c3333">UNKNOWN PROVIDER</text>
+  <text x="1160" y="1040" class="failure-copy">from names no loaded or external agent.</text>
+</svg>

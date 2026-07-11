@@ -320,6 +320,9 @@ So `NoDoubleBook`, `EligibilityBeforeBooking`, and `ConfirmBeforeBooking` are al
 
 Part IV made a single agent trustworthy. But the clinic agent is not one agent — it is a system of agents behind a single face. The inter-agent half of the theory is where most agentic-system designs are weakest, because their dependencies are *hidden*: shared state that one agent writes and another silently reads, construction-time coupling, orchestrators that claim to "own" their subordinates. Promise Theory's contribution here is to make every such dependency an explicit, checkable edge.
 
+For a domain-neutral, implementation-oriented treatment of the graph vocabulary and
+its verifier, see [Composing Promises](promise-graph/README.md).
+
 ## 5.1 The agents, restated as autonomous promisers
 
 The clinic's agents (full inventory in the [architecture doc](promise-theory-architecture.md)):
