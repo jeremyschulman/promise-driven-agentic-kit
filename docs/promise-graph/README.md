@@ -230,10 +230,11 @@ checkable; it does not turn cooperation into command or certainty.
 For the single-agent contract that contributes these promises, see
 [Authoring an Agent Contract](../authoring-workflow/README.md). For the broader limits
 of this gate, see [Five Questions, Five Kinds of Evidence](../assurance-model/README.md).
+For provider replacements, offer renames, and other graph migrations, see
+[Evolving an Agent Contract](../contract-evolution/README.md).
 
 ## Image sources
 
 - [`promise-graph-anatomy.svg`](promise-graph-anatomy.svg) is the editable source.
 - [`promise-graph-anatomy.png`](promise-graph-anatomy.png) is the rendered copy for
   Markdown, articles, and presentations.
-

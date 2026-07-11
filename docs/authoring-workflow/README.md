@@ -267,4 +267,6 @@ behave the same way.
 For the exact element and attribute vocabulary, use the
 [contract anatomy reference](../../skills/authoring-agent-contracts/references/contract-anatomy.md).
 For a visual trace from XML identifiers into Python, continue with
-[From Contract to Enforcement](../contract-assessment/README.md).
+[From Contract to Enforcement](../contract-assessment/README.md). When changing an
+existing contract, use [Evolving an Agent Contract](../contract-evolution/README.md) to
+trace its full change radius.

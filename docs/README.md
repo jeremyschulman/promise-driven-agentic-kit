@@ -10,6 +10,7 @@ the relevant guide.
 | --- | --- | --- |
 | Understand the method quickly | [From Contract to Enforcement](contract-assessment/README.md) | [The assurance model](assurance-model/README.md) |
 | Author or change an agent contract | [Authoring an Agent Contract](authoring-workflow/README.md) | [Contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
+| Evolve an existing contract safely | [Evolving an Agent Contract](contract-evolution/README.md) | [The assurance model](assurance-model/README.md) |
 | Diagnose a failed model check | [Debugging a FizzBee Counterexample](counterexample-debugging/README.md) | [The assurance model](assurance-model/README.md) |
 | Compose several agents and services | [Composing Promises](promise-graph/README.md) | [Promise Theory architecture analysis](promise-theory-architecture.md) |
 | Understand the theory | [The Promise-Driven Agent](why-promise-driven-agents.md) | [Promise Theory architecture analysis](promise-theory-architecture.md) |
@@ -46,6 +47,9 @@ The documentation follows the same lifecycle as the method:
   quenching, deterministic participants, external parties, and superagent entailment.
 - [Debugging a FizzBee Counterexample](counterexample-debugging/README.md) turns a
   failed invariant trace into a classified design defect, repair, and complete recheck.
+- [Evolving an Agent Contract](contract-evolution/README.md) maps local and structural
+  changes across identifiers, peer agents, enforcement, tests, runtime consumers, and
+  compatibility strategies.
 - [Five Questions, Five Kinds of Evidence](assurance-model/README.md) explains what each
   verification layer establishes and, equally importantly, what it does not establish.
 

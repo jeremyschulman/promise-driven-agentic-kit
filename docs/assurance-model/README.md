@@ -57,6 +57,8 @@ Use these questions when evaluating a contract-driven workflow:
 - Do refusal results identify the unmet condition and preserve protected state?
 - Can runtime evidence be correlated back to the contract and implementation version?
 - What meaningful failure mode remains outside the modeled or tested boundary?
+- Has a contract change been traced through every affected identity and consumer? See
+  [Evolving an Agent Contract](../contract-evolution/README.md).
 
 For the authoring sequence that produces this evidence, continue with
 [Authoring an Agent Contract](../authoring-workflow/README.md). For the detailed mapping

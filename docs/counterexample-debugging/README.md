@@ -180,7 +180,8 @@ is a design possibility, even if a stochastic implementation rarely selects it.
 ## Propagate the repair through the contract
 
 A model repair can change more than `<verifiable-behavior>`. Review its full change
-radius:
+radius. [Evolving an Agent Contract](../contract-evolution/README.md) provides the
+complete maintenance and compatibility workflow:
 
 | Repair changes... | Revisit... |
 | --- | --- |
