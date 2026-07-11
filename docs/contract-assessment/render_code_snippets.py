@@ -1,4 +1,4 @@
-"""Render the article's Python examples as syntax-highlighted Rich SVGs."""
+"""Render the article's code examples as syntax-highlighted Rich SVGs."""
 
 from io import StringIO
 from pathlib import Path
@@ -32,8 +32,34 @@ def test_no_unsafe_commit():
     assert authoritative_state_unchanged()
 '''
 
+FIZZBEE_CODE = '''\
+action CommitAction:
+    require precondition_met
+    committed = True
+always assertion NoUnsafeCommit:
+    return (not committed) or precondition_met
+'''
 
-def render(filename: str, title: str, code: str, width: int) -> None:
+PROMISES_XML = '''\
+<promises>
+  <tool name="commit_action"/>
+  <offer id="safe_action">
+    <condition ref="precondition_met"/>
+  </offer>
+  <use id="evidence" from="provider"
+       quenches="precondition_met"/>
+</promises>
+'''
+
+ENFORCEMENT_XML = '''\
+<enforcement>
+  <rule id="NoUnsafeCommit">
+    Refuse unless precondition_met.</rule>
+</enforcement>
+'''
+
+
+def render(filename: str, title: str, code: str, width: int, lexer: str) -> None:
     console = Console(
         record=True,
         width=width,
@@ -43,7 +69,7 @@ def render(filename: str, title: str, code: str, width: int) -> None:
     console.print(
         Syntax(
             code.rstrip(),
-            "python",
+            lexer,
             theme="monokai",
             line_numbers=True,
             padding=(1, 2),
@@ -65,10 +91,33 @@ if __name__ == "__main__":
         "service.py - authoritative boundary",
         ASSESSMENT_CODE,
         width=64,
+        lexer="python",
     )
     render(
         "python-enforcement-test.svg",
         "test_service.py - enforcement twin",
         TEST_CODE,
         width=64,
+        lexer="python",
+    )
+    render(
+        "contract-intent-fizzbee.svg",
+        "<contract>",
+        FIZZBEE_CODE,
+        width=58,
+        lexer="python",
+    )
+    render(
+        "contract-intent-promises.svg",
+        "<promises>",
+        PROMISES_XML,
+        width=64,
+        lexer="xml",
+    )
+    render(
+        "contract-intent-enforcement.svg",
+        "<enforcement>",
+        ENFORCEMENT_XML,
+        width=52,
+        lexer="xml",
     )

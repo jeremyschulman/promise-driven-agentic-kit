@@ -1,11 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120" role="img" aria-labelledby="title desc">
   <title id="title">Tracing one assessed promise from XML to Python</title>
-  <desc id="desc">A detailed trace showing safety, condition, and capability identifiers linking an XML contract to Python guards, structured refusals, and tests.</desc>
+  <desc id="desc">A detailed trace showing safety, condition, and capability identifiers linking an XML contract to Python guards and structured refusals, plus a build-time AI coding assistant that generates matching pytest evidence.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#52606d"/></marker>
     <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#2563a6"/></marker>
     <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#3e7b53"/></marker>
     <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#b54343"/></marker>
+    <marker id="amber-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#9a681e"/></marker>
     <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#1f2937" flood-opacity="0.12"/></filter>
     <style>
       text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #17202a; letter-spacing: 0; }
@@ -21,6 +22,7 @@
       .on-dark { fill: #ffffff; }
       .wire-under { fill: none; stroke: #f7f8fa; stroke-width: 9px; stroke-linecap: round; stroke-linejoin: round; }
       .wire { fill: none; stroke-width: 3px; stroke-linecap: round; stroke-linejoin: round; }
+      .build-wire { fill: none; stroke: #9a681e; stroke-width: 2.5px; stroke-linecap: round; stroke-dasharray: 7 5; }
     </style>
   </defs>
 
@@ -40,7 +42,7 @@
   <!-- Stage columns -->
   <text x="70" y="155" class="stage" fill="#2563a6">1 · CONTRACT INTENT</text>
   <text x="650" y="155" class="stage" fill="#7b4d11">2 · DECLARATIVE LINKS</text>
-  <text x="1230" y="155" class="stage" fill="#9d3434">3 · RUNTIME ASSESSMENT</text>
+  <text x="1230" y="155" class="stage" fill="#9d3434">3 · BUILD + RUNTIME EVIDENCE</text>
 
   <line x1="610" y1="135" x2="610" y2="935" stroke="#d9e0e6" stroke-width="2"/>
   <line x1="1190" y1="135" x2="1190" y2="935" stroke="#d9e0e6" stroke-width="2"/>
@@ -52,26 +54,13 @@
   <text x="95" y="214" class="on-dark" font-size="19" font-weight="700">agent_&lt;workflow&gt;.xml</text>
 
   <rect x="90" y="255" width="460" height="185" rx="6" fill="#edf3fb"/>
-  <text x="110" y="286" class="head">&lt;contract&gt; / FizzBee</text>
-  <text x="110" y="317" class="code">action CommitAction:</text>
-  <text x="128" y="344" class="code" fill="#3e7b53">require precondition_met</text>
-  <text x="128" y="371" class="code" fill="#2563a6">committed = True</text>
-  <text x="110" y="404" class="code" fill="#b54343">always assertion NoUnsafeCommit:</text>
-  <text x="128" y="429" class="code-sm">return (not committed) or precondition_met</text>
+  <image x="100" y="270" width="440" height="134" href="contract-intent-fizzbee.png" preserveAspectRatio="xMidYMid meet"/>
 
   <rect x="90" y="460" width="460" height="218" rx="6" fill="#f0f7f1"/>
-  <text x="110" y="491" class="head">&lt;promises&gt;</text>
-  <text x="110" y="524" class="code" fill="#2563a6">&lt;tool name="commit_action"/&gt;</text>
-  <text x="110" y="556" class="code">&lt;offer id="safe_action" ...&gt;</text>
-  <text x="128" y="583" class="code" fill="#3e7b53">&lt;condition ref="precondition_met"/&gt;</text>
-  <text x="110" y="615" class="code">&lt;/offer&gt;</text>
-  <text x="110" y="647" class="code-sm" fill="#3e7b53">&lt;use id="evidence" from="provider"</text>
-  <text x="128" y="669" class="code-sm" fill="#3e7b53">quenches="precondition_met"/&gt;</text>
+  <image x="100" y="480" width="440" height="162" href="contract-intent-promises.png" preserveAspectRatio="xMidYMid meet"/>
 
   <rect x="90" y="698" width="460" height="112" rx="6" fill="#fff0ef"/>
-  <text x="110" y="729" class="head">&lt;enforcement&gt;</text>
-  <text x="110" y="765" class="code" fill="#b54343">&lt;rule id="NoUnsafeCommit"&gt;</text>
-  <text x="128" y="791" class="code-sm">Refuse unless the precondition holds.</text>
+  <image x="145" y="701" width="350" height="105" href="contract-intent-enforcement.png" preserveAspectRatio="xMidYMid meet"/>
 
   <rect x="90" y="830" width="460" height="80" rx="6" fill="#fff7e8"/>
   <text x="110" y="861" class="head">&lt;step-guidance&gt; + &lt;responses&gt;</text>
@@ -112,19 +101,31 @@
   <!-- Runtime code -->
   <image x="1230" y="205" width="500" height="230" href="python-assessment-boundary.png" preserveAspectRatio="xMidYMid meet"/>
 
+  <!-- Build-time generator -->
+  <g filter="url(#shadow)"><rect x="1230" y="485" width="500" height="140" rx="8" fill="#ffffff" stroke="#d9c49b"/></g>
+  <rect x="1230" y="485" width="9" height="140" rx="4" fill="#b7791f"/>
+  <text x="1265" y="522" class="head">AI coding assistant · build time</text>
+  <text x="1265" y="552" class="body">Reads the verified XML as implementation input.</text>
+  <text x="1265" y="580" class="small">Generates enforcement code + pytest twins</text>
+  <text x="1265" y="606" class="small">runs · repairs · repeats until the suite is green</text>
+  <path class="build-wire" d="M1380 485 V443" marker-end="url(#amber-arrow)"/>
+  <text x="1396" y="463" class="small" fill="#845b19">generates guard</text>
+
   <!-- Test -->
   <image x="1230" y="690" width="500" height="138" href="python-enforcement-test.png" preserveAspectRatio="xMidYMid meet"/>
+  <path class="build-wire" d="M1580 625 V682" marker-end="url(#amber-arrow)"/>
+  <text x="1596" y="659" class="small" fill="#845b19">generates pytest</text>
 
   <!-- Cross-column arrows -->
   <path class="wire-under" d="M550 405 H580 Q594 405 594 391 V314 Q594 300 608 300 H650"/>
   <path class="wire" d="M550 405 H580 Q594 405 594 391 V314 Q594 300 608 300 H650" stroke="#b54343" marker-end="url(#red-arrow)"/>
-  <path class="wire-under" d="M550 345 H565 Q579 345 579 359 V529 Q579 543 593 543 H650"/>
-  <path class="wire" d="M550 345 H565 Q579 345 579 359 V529 Q579 543 593 543 H650" stroke="#3e7b53" marker-end="url(#green-arrow)"/>
-  <path class="wire-under" d="M550 525 H570 Q584 525 584 539 V811 Q584 825 598 825 H650"/>
-  <path class="wire" d="M550 525 H570 Q584 525 584 539 V811 Q584 825 598 825 H650" stroke="#2563a6" marker-end="url(#blue-arrow)"/>
+  <path class="wire-under" d="M550 345 H565 Q579 345 579 359 V491 Q579 505 593 505 H650"/>
+  <path class="wire" d="M550 345 H565 Q579 345 579 359 V491 Q579 505 593 505 H650" stroke="#3e7b53" marker-end="url(#green-arrow)"/>
+  <path class="wire-under" d="M550 548 H570 Q584 548 584 562 V811 Q584 825 598 825 H650"/>
+  <path class="wire" d="M550 548 H570 Q584 548 584 562 V811 Q584 825 598 825 H650" stroke="#2563a6" marker-end="url(#blue-arrow)"/>
 
-  <path class="wire-under" d="M1150 371 H1196 Q1210 371 1210 357 V323 Q1210 309 1224 309 H1230"/>
-  <path class="wire" d="M1150 371 H1196 Q1210 371 1210 357 V323 Q1210 309 1224 309 H1230" stroke="#b54343" marker-end="url(#red-arrow)"/>
+  <path class="wire-under" d="M1150 371 H1154 Q1164 371 1164 361 V319 Q1164 305 1178 305 H1230"/>
+  <path class="wire" d="M1150 371 H1154 Q1164 371 1164 361 V319 Q1164 305 1178 305 H1230" stroke="#b54343" marker-end="url(#red-arrow)"/>
   <path class="wire-under" d="M1150 631 H1180 Q1194 631 1194 617 V355 Q1194 341 1208 341 H1230"/>
   <path class="wire" d="M1150 631 H1180 Q1194 631 1194 617 V355 Q1194 341 1208 341 H1230" stroke="#3e7b53" marker-end="url(#green-arrow)"/>
   <path class="wire-under" d="M1150 898 H1164 Q1178 898 1178 884 V289 Q1178 275 1192 275 H1230"/>
