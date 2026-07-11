@@ -257,6 +257,10 @@ policy identity, unmet condition, outcome, and correlation information appropria
 the application. This is assessment evidence, not proof that future requests will
 behave the same way.
 
+[Runtime Assessment and Evidence](../runtime-assessment/README.md) defines the generic
+record shape and explains why operational outcome must remain distinct from the
+assessment of each promise.
+
 ## Definition of done
 
 - The document validates against the correct schema.

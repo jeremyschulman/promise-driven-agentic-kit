@@ -66,7 +66,9 @@ Use these questions when evaluating a contract-driven workflow:
 For the authoring sequence that produces this evidence, continue with
 [Authoring an Agent Contract](../authoring-workflow/README.md). For the detailed mapping
 from XML identifiers into Python, see
-[From Contract to Enforcement](../contract-assessment/README.md).
+[From Contract to Enforcement](../contract-assessment/README.md). For the Run-stage
+record, outcome semantics, and ledger discipline, see
+[Runtime Assessment and Evidence](../runtime-assessment/README.md).
 
 ## Image sources
 

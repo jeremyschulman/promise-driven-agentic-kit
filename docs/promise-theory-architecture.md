@@ -95,7 +95,11 @@ Promises are intent; keeping them is never guaranteed. The system assesses const
 - **The enforcement twins + tests** — `provider_schedule`'s refusal of a taken slot, the ownership check in `manage_appointment`, the confirm gate: repeated code-level assessments of the stochastic promiser.
 - **Model checking as *pre-assessment*** — `fizz` proves an agent's promise set is *coherent* before it is ever offered. In the Trials of the Holy Grail example, this caught a real defect: the Quest Marshal's first draft let a passed trial be un-passed, which would have let the Grail be granted without both trials. The checker produced the counterexample trace; the fix was mechanical. That is pre-assessment doing its job.
 
-What a production system adds next is a **trust ledger** — recording per-agent kept/not-kept outcomes so trust can *modulate reliance* (tighter confirmations for a flaky dependency), never *create obligation*.
+What a production system adds next is an **assessment ledger**: promise-specific,
+append-only records from named assessors. Trust can then *modulate reliance* (for
+example, tighter confirmations for a flaky dependency), never *create obligation*.
+The [Runtime Assessment and Evidence](runtime-assessment/README.md) guide defines a
+general record and the distinction between operational outcome and promise status.
 
 ## 7. Superagents
 

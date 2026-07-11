@@ -462,11 +462,24 @@ A promiser that publishes its own unreliability lets promisees calibrate their a
 
 ## 6.3 Trust as recorded assessment
 
-What these examples don't yet build — and what the [architecture doc](promise-theory-architecture.md) sketches — is an **assessment ledger**: a record, per `(agent, promise-type)`, of promised / kept / not-kept / unknown outcomes. With it, **trust modulates reliance, never obligation**: a dependency with a low keep-rate earns a tighter confirmation prompt; a service that repeatedly refuses gets a proactive reconnection flow instead of blind retries; a high-keep-rate subagent gets relayed with less hedging. This is the theory's trust-as-integral-of-assessment made operational — the natural next build once the promise graph exists.
+What these examples don't yet build is an **assessment ledger**: an append-only record
+of one named assessor's judgment about one promise at a time. With it, **trust modulates
+reliance, never obligation**: a dependency with repeated `not-kept` or `unknown`
+assessments earns tighter confirmation or a different provider. A normal refusal does
+not automatically count against trust; it may keep a safety promise while making a
+conditional capability not applicable. The
+[Runtime Assessment and Evidence](runtime-assessment/README.md) guide defines the
+record and outcome semantics.
 
 ## 6.4 Structured refusal as the non-cooperation path
 
-Autonomy includes the right to decline. The services already return `{"ok": false, …}` structured refusals rather than raising across boundaries — voluntary non-cooperation, not an error. Each refusal names *which promise could not bind and which condition failed* (e.g. `{"unmet": "slot_available"}`), which lets the orchestrator relay unmet-condition information mechanically and lets a future ledger record `not_kept(condition)` rather than a generic error. A refusal is a first-class promise outcome, not an exception.
+Autonomy includes the right to decline. The services already return `{"ok": false, …}`
+structured refusals rather than raising across boundaries — voluntary non-cooperation,
+not an error. Each refusal names which condition failed (for example,
+`{"unmet": "slot_available"}`), which lets the orchestrator relay the evidence
+mechanically. A ledger records the operation as `refused`, then assesses each named
+promise separately: the safety promise may be `kept` while the conditional capability
+is `not-applicable`. A refusal is a first-class operational outcome, not an exception.
 
 ---
 
@@ -617,7 +630,7 @@ definitions, identifier rules, and distinctions used across the kit.
 | Assisted promise (Law 4) | "the clinic will book your appointment" = `book \| slot_available` + `−open_slots` from the schedule (§5.5) |
 | Assessment | structured refusals, the eligibility verdict, code `<enforcement>`, test twins |
 | Pre-assessment | `fizz` model checking; `verified="fizz-0.5.1"` (and the real bug it caught in the Grail Marshal) |
-| Trust (integral of assessment) | the proposed assessment ledger (architecture doc); the eligibility service's "point-in-time" self-calibration |
+| Trust (integral of assessment) | the [assessment-ledger pattern](runtime-assessment/README.md); the eligibility service's "point-in-time" self-calibration |
 | Imposition | a prose command to the LLM |
 | Structured refusal (non-cooperation) | `{"ok": false, "unmet": …}` service results; `<responses>` refusal templates |
 | Superagent | the grail superagent card; the LLM+code enforcement pair |

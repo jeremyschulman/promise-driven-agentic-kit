@@ -73,7 +73,8 @@ The most important naming rule is:
 | **Enforcement twin** | A test that deliberately attempts the forbidden operation and checks both structured refusal and unchanged protected state. It demonstrates the exercised implementation path, not universal correctness. |
 | **Structured refusal** | A normal, machine-readable non-cooperation result, typically including `ok: false`, a refusal code, and the unmet condition. It is not an unexpected exception. |
 | **Receipt** | Structured evidence that a consequential operation committed, including enough identity and correlation information for later assessment. |
-| **Runtime assessment** | The boundary's current accept-or-refuse decision against authoritative state. It answers whether this operation may proceed now. |
+| **Runtime assessment** | One assessor's local judgment about one named promise after a boundary decision. It is related to, but distinct from, whether the operation committed, was refused, failed, or remained unknown. |
+| **Assessment ledger** | An append-only collection of promise-specific assessment records. Corrections supersede earlier records rather than rewriting history. |
 | **Evidence chain** | The connected results of schema validation, model checking, promise-graph verification, enforcement testing, and runtime assessment. Each result supports a different claim. |
 
 ## Naming conventions
@@ -154,6 +155,8 @@ vocabulary.
 For the practical sequence that applies these terms, continue with
 [Authoring an Agent Contract](../authoring-workflow/README.md). For the five evidence
 claims, see [Five Questions, Five Kinds of Evidence](../assurance-model/README.md).
+For operational outcomes, assessment records, and ledger semantics, see
+[Runtime Assessment and Evidence](../runtime-assessment/README.md).
 
 ## Image sources
 

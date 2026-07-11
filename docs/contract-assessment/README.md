@@ -208,7 +208,9 @@ authoritative state.
 
 Continue with [Authoring an Agent Contract](../authoring-workflow/README.md) for the
 step-by-step construction process, or [Five Questions, Five Kinds of Evidence](../assurance-model/README.md)
-for the precise claim and limitation of each verification layer.
+for the precise claim and limitation of each verification layer. For the structure and
+semantics of the Run-stage record, continue with
+[Runtime Assessment and Evidence](../runtime-assessment/README.md).
 
 ## Image sources
 

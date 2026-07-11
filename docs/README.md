@@ -9,6 +9,7 @@ the relevant guide.
 | I want to... | Start with | Continue with |
 | --- | --- | --- |
 | Understand the method quickly | [From Contract to Enforcement](contract-assessment/README.md) | [The assurance model](assurance-model/README.md) |
+| Design runtime evidence and assessment records | [Runtime Assessment and Evidence](runtime-assessment/README.md) | [The assurance model](assurance-model/README.md) |
 | Look up a term or identifier convention | [Glossary and Naming Conventions](glossary/README.md) | [Contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
 | Decide what should be an agent | [Choosing a Participant and Document Type](participant-types/README.md) | [Composing Promises](promise-graph/README.md) |
 | Author or change an agent contract | [Authoring an Agent Contract](authoring-workflow/README.md) | [Contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
@@ -28,7 +29,7 @@ The documentation follows the same lifecycle as the method:
 | --- | --- | --- |
 | **Design** | Define behavior, promises, conditions, and invariants; validate the XML; model-check reachable states; verify the promise graph. | [Authoring workflow](authoring-workflow/README.md), [counterexample debugging](counterexample-debugging/README.md), [Promise Graph guide](promise-graph/README.md) |
 | **Build** | Bind tools, implement deterministic safeguards, create enforcement-twin tests, and run the complete gate. | [Authoring workflow](authoring-workflow/README.md), [contract-to-enforcement guide](contract-assessment/README.md) |
-| **Run** | Give the contract to the LLM and reassess consequential operations against authoritative state. | [Contract-to-enforcement guide](contract-assessment/README.md), [assurance model](assurance-model/README.md) |
+| **Run** | Give the contract to the LLM, reassess consequential operations against authoritative state, and preserve promise-specific evidence. | [Runtime assessment guide](runtime-assessment/README.md), [contract-to-enforcement guide](contract-assessment/README.md), [assurance model](assurance-model/README.md) |
 
 ## Theory and architecture
 
@@ -60,6 +61,9 @@ The documentation follows the same lifecycle as the method:
 - [Glossary and Naming Conventions](glossary/README.md) aligns Promise Theory, XML,
   behavior-model, Python-enforcement, and evidence terms and defines stable identity
   chains.
+- [Runtime Assessment and Evidence](runtime-assessment/README.md) defines operational
+  outcomes, promise assessments, structured evidence records, append-only ledgers,
+  privacy boundaries, and trust-derived reliance.
 
 ## Reference material
 
@@ -69,4 +73,5 @@ The documentation follows the same lifecycle as the method:
 - [Contract anatomy reference](../skills/authoring-agent-contracts/references/contract-anatomy.md)
 - [Authoring checklist](../skills/authoring-agent-contracts/references/authoring-checklist.md)
 - [Glossary and naming conventions](glossary/README.md)
+- [Generic assessment-record schema](runtime-assessment/assessment-record.schema.json)
 - [Complete worked examples](../examples/)
