@@ -273,6 +273,8 @@ which can also make it sensitive.
 For the complete assurance chain before Run, see
 [Five Questions, Five Kinds of Evidence](../assurance-model/README.md). For identifier
 definitions, see the [Glossary and Naming Conventions](../glossary/README.md).
+For a package-level readiness decision, use
+[Reviewing a Contract Package](../reviewing-contract-packages/README.md).
 
 ## Image and schema sources
 

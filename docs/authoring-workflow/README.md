@@ -280,4 +280,6 @@ For shared terminology and identifier conventions, use the
 For a visual trace from XML identifiers into Python, continue with
 [From Contract to Enforcement](../contract-assessment/README.md). When changing an
 existing contract, use [Evolving an Agent Contract](../contract-evolution/README.md) to
-trace its full change radius.
+trace its full change radius. Before approval, use
+[Reviewing a Contract Package](../reviewing-contract-packages/README.md) to evaluate the
+complete Design, Build, and Run evidence chain.

@@ -42,6 +42,7 @@ The most important naming rule is:
 | Term | Meaning in this methodology |
 | --- | --- |
 | **Agent contract** | The complete `agent_*.xml` document consumed by an LLM as runtime instructions. It contains all six section types: `<objective>`, `<verifiable-behavior>`, `<promises>`, `<step-guidance>`, `<enforcement>`, and `<responses>`. |
+| **Contract package** | The reviewable set surrounding a consequential workflow: contracts, manifests, models, graph evidence, enforcement code, tests, runtime records, versions, and operating documentation. |
 | **Deterministic agent manifest** | A `manifest_*.xml` document that publishes promises for a governed non-LLM participant. It contains a description and `<promises>`, but no LLM instructions or embedded behavior model. |
 | **External party** | A participant outside the locally governed document set. A narrowly configured verifier exemption permits references to it without a local manifest. External status is a governance decision, not a synonym for deterministic agent. |
 | **Promise manifest** | The `<promises>` content that declares tools, offers, uses, conditions, and dependencies. Both document families contribute this information to the promise graph. |
@@ -157,6 +158,8 @@ For the practical sequence that applies these terms, continue with
 claims, see [Five Questions, Five Kinds of Evidence](../assurance-model/README.md).
 For operational outcomes, assessment records, and ledger semantics, see
 [Runtime Assessment and Evidence](../runtime-assessment/README.md).
+For the package-level approval practice, see
+[Reviewing a Contract Package](../reviewing-contract-packages/README.md).
 
 ## Image sources
 

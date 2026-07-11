@@ -68,7 +68,9 @@ For the authoring sequence that produces this evidence, continue with
 from XML identifiers into Python, see
 [From Contract to Enforcement](../contract-assessment/README.md). For the Run-stage
 record, outcome semantics, and ledger discipline, see
-[Runtime Assessment and Evidence](../runtime-assessment/README.md).
+[Runtime Assessment and Evidence](../runtime-assessment/README.md). To turn these layers
+into an approval decision, use
+[Reviewing a Contract Package](../reviewing-contract-packages/README.md).
 
 ## Image sources
 

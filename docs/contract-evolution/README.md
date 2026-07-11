@@ -205,6 +205,10 @@ uv run pytest -q
 Add integration or migration checks when the changed boundary is not covered by the
 standard gate.
 
+Before approving the evolved package, use
+[Reviewing a Contract Package](../reviewing-contract-packages/README.md) to confirm that
+the rebuilt evidence supports the proposed promise and compatibility claims.
+
 ## Change scenarios
 
 ### Invariant logic or name
@@ -350,4 +354,3 @@ cross-agent dependencies, see [Composing Promises](../promise-graph/README.md).
 - [`change-radius.svg`](change-radius.svg) is the editable source.
 - [`change-radius.png`](change-radius.png) is the rendered copy for Markdown, articles,
   and presentations.
-

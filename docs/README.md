@@ -9,6 +9,7 @@ the relevant guide.
 | I want to... | Start with | Continue with |
 | --- | --- | --- |
 | Understand the method quickly | [From Contract to Enforcement](contract-assessment/README.md) | [The assurance model](assurance-model/README.md) |
+| Review a complete contract package | [Reviewing a Contract Package](reviewing-contract-packages/README.md) | [Worked review exercise](reviewing-contract-packages/worked-review.md) |
 | Design runtime evidence and assessment records | [Runtime Assessment and Evidence](runtime-assessment/README.md) | [The assurance model](assurance-model/README.md) |
 | Look up a term or identifier convention | [Glossary and Naming Conventions](glossary/README.md) | [Contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
 | Decide what should be an agent | [Choosing a Participant and Document Type](participant-types/README.md) | [Composing Promises](promise-graph/README.md) |
@@ -64,6 +65,9 @@ The documentation follows the same lifecycle as the method:
 - [Runtime Assessment and Evidence](runtime-assessment/README.md) defines operational
   outcomes, promise assessments, structured evidence records, append-only ledgers,
   privacy boundaries, and trust-derived reliance.
+- [Reviewing a Contract Package](reviewing-contract-packages/README.md) turns the full
+  Design, Build, and Run evidence chain into a repeatable architecture-review practice,
+  severity model, worked exercise, and report template.
 
 ## Reference material
 
@@ -74,4 +78,5 @@ The documentation follows the same lifecycle as the method:
 - [Authoring checklist](../skills/authoring-agent-contracts/references/authoring-checklist.md)
 - [Glossary and naming conventions](glossary/README.md)
 - [Generic assessment-record schema](runtime-assessment/assessment-record.schema.json)
+- [Contract-package review report template](reviewing-contract-packages/review-report-template.md)
 - [Complete worked examples](../examples/)

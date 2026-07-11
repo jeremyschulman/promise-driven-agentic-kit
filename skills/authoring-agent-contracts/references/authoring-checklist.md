@@ -30,3 +30,9 @@ last one in each section — everything else is in service of it.
 - [ ] `uv run python scripts/verify_promise_graph.py`
 - [ ] `uv run pytest -q`
 - [ ] Stamped `verified="fizz-<version>"` once model-checking is clean.
+
+## Package review
+
+- [ ] The complete Design, Build, and Run evidence chain has been evaluated using the
+  [contract-package review guide](../../../docs/reviewing-contract-packages/README.md),
+  with no unresolved P0 blocking defect or P1 assurance gap.
