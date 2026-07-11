@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050" role="img" aria-labelledby="title desc">
+  <title id="title">One contract, six coordinated sections</title>
+  <desc id="desc">A general architecture diagram showing the six XML contract sections, their readers, and the Python assessment and enforcement boundary.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#51606f"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563a6"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#1f2937" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #17202a; letter-spacing: 0; }
+      .title { font-size: 38px; font-weight: 700; }
+      .subtitle { font-size: 18px; fill: #52606d; }
+      .eyebrow { font-size: 14px; font-weight: 700; letter-spacing: 1.2px; }
+      .section { font-size: 20px; font-weight: 700; }
+      .body { font-size: 16px; fill: #344454; }
+      .small { font-size: 14px; fill: #52606d; }
+      .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 16px; }
+      .reader-title { font-size: 19px; font-weight: 700; }
+      .reader-copy { font-size: 15px; fill: #435363; }
+      .label { font-size: 13px; font-weight: 700; }
+      .on-dark { fill: #ffffff; }
+      .on-dark-muted { fill: #d8e1e8; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1050" fill="#f7f8fa"/>
+  <rect x="0" y="0" width="1600" height="10" fill="#2563a6"/>
+
+  <text x="70" y="70" class="title">One contract, six coordinated sections</text>
+  <text x="70" y="103" class="subtitle">The XML is a shared source of truth. Each section carries a different kind of promise information.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="145" width="890" height="670" rx="8" fill="#ffffff" stroke="#cbd3dc"/>
+  </g>
+  <rect x="70" y="145" width="890" height="58" rx="8" fill="#1f3347"/>
+  <rect x="70" y="195" width="890" height="8" fill="#1f3347"/>
+  <text x="98" y="181" class="on-dark" font-size="21" font-weight="700">agent_&lt;workflow&gt;.xml</text>
+  <text x="748" y="181" class="on-dark-muted" font-size="14" font-weight="600">one artifact / six required sections</text>
+
+  <!-- Objective -->
+  <rect x="88" y="221" width="854" height="82" rx="6" fill="#eef6fb"/>
+  <rect x="88" y="221" width="8" height="82" rx="4" fill="#2b7a9b"/>
+  <text x="116" y="251" class="section">&lt;objective&gt;</text>
+  <text x="315" y="250" class="body">Purpose, scope, and desired outcome</text>
+  <text x="315" y="278" class="small">Why the agent exists; expressed as clear prose.</text>
+  <rect x="804" y="239" width="108" height="28" rx="14" fill="#d9edf6"/>
+  <text x="858" y="258" class="label" text-anchor="middle" fill="#235e76">PROSE</text>
+
+  <!-- Contract -->
+  <rect x="88" y="313" width="854" height="94" rx="6" fill="#edf3fb"/>
+  <rect x="88" y="313" width="8" height="94" rx="4" fill="#2563a6"/>
+  <text x="116" y="344" class="section">&lt;contract&gt;</text>
+  <text x="315" y="343" class="body">State, actions, guards, and invariants</text>
+  <text x="315" y="371" class="small">FizzBee explores every modeled path; the LLM reads the same actions.</text>
+  <text x="315" y="394" class="code" fill="#2563a6">always assertion NoUnsafeCommit</text>
+  <rect x="804" y="326" width="108" height="28" rx="14" fill="#dce8f7"/>
+  <text x="858" y="345" class="label" text-anchor="middle" fill="#234f83">FORMAL</text>
+
+  <!-- Promises -->
+  <rect x="88" y="417" width="854" height="104" rx="6" fill="#f0f7f1"/>
+  <rect x="88" y="417" width="8" height="104" rx="4" fill="#3e7b53"/>
+  <text x="116" y="448" class="section">&lt;promises&gt;</text>
+  <text x="315" y="447" class="body">Offers (+), uses (-), conditions, and tools</text>
+  <text x="315" y="475" class="small">Who promises what to whom, and what cooperation it depends on.</text>
+  <text x="315" y="500" class="code" fill="#356b48">condition ref="precondition_met"</text>
+  <rect x="778" y="430" width="134" height="28" rx="14" fill="#deeee2"/>
+  <text x="845" y="449" class="label" text-anchor="middle" fill="#315f40">DECLARATIVE</text>
+
+  <!-- Guidance -->
+  <rect x="88" y="531" width="854" height="82" rx="6" fill="#fff7e8"/>
+  <rect x="88" y="531" width="8" height="82" rx="4" fill="#b7791f"/>
+  <text x="116" y="562" class="section">&lt;step-guidance&gt;</text>
+  <text x="315" y="561" class="body">Per-action judgment, tool binding, and phrasing</text>
+  <text x="315" y="589" class="small">How to interpret a situation and carry out each modeled or fuzzy step.</text>
+  <rect x="804" y="544" width="108" height="28" rx="14" fill="#fae9c7"/>
+  <text x="858" y="563" class="label" text-anchor="middle" fill="#845b19">PROSE</text>
+
+  <!-- Enforcement -->
+  <rect x="88" y="623" width="854" height="94" rx="6" fill="#fff0ef"/>
+  <rect x="88" y="623" width="8" height="94" rx="4" fill="#b54343"/>
+  <text x="116" y="654" class="section">&lt;enforcement&gt;</text>
+  <text x="315" y="653" class="body">Traceability to independent code safeguards</text>
+  <text x="315" y="681" class="small">Names the invariants Python must assess before consequential operations.</text>
+  <text x="315" y="705" class="code" fill="#9d3434">rule id="NoUnsafeCommit"</text>
+  <rect x="778" y="636" width="134" height="28" rx="14" fill="#f5dedd"/>
+  <text x="845" y="655" class="label" text-anchor="middle" fill="#8f3232">DECLARATIVE</text>
+
+  <!-- Responses -->
+  <rect x="88" y="727" width="854" height="70" rx="6" fill="#f4f0f8"/>
+  <rect x="88" y="727" width="8" height="70" rx="4" fill="#76528c"/>
+  <text x="116" y="758" class="section">&lt;responses&gt;</text>
+  <text x="315" y="757" class="body">Reusable success, fallback, and refusal language</text>
+  <text x="315" y="783" class="small">Communicates assessed outcomes without inventing facts.</text>
+  <rect x="804" y="740" width="108" height="28" rx="14" fill="#e9def0"/>
+  <text x="858" y="759" class="label" text-anchor="middle" fill="#68457e">PROSE</text>
+
+  <!-- Reader cards -->
+  <text x="1040" y="171" class="eyebrow" fill="#52606d">THREE READERS, DIFFERENT QUESTIONS</text>
+
+  <g filter="url(#shadow)">
+    <rect x="1040" y="195" width="490" height="145" rx="8" fill="#ffffff" stroke="#cbd3dc"/>
+  </g>
+  <circle cx="1081" cy="237" r="20" fill="#dce8f7"/>
+  <path d="M1071 237 l7 7 14-16" fill="none" stroke="#2563a6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1115" y="229" class="reader-title">FizzBee model checker</text>
+  <text x="1115" y="255" class="reader-copy">Can any modeled path violate an invariant?</text>
+  <text x="1065" y="294" class="small">Reads: &lt;contract&gt;</text>
+  <rect x="1065" y="309" width="410" height="1" fill="#dde3e9"/>
+  <text x="1065" y="329" class="small">Output: proof or counterexample trace</text>
+
+  <g filter="url(#shadow)">
+    <rect x="1040" y="362" width="490" height="168" rx="8" fill="#ffffff" stroke="#cbd3dc"/>
+  </g>
+  <circle cx="1081" cy="404" r="20" fill="#deeee2"/>
+  <circle cx="1075" cy="404" r="4" fill="#3e7b53"/><circle cx="1088" cy="395" r="4" fill="#3e7b53"/><circle cx="1089" cy="414" r="4" fill="#3e7b53"/>
+  <path d="M1078 402 L1085 397 M1078 407 L1085 412" stroke="#3e7b53" stroke-width="2"/>
+  <text x="1115" y="396" class="reader-title">Agent constructor + promise graph</text>
+  <text x="1115" y="422" class="reader-copy">Do offers, uses, conditions, and tools resolve?</text>
+  <text x="1065" y="461" class="small">Reads: &lt;promises&gt; and non-LLM manifests</text>
+  <rect x="1065" y="478" width="410" height="1" fill="#dde3e9"/>
+  <text x="1065" y="500" class="small">Output: bound tools + verified cooperation graph</text>
+
+  <g filter="url(#shadow)">
+    <rect x="1040" y="552" width="490" height="210" rx="8" fill="#ffffff" stroke="#cbd3dc"/>
+  </g>
+  <circle cx="1081" cy="594" r="20" fill="#fae9c7"/>
+  <path d="M1071 588 h20 v13 h-11 l-6 6 v-6 h-3 z" fill="none" stroke="#9a681e" stroke-width="2" stroke-linejoin="round"/>
+  <text x="1115" y="586" class="reader-title">LLM at runtime</text>
+  <text x="1115" y="612" class="reader-copy">What should I attempt, use, assess, and say?</text>
+  <text x="1065" y="651" class="small">Reads: the entire XML document as instructions</text>
+  <text x="1065" y="679" class="small">Exercises judgment and selects tools; it remains</text>
+  <text x="1065" y="702" class="small">autonomous and stochastic.</text>
+  <rect x="1065" y="722" width="410" height="1" fill="#dde3e9"/>
+  <text x="1065" y="746" class="small">Output: proposed action or user-facing response</text>
+
+  <!-- Connectors -->
+  <path d="M942 360 C990 360 997 266 1040 266" fill="none" stroke="#2563a6" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+  <path d="M942 469 C990 469 997 446 1040 446" fill="none" stroke="#3e7b53" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M960 585 C1000 585 1005 656 1040 656" fill="none" stroke="#b7791f" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- Enforcement boundary -->
+  <path d="M800 817 L800 852" fill="none" stroke="#51606f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M1275 764 L1275 852" fill="none" stroke="#51606f" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="835" y="843" class="small">requested operation</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="866" width="1460" height="130" rx="8" fill="#23323f"/>
+  </g>
+  <rect x="70" y="866" width="12" height="130" rx="6" fill="#d65b50"/>
+  <text x="105" y="902" class="eyebrow" style="fill:#f3b9b3">PYTHON ASSESSMENT + ENFORCEMENT BOUNDARY</text>
+  <text x="105" y="937" class="on-dark" font-size="22" font-weight="700">Re-check authoritative state before the operation commits.</text>
+  <text x="105" y="969" class="on-dark-muted" font-size="16">Keep the promise and change state, or decline with a structured refusal that names the unmet condition.</text>
+
+  <rect x="1080" y="895" width="190" height="66" rx="6" fill="#314554" stroke="#587080"/>
+  <text x="1175" y="921" font-size="14" font-weight="700" text-anchor="middle" style="fill:#bfe1c9">GUARD PASSES</text>
+  <text x="1175" y="947" class="on-dark" font-size="16" text-anchor="middle">commit + receipt</text>
+  <rect x="1290" y="895" width="210" height="66" rx="6" fill="#314554" stroke="#587080"/>
+  <text x="1395" y="921" font-size="14" font-weight="700" text-anchor="middle" style="fill:#f3b9b3">GUARD FAILS</text>
+  <text x="1395" y="947" class="on-dark" font-size="16" text-anchor="middle">refusal + unmet token</text>
+
+  <text x="70" y="1030" class="small">Promise intent is assessed at the boundary. A model-checked specification does not replace runtime enforcement.</text>
+</svg>

@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Tracing one assessed promise from XML to Python</title>
+  <desc id="desc">A detailed trace showing safety, condition, and capability identifiers linking an XML contract to Python guards, structured refusals, and tests.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#52606d"/></marker>
+    <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#2563a6"/></marker>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#3e7b53"/></marker>
+    <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#b54343"/></marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#1f2937" flood-opacity="0.12"/></filter>
+    <style>
+      text { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #17202a; letter-spacing: 0; }
+      .title { font-size: 38px; font-weight: 700; }
+      .subtitle { font-size: 18px; fill: #52606d; }
+      .stage { font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+      .head { font-size: 21px; font-weight: 700; }
+      .body { font-size: 16px; fill: #435363; }
+      .small { font-size: 14px; fill: #52606d; }
+      .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 15px; }
+      .code-sm { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 13px; }
+      .rail { font-size: 14px; font-weight: 700; }
+      .on-dark { fill: #ffffff; }
+      .wire-under { fill: none; stroke: #f7f8fa; stroke-width: 9px; stroke-linecap: round; stroke-linejoin: round; }
+      .wire { fill: none; stroke-width: 3px; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1120" fill="#f7f8fa"/>
+  <rect x="0" y="0" width="1800" height="10" fill="#2563a6"/>
+  <text x="70" y="70" class="title">Tracing one assessed promise: XML → Python → evidence</text>
+  <text x="70" y="103" class="subtitle">Three identifier families preserve meaning across different architectural relationships.</text>
+
+  <!-- Legend -->
+  <line x1="1125" y1="101" x2="1170" y2="101" stroke="#b54343" stroke-width="5"/>
+  <text x="1182" y="106" class="rail">Safety identity</text>
+  <line x1="1322" y1="101" x2="1367" y2="101" stroke="#3e7b53" stroke-width="5"/>
+  <text x="1379" y="106" class="rail">Condition identity</text>
+  <line x1="1530" y1="101" x2="1575" y2="101" stroke="#2563a6" stroke-width="5"/>
+  <text x="1587" y="106" class="rail">Capability identity</text>
+
+  <!-- Stage columns -->
+  <text x="70" y="155" class="stage" fill="#2563a6">1 · CONTRACT INTENT</text>
+  <text x="650" y="155" class="stage" fill="#7b4d11">2 · DECLARATIVE LINKS</text>
+  <text x="1230" y="155" class="stage" fill="#9d3434">3 · RUNTIME ASSESSMENT</text>
+
+  <line x1="610" y1="135" x2="610" y2="935" stroke="#d9e0e6" stroke-width="2"/>
+  <line x1="1190" y1="135" x2="1190" y2="935" stroke="#d9e0e6" stroke-width="2"/>
+
+  <!-- Contract card -->
+  <g filter="url(#shadow)"><rect x="70" y="180" width="500" height="755" rx="8" fill="#ffffff" stroke="#cbd3dc"/></g>
+  <rect x="70" y="180" width="500" height="55" rx="8" fill="#1f3347"/>
+  <rect x="70" y="227" width="500" height="8" fill="#1f3347"/>
+  <text x="95" y="214" class="on-dark" font-size="19" font-weight="700">agent_&lt;workflow&gt;.xml</text>
+
+  <rect x="90" y="255" width="460" height="185" rx="6" fill="#edf3fb"/>
+  <text x="110" y="286" class="head">&lt;contract&gt; / FizzBee</text>
+  <text x="110" y="317" class="code">action CommitAction:</text>
+  <text x="128" y="344" class="code" fill="#3e7b53">require precondition_met</text>
+  <text x="128" y="371" class="code" fill="#2563a6">committed = True</text>
+  <text x="110" y="404" class="code" fill="#b54343">always assertion NoUnsafeCommit:</text>
+  <text x="128" y="429" class="code-sm">return (not committed) or precondition_met</text>
+
+  <rect x="90" y="460" width="460" height="218" rx="6" fill="#f0f7f1"/>
+  <text x="110" y="491" class="head">&lt;promises&gt;</text>
+  <text x="110" y="524" class="code" fill="#2563a6">&lt;tool name="commit_action"/&gt;</text>
+  <text x="110" y="556" class="code">&lt;offer id="safe_action" ...&gt;</text>
+  <text x="128" y="583" class="code" fill="#3e7b53">&lt;condition ref="precondition_met"/&gt;</text>
+  <text x="110" y="615" class="code">&lt;/offer&gt;</text>
+  <text x="110" y="647" class="code-sm" fill="#3e7b53">&lt;use id="evidence" from="provider"</text>
+  <text x="128" y="669" class="code-sm" fill="#3e7b53">quenches="precondition_met"/&gt;</text>
+
+  <rect x="90" y="698" width="460" height="112" rx="6" fill="#fff0ef"/>
+  <text x="110" y="729" class="head">&lt;enforcement&gt;</text>
+  <text x="110" y="765" class="code" fill="#b54343">&lt;rule id="NoUnsafeCommit"&gt;</text>
+  <text x="128" y="791" class="code-sm">Refuse unless the precondition holds.</text>
+
+  <rect x="90" y="830" width="460" height="80" rx="6" fill="#fff7e8"/>
+  <text x="110" y="861" class="head">&lt;step-guidance&gt; + &lt;responses&gt;</text>
+  <text x="110" y="890" class="small">Attempt the tool only after evidence; relay its result.</text>
+
+  <!-- Middle relationships -->
+  <g filter="url(#shadow)"><rect x="650" y="180" width="500" height="226" rx="8" fill="#ffffff" stroke="#cbd3dc"/></g>
+  <text x="678" y="218" class="head">Safety trace</text>
+  <text x="678" y="248" class="body">One stable name pairs proof intent with code duty.</text>
+  <rect x="678" y="274" width="444" height="45" rx="5" fill="#fff0ef"/>
+  <text x="700" y="302" class="code" fill="#b54343">NoUnsafeCommit</text>
+  <text x="860" y="302" class="small">FizzBee assertion</text>
+  <path d="M900 326 L900 351" stroke="#b54343" stroke-width="3" marker-end="url(#red-arrow)"/>
+  <rect x="678" y="354" width="444" height="35" rx="5" fill="#f5dedd"/>
+  <text x="700" y="377" class="code-sm" fill="#b54343">rule id="NoUnsafeCommit"</text>
+  <text x="937" y="377" class="small">code twin expected</text>
+
+  <g filter="url(#shadow)"><rect x="650" y="428" width="500" height="258" rx="8" fill="#ffffff" stroke="#cbd3dc"/></g>
+  <text x="678" y="466" class="head">Condition trace</text>
+  <text x="678" y="496" class="body">One fact token crosses model, promise graph, and refusal.</text>
+  <rect x="678" y="522" width="444" height="42" rx="5" fill="#f0f7f1"/>
+  <text x="700" y="548" class="code" fill="#3e7b53">precondition_met</text>
+  <text x="884" y="548" class="small">FizzBee state + guard</text>
+  <path d="M900 570 L900 592" stroke="#3e7b53" stroke-width="3" marker-end="url(#green-arrow)"/>
+  <rect x="678" y="595" width="444" height="74" rx="5" fill="#deeee2"/>
+  <text x="700" y="621" class="code-sm" fill="#3e7b53">condition ref="precondition_met"</text>
+  <text x="700" y="650" class="code-sm" fill="#3e7b53">use ... quenches="precondition_met"</text>
+
+  <g filter="url(#shadow)"><rect x="650" y="708" width="500" height="227" rx="8" fill="#ffffff" stroke="#cbd3dc"/></g>
+  <text x="678" y="746" class="head">Capability trace</text>
+  <text x="678" y="776" class="body">A declared tool resolves to a real callable.</text>
+  <rect x="678" y="803" width="444" height="45" rx="5" fill="#edf3fb"/>
+  <text x="700" y="831" class="code" fill="#2563a6">tool name="commit_action"</text>
+  <path d="M900 854 L900 876" stroke="#2563a6" stroke-width="3" marker-end="url(#blue-arrow)"/>
+  <rect x="678" y="879" width="444" height="39" rx="5" fill="#dce8f7"/>
+  <text x="700" y="904" class="code" fill="#2563a6">def commit_action(...)</text>
+
+  <!-- Runtime code -->
+  <image x="1230" y="205" width="500" height="230" href="python-assessment-boundary.png" preserveAspectRatio="xMidYMid meet"/>
+
+  <!-- Test -->
+  <image x="1230" y="690" width="500" height="138" href="python-enforcement-test.png" preserveAspectRatio="xMidYMid meet"/>
+
+  <!-- Cross-column arrows -->
+  <path class="wire-under" d="M550 405 H580 Q594 405 594 391 V314 Q594 300 608 300 H650"/>
+  <path class="wire" d="M550 405 H580 Q594 405 594 391 V314 Q594 300 608 300 H650" stroke="#b54343" marker-end="url(#red-arrow)"/>
+  <path class="wire-under" d="M550 345 H565 Q579 345 579 359 V529 Q579 543 593 543 H650"/>
+  <path class="wire" d="M550 345 H565 Q579 345 579 359 V529 Q579 543 593 543 H650" stroke="#3e7b53" marker-end="url(#green-arrow)"/>
+  <path class="wire-under" d="M550 525 H570 Q584 525 584 539 V811 Q584 825 598 825 H650"/>
+  <path class="wire" d="M550 525 H570 Q584 525 584 539 V811 Q584 825 598 825 H650" stroke="#2563a6" marker-end="url(#blue-arrow)"/>
+
+  <path class="wire-under" d="M1150 371 H1196 Q1210 371 1210 357 V323 Q1210 309 1224 309 H1230"/>
+  <path class="wire" d="M1150 371 H1196 Q1210 371 1210 357 V323 Q1210 309 1224 309 H1230" stroke="#b54343" marker-end="url(#red-arrow)"/>
+  <path class="wire-under" d="M1150 631 H1180 Q1194 631 1194 617 V355 Q1194 341 1208 341 H1230"/>
+  <path class="wire" d="M1150 631 H1180 Q1194 631 1194 617 V355 Q1194 341 1208 341 H1230" stroke="#3e7b53" marker-end="url(#green-arrow)"/>
+  <path class="wire-under" d="M1150 898 H1164 Q1178 898 1178 884 V289 Q1178 275 1192 275 H1230"/>
+  <path class="wire" d="M1150 898 H1164 Q1178 898 1178 884 V289 Q1178 275 1192 275 H1230" stroke="#2563a6" marker-end="url(#blue-arrow)"/>
+
+  <!-- Assurance gates -->
+  <text x="70" y="991" class="stage" fill="#52606d">LAYERED EVIDENCE · ALL FOUR GATES MATTER</text>
+  <line x1="70" y1="1015" x2="1730" y2="1015" stroke="#cbd3dc" stroke-width="2"/>
+
+  <circle cx="206" cy="1062" r="28" fill="#e8edf1"/><text x="206" y="1069" text-anchor="middle" font-size="20" font-weight="700">1</text>
+  <text x="250" y="1055" class="head">Schema</text><text x="250" y="1082" class="small">complete and well-formed</text>
+  <path d="M445 1062 L500 1062" stroke="#52606d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <circle cx="555" cy="1062" r="28" fill="#dce8f7"/><text x="555" y="1069" text-anchor="middle" font-size="20" font-weight="700">2</text>
+  <text x="599" y="1055" class="head">Model check</text><text x="599" y="1082" class="small">invariant holds in modeled states</text>
+  <path d="M875 1062 L930 1062" stroke="#52606d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <circle cx="985" cy="1062" r="28" fill="#deeee2"/><text x="985" y="1069" text-anchor="middle" font-size="20" font-weight="700">3</text>
+  <text x="1029" y="1055" class="head">Promise graph</text><text x="1029" y="1082" class="small">dependencies and bindings resolve</text>
+  <path d="M1310 1062 L1365 1062" stroke="#52606d" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <circle cx="1420" cy="1062" r="28" fill="#f5dedd"/><text x="1420" y="1069" text-anchor="middle" font-size="20" font-weight="700">4</text>
+  <text x="1464" y="1055" class="head">Enforcement test</text><text x="1464" y="1082" class="small">forbidden operation is refused in code</text>
+</svg>
