@@ -236,7 +236,7 @@ as evidence:
 | Failure | What to inspect |
 | --- | --- |
 | XSD validation | Missing or misordered sections, required attributes, controlled vocabulary |
-| FizzBee counterexample | The exact reachable action sequence; missing guard or incorrect invariant |
+| [FizzBee counterexample](../counterexample-debugging/README.md) | The exact reachable action sequence; missing guard or incorrect invariant |
 | Promise-graph failure | Unmatched offer/use, unquenched condition, or invalid declared entailment where that check is enabled |
 | Enforcement-test failure | Guard logic, refusal evidence, or forbidden state mutation |
 

@@ -10,6 +10,7 @@ the relevant guide.
 | --- | --- | --- |
 | Understand the method quickly | [From Contract to Enforcement](contract-assessment/README.md) | [The assurance model](assurance-model/README.md) |
 | Author or change an agent contract | [Authoring an Agent Contract](authoring-workflow/README.md) | [Contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
+| Diagnose a failed model check | [Debugging a FizzBee Counterexample](counterexample-debugging/README.md) | [The assurance model](assurance-model/README.md) |
 | Compose several agents and services | [Composing Promises](promise-graph/README.md) | [Promise Theory architecture analysis](promise-theory-architecture.md) |
 | Understand the theory | [The Promise-Driven Agent](why-promise-driven-agents.md) | [Promise Theory architecture analysis](promise-theory-architecture.md) |
 | Evaluate the approach without formal-methods background | [Contracts, Not Prompts](contracts-not-prompts.md) | [From Contract to Enforcement](contract-assessment/README.md) |
@@ -22,7 +23,7 @@ The documentation follows the same lifecycle as the method:
 
 | Stage | Engineering work | Primary guides |
 | --- | --- | --- |
-| **Design** | Define behavior, promises, conditions, and invariants; validate the XML; model-check reachable states; verify the promise graph. | [Authoring workflow](authoring-workflow/README.md), [Promise Graph guide](promise-graph/README.md), [contract anatomy](../skills/authoring-agent-contracts/references/contract-anatomy.md) |
+| **Design** | Define behavior, promises, conditions, and invariants; validate the XML; model-check reachable states; verify the promise graph. | [Authoring workflow](authoring-workflow/README.md), [counterexample debugging](counterexample-debugging/README.md), [Promise Graph guide](promise-graph/README.md) |
 | **Build** | Bind tools, implement deterministic safeguards, create enforcement-twin tests, and run the complete gate. | [Authoring workflow](authoring-workflow/README.md), [contract-to-enforcement guide](contract-assessment/README.md) |
 | **Run** | Give the contract to the LLM and reassess consequential operations against authoritative state. | [Contract-to-enforcement guide](contract-assessment/README.md), [assurance model](assurance-model/README.md) |
 
@@ -43,6 +44,8 @@ The documentation follows the same lifecycle as the method:
   promise to a contract, implementation guard, test twin, and green verification gate.
 - [Composing Promises](promise-graph/README.md) explains offer/use binding, condition
   quenching, deterministic participants, external parties, and superagent entailment.
+- [Debugging a FizzBee Counterexample](counterexample-debugging/README.md) turns a
+  failed invariant trace into a classified design defect, repair, and complete recheck.
 - [Five Questions, Five Kinds of Evidence](assurance-model/README.md) explains what each
   verification layer establishes and, equally importantly, what it does not establish.
 

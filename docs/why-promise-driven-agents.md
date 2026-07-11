@@ -202,6 +202,9 @@ If someone adds an action that could set `active_workflow` while `patient_verifi
 
 **This is not hypothetical.** The Trials of the Holy Grail example has a Quest Marshal that grants the Grail only after both trials pass (`GrailRequiresBothTrials`). Its *first draft failed model-checking*: a knight could re-attempt an already-passed trial and flip it back to failed *after* the Grail was granted, violating the invariant. The checker produced the counterexample trace; the fix (making a passed trial sticky) was mechanical. That is pre-assessment doing its job on a real defect.
 
+[Debugging a FizzBee Counterexample](counterexample-debugging/README.md) develops this
+failure-to-repair process with a small runnable model and state-by-state illustration.
+
 In Promise Theory terms, this is **pre-assessment** (Part VI): a proof that the agent's promise set is internally *coherent* — that the agent is not promising something it has structurally made impossible — before the promise is ever offered. The `verified="fizz-0.5.1"` attribute stamped in each `<fizzbee>` tag records which toolchain version last certified it.
 
 ## 3.4 The crucial reinterpretation: `runtime-instructions` mode

@@ -1,0 +1,23 @@
+---
+deadlock_detection: false
+liveness: "false"
+options:
+  max_concurrent_actions: 1
+---
+
+action Init:
+    evidence_valid = True
+    committed = False
+
+atomic action CommitAction:
+    require evidence_valid
+    require not committed
+    committed = True
+
+atomic action RevokeEvidence:
+    require evidence_valid
+    evidence_valid = False
+
+always assertion NoUnsafeCommit:
+    return (not committed) or evidence_valid
+
