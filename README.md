@@ -1,5 +1,9 @@
 # promise-driven-agentic-kit
 
+**[Corpus Table of Contents](docs/corpus-table-of-contents.md)** — the master reading
+order for every chapter, illustration, schema, skill, template, article, and runnable
+example in the kit.
+
 **A portable methodology kit for building agentic systems from model-checked,
 Promise-Theoretic contracts rather than relying on prose prompts alone.**
 

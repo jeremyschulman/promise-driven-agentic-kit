@@ -1,5 +1,8 @@
 # Documentation
 
+**Start with the [Corpus Table of Contents](corpus-table-of-contents.md)** for the
+complete section-and-chapter reading order and the full supporting-asset inventory.
+
 The promise-driven-agentic-kit is a methodology and a set of reusable engineering
 artifacts. Use this page to choose the shortest path from your current question to
 the relevant guide.
