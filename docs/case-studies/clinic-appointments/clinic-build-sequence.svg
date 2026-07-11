@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1080" viewBox="0 0 1800 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Clinic package build sequence</title>
+  <desc id="desc">The Clinic package is reconstructed across Design, Build, and Run: define risks and participants, author six documents, model and verify, bind tools, implement services and tests, construct ADK agents, and reassess real operations.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#17202b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#607181"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .phase { font-size: 21px; font-weight: 700; letter-spacing: 1px; }
+      .phase-copy { font-size: 16px; fill: #5c6b7a; }
+      .num { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .heading { font-size: 22px; font-weight: 700; }
+      .body { font-size: 17px; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 15px; }
+      .label { font-size: 14px; font-weight: 700; letter-spacing: 1px; }
+      .band-label { font-size: 14px; font-weight: 700; letter-spacing: 1px; fill: #ffffff; }
+      .band-title { font-size: 27px; font-weight: 700; fill: #ffffff; }
+      .band-copy { font-size: 19px; fill: #dce5ec; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1080" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">Building the Clinic package, one assurance layer at a time</text>
+  <text x="60" y="108" class="subtitle">Each step produces an artifact consumed by the next step; the complete gate preserves the distinctions between their claims.</text>
+
+  <!-- Phase headers -->
+  <rect x="60" y="142" width="540" height="70" rx="8" fill="#e5edf7"/>
+  <text x="88" y="173" class="phase" fill="#315e8c">DESIGN</text>
+  <text x="88" y="198" class="phase-copy">intent · boundaries · model · composition</text>
+  <rect x="630" y="142" width="540" height="70" rx="8" fill="#e7f2ea"/>
+  <text x="658" y="173" class="phase" fill="#356b48">BUILD</text>
+  <text x="658" y="198" class="phase-copy">load · bind · enforce · test</text>
+  <rect x="1200" y="142" width="540" height="70" rx="8" fill="#faecd8"/>
+  <text x="1228" y="173" class="phase" fill="#80571f">RUN</text>
+  <text x="1228" y="198" class="phase-copy">construct · propose · reassess · communicate</text>
+
+  <!-- Design cards -->
+  <g filter="url(#shadow)"><rect x="60" y="244" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="96" cy="282" r="20" fill="#2e6eaf"/>
+  <text x="96" y="289" class="num" text-anchor="middle">1</text>
+  <text x="128" y="290" class="heading">State the safety case and participants</text>
+  <text x="88" y="331" class="body">Identity, eligibility, confirmation, ownership, and slot state</text>
+  <text x="88" y="361" class="body">receive explicit authorities and refusal outcomes.</text>
+  <text x="88" y="392" class="mono">3 LLM contracts · 3 deterministic manifests</text>
+
+  <g filter="url(#shadow)"><rect x="60" y="436" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="96" cy="474" r="20" fill="#2e6eaf"/>
+  <text x="96" y="481" class="num" text-anchor="middle">2</text>
+  <text x="128" y="482" class="heading">Author the six-section LLM contracts</text>
+  <text x="88" y="523" class="body">Objective, verifiable behavior, promises, guidance,</text>
+  <text x="88" y="553" class="body">enforcement traceability, and responses stay coordinated.</text>
+  <text x="88" y="584" class="mono">agent_clinic_orchestrator · book · manage</text>
+
+  <g filter="url(#shadow)"><rect x="60" y="628" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="96" cy="666" r="20" fill="#2e6eaf"/>
+  <text x="96" y="673" class="num" text-anchor="middle">3</text>
+  <text x="128" y="674" class="heading">Check models and promise composition</text>
+  <text x="88" y="715" class="body">FizzBee explores reachable states; the graph resolves</text>
+  <text x="88" y="745" class="body">provider offers and condition quenchers.</text>
+  <text x="88" y="776" class="mono">3 model results · 6-agent coherent graph</text>
+
+  <!-- Build cards -->
+  <g filter="url(#shadow)"><rect x="630" y="244" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="666" cy="282" r="20" fill="#3e7d54"/>
+  <text x="666" y="289" class="num" text-anchor="middle">4</text>
+  <text x="698" y="290" class="heading">Load one artifact for several consumers</text>
+  <text x="658" y="331" class="body">Preserve full XML, extract FizzBee, parse promises,</text>
+  <text x="658" y="361" class="body">and resolve every declared tool name.</text>
+  <text x="658" y="392" class="mono">contract_doc.py · promises.py · build.py</text>
+
+  <g filter="url(#shadow)"><rect x="630" y="436" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="666" cy="474" r="20" fill="#3e7d54"/>
+  <text x="666" y="481" class="num" text-anchor="middle">5</text>
+  <text x="698" y="482" class="heading">Implement deterministic boundaries</text>
+  <text x="658" y="523" class="body">Thin tools delegate to registry, eligibility, and schedule.</text>
+  <text x="658" y="553" class="body">Guards execute before protected state changes.</text>
+  <text x="658" y="584" class="mono">tools.py -> services/*.py -> ClinicStore</text>
+
+  <g filter="url(#shadow)"><rect x="630" y="628" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="666" cy="666" r="20" fill="#3e7d54"/>
+  <text x="666" y="673" class="num" text-anchor="middle">6</text>
+  <text x="698" y="674" class="heading">Exercise forbidden and permitted paths</text>
+  <text x="658" y="715" class="body">Schema tests, enforcement twins, model checks, and</text>
+  <text x="658" y="745" class="body">graph checks run without an LLM or credentials.</text>
+  <text x="658" y="776" class="mono">pytest · fizz · verify_promise_graph.py</text>
+
+  <!-- Run cards -->
+  <g filter="url(#shadow)"><rect x="1200" y="244" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="1236" cy="282" r="20" fill="#b77720"/>
+  <text x="1236" y="289" class="num" text-anchor="middle">7</text>
+  <text x="1268" y="290" class="heading">Construct the ADK agent society</text>
+  <text x="1228" y="331" class="body">The complete XML becomes runtime instruction; contract</text>
+  <text x="1228" y="361" class="body">tools and code-supplied subagents become framework wiring.</text>
+  <text x="1228" y="392" class="mono">orchestrator -> book + manage</text>
+
+  <g filter="url(#shadow)"><rect x="1200" y="436" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="1236" cy="474" r="20" fill="#b77720"/>
+  <text x="1236" y="481" class="num" text-anchor="middle">8</text>
+  <text x="1268" y="482" class="heading">Interpret, propose, and reassess</text>
+  <text x="1228" y="523" class="body">The LLM proposes a tool call. Services read current identity,</text>
+  <text x="1228" y="553" class="body">coverage, ownership, confirmation, and slot state.</text>
+  <text x="1228" y="584" class="mono">commit | structured refusal</text>
+
+  <g filter="url(#shadow)"><rect x="1200" y="628" width="540" height="166" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="1236" cy="666" r="20" fill="#b77720"/>
+  <text x="1236" y="673" class="num" text-anchor="middle">9</text>
+  <text x="1268" y="674" class="heading">Communicate and preserve evidence</text>
+  <text x="1228" y="715" class="body">The current example returns result dictionaries; a hardened</text>
+  <text x="1228" y="745" class="body">system also records versioned promise assessments.</text>
+  <text x="1228" y="776" class="mono">receipt/refusal now · ledger later</text>
+
+  <!-- Connectors -->
+  <path d="M330 410 V426" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M330 602 V618" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M600 710 H620" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M900 410 V426" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M900 602 V618" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1170 710 H1190" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1470 410 V426" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1470 602 V618" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Evidence chain -->
+  <rect x="60" y="846" width="1680" height="164" rx="8" fill="#223547"/>
+  <text x="92" y="892" class="band-title">The package grows; the claims remain separate.</text>
+  <text x="92" y="928" class="band-copy">Structure → modeled safety → composition → executable safeguards → exercised paths → current decision</text>
+  <line x1="92" y1="960" x2="1700" y2="960" stroke="#5e7387" stroke-width="2"/>
+  <text x="92" y="990" class="band-label">COMPLETE GATE</text>
+  <text x="260" y="990" class="mono" style="fill:#dce5ec">XSD + FizzBee + promise graph + pytest</text>
+  <text x="870" y="990" class="body" style="fill:#dce5ec">No green result substitutes for the next layer.</text>
+</svg>

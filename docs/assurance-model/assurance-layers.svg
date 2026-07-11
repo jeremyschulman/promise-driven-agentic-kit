@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1080" viewBox="0 0 1800 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Five questions, five kinds of evidence</title>
+  <desc id="desc">Five assurance gates across Design, Build, and Run: schema validation, FizzBee model checking, promise graph verification, enforcement testing, and runtime assessment. Each gate shows its question, evidence, assurance claim, and limit.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#17202b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#627181"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .phase { font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+      .gate { font-size: 25px; font-weight: 700; }
+      .num { font-size: 20px; font-weight: 700; fill: #ffffff; }
+      .label { font-size: 15px; font-weight: 700; letter-spacing: 1px; fill: #657383; }
+      .body { font-size: 19px; }
+      .limit { font-size: 18px; fill: #7b3f3f; }
+      .band-title { font-size: 27px; font-weight: 700; fill: #ffffff; }
+      .band-copy { font-size: 19px; fill: #dce5ec; }
+      .band-step { font-size: 17px; font-weight: 700; fill: #ffffff; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1080" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="74" class="title">Five questions, five kinds of evidence</text>
+  <text x="60" y="108" class="subtitle">Each gate supports a narrower claim. Together they form an evidence chain across Design → Build → Run.</text>
+
+  <rect x="60" y="142" width="980" height="58" rx="8" fill="#e4edf7"/>
+  <text x="550" y="179" class="phase" text-anchor="middle" fill="#244f7c">DESIGN · describe and verify intent</text>
+  <rect x="1080" y="142" width="300" height="58" rx="8" fill="#f8e4e2"/>
+  <text x="1230" y="179" class="phase" text-anchor="middle" fill="#8f3937">BUILD · test the guard</text>
+  <rect x="1420" y="142" width="300" height="58" rx="8" fill="#faecd5"/>
+  <text x="1570" y="179" class="phase" text-anchor="middle" fill="#805519">RUN · assess now</text>
+
+  <!-- Gate 1 -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="228" width="300" height="590" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="60" y="228" width="300" height="76" rx="8" fill="#edf2f6"/>
+  <rect x="60" y="296" width="300" height="8" fill="#edf2f6"/>
+  <circle cx="91" cy="266" r="19" fill="#607588"/>
+  <text x="91" y="273" class="num" text-anchor="middle">1</text>
+  <text x="122" y="275" class="gate">Schema validation</text>
+  <text x="84" y="347" class="label">QUESTION</text>
+  <text x="84" y="382" class="body">Is the document complete</text>
+  <text x="84" y="410" class="body">and well formed?</text>
+  <line x1="84" y1="442" x2="336" y2="442" stroke="#dbe1e7"/>
+  <text x="84" y="477" class="label">EVIDENCE</text>
+  <text x="84" y="512" class="body">XSD validation result</text>
+  <line x1="84" y1="548" x2="336" y2="548" stroke="#dbe1e7"/>
+  <text x="84" y="583" class="label">ESTABLISHES</text>
+  <text x="84" y="618" class="body">Required structure and</text>
+  <text x="84" y="646" class="body">controlled vocabulary</text>
+  <line x1="84" y1="682" x2="336" y2="682" stroke="#dbe1e7"/>
+  <text x="84" y="717" class="label">DOES NOT ESTABLISH</text>
+  <text x="84" y="752" class="limit">Behavioral safety or</text>
+  <text x="84" y="780" class="limit">dependency coherence</text>
+
+  <!-- Gate 2 -->
+  <g filter="url(#shadow)">
+    <rect x="400" y="228" width="300" height="590" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="400" y="228" width="300" height="76" rx="8" fill="#e7f0fb"/>
+  <rect x="400" y="296" width="300" height="8" fill="#e7f0fb"/>
+  <circle cx="431" cy="266" r="19" fill="#2d6caf"/>
+  <text x="431" y="273" class="num" text-anchor="middle">2</text>
+  <text x="462" y="275" class="gate">FizzBee model check</text>
+  <text x="424" y="347" class="label">QUESTION</text>
+  <text x="424" y="382" class="body">Can a modeled path</text>
+  <text x="424" y="410" class="body">violate an invariant?</text>
+  <line x1="424" y1="442" x2="676" y2="442" stroke="#dbe1e7"/>
+  <text x="424" y="477" class="label">EVIDENCE</text>
+  <text x="424" y="512" class="body">Proof result or</text>
+  <text x="424" y="540" class="body">counterexample trace</text>
+  <line x1="424" y1="568" x2="676" y2="568" stroke="#dbe1e7"/>
+  <text x="424" y="603" class="label">ESTABLISHES</text>
+  <text x="424" y="638" class="body">Modeled reachability and</text>
+  <text x="424" y="666" class="body">invariant coherence</text>
+  <line x1="424" y1="696" x2="676" y2="696" stroke="#dbe1e7"/>
+  <text x="424" y="731" class="label">DOES NOT ESTABLISH</text>
+  <text x="424" y="766" class="limit">LLM compliance or</text>
+  <text x="424" y="794" class="limit">Python correctness</text>
+
+  <!-- Gate 3 -->
+  <g filter="url(#shadow)">
+    <rect x="740" y="228" width="300" height="590" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="740" y="228" width="300" height="76" rx="8" fill="#e8f3eb"/>
+  <rect x="740" y="296" width="300" height="8" fill="#e8f3eb"/>
+  <circle cx="771" cy="266" r="19" fill="#3d7b52"/>
+  <text x="771" y="273" class="num" text-anchor="middle">3</text>
+  <text x="802" y="275" class="gate">Promise graph</text>
+  <text x="764" y="347" class="label">QUESTION</text>
+  <text x="764" y="382" class="body">Do offers, uses, and</text>
+  <text x="764" y="410" class="body">conditions compose?</text>
+  <line x1="764" y1="442" x2="1016" y2="442" stroke="#dbe1e7"/>
+  <text x="764" y="477" class="label">EVIDENCE</text>
+  <text x="764" y="512" class="body">Verified dependency</text>
+  <text x="764" y="540" class="body">and binding graph</text>
+  <line x1="764" y1="568" x2="1016" y2="568" stroke="#dbe1e7"/>
+  <text x="764" y="603" class="label">ESTABLISHES</text>
+  <text x="764" y="638" class="body">Declared cooperation</text>
+  <text x="764" y="666" class="body">is coherent</text>
+  <line x1="764" y1="696" x2="1016" y2="696" stroke="#dbe1e7"/>
+  <text x="764" y="731" class="label">DOES NOT ESTABLISH</text>
+  <text x="764" y="766" class="limit">Provider availability or</text>
+  <text x="764" y="794" class="limit">honest runtime behavior</text>
+
+  <!-- Gate 4 -->
+  <g filter="url(#shadow)">
+    <rect x="1080" y="228" width="300" height="590" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="1080" y="228" width="300" height="76" rx="8" fill="#f8e8e6"/>
+  <rect x="1080" y="296" width="300" height="8" fill="#f8e8e6"/>
+  <circle cx="1111" cy="266" r="19" fill="#b64b47"/>
+  <text x="1111" y="273" class="num" text-anchor="middle">4</text>
+  <text x="1142" y="275" class="gate">Enforcement test</text>
+  <text x="1104" y="347" class="label">QUESTION</text>
+  <text x="1104" y="382" class="body">Does code refuse the</text>
+  <text x="1104" y="410" class="body">forbidden operation?</text>
+  <line x1="1104" y1="442" x2="1356" y2="442" stroke="#dbe1e7"/>
+  <text x="1104" y="477" class="label">EVIDENCE</text>
+  <text x="1104" y="512" class="body">Passing test plus</text>
+  <text x="1104" y="540" class="body">unchanged state</text>
+  <line x1="1104" y1="568" x2="1356" y2="568" stroke="#dbe1e7"/>
+  <text x="1104" y="603" class="label">ESTABLISHES</text>
+  <text x="1104" y="638" class="body">Implemented safeguard</text>
+  <text x="1104" y="666" class="body">for exercised cases</text>
+  <line x1="1104" y1="696" x2="1356" y2="696" stroke="#dbe1e7"/>
+  <text x="1104" y="731" class="label">DOES NOT ESTABLISH</text>
+  <text x="1104" y="766" class="limit">Every input, integration,</text>
+  <text x="1104" y="794" class="limit">or production path</text>
+
+  <!-- Gate 5 -->
+  <g filter="url(#shadow)">
+    <rect x="1420" y="228" width="300" height="590" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="1420" y="228" width="300" height="76" rx="8" fill="#fbefd9"/>
+  <rect x="1420" y="296" width="300" height="8" fill="#fbefd9"/>
+  <circle cx="1451" cy="266" r="19" fill="#b77a21"/>
+  <text x="1451" y="273" class="num" text-anchor="middle">5</text>
+  <text x="1482" y="275" class="gate">Runtime assessment</text>
+  <text x="1444" y="347" class="label">QUESTION</text>
+  <text x="1444" y="382" class="body">May this operation</text>
+  <text x="1444" y="410" class="body">commit right now?</text>
+  <line x1="1444" y1="442" x2="1696" y2="442" stroke="#dbe1e7"/>
+  <text x="1444" y="477" class="label">EVIDENCE</text>
+  <text x="1444" y="512" class="body">Commit receipt or</text>
+  <text x="1444" y="540" class="body">structured refusal</text>
+  <line x1="1444" y1="568" x2="1696" y2="568" stroke="#dbe1e7"/>
+  <text x="1444" y="603" class="label">ESTABLISHES</text>
+  <text x="1444" y="638" class="body">Current decision against</text>
+  <text x="1444" y="666" class="body">authoritative state</text>
+  <line x1="1444" y1="696" x2="1696" y2="696" stroke="#dbe1e7"/>
+  <text x="1444" y="731" class="label">DOES NOT ESTABLISH</text>
+  <text x="1444" y="766" class="limit">Future behavior or</text>
+  <text x="1444" y="794" class="limit">universal correctness</text>
+
+  <path d="M365 520 H393" fill="none" stroke="#627181" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M705 520 H733" fill="none" stroke="#627181" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M1045 520 H1073" fill="none" stroke="#627181" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M1385 520 H1413" fill="none" stroke="#627181" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="60" y="870" width="1660" height="150" rx="8" fill="#223547"/>
+  <text x="92" y="916" class="band-title">Evidence accumulates; it does not substitute.</text>
+  <text x="92" y="950" class="band-copy">A green result supports only the claim that gate was designed to answer. Preserve every layer and its stable identifiers.</text>
+  <text x="92" y="991" class="band-step">STRUCTURE</text>
+  <text x="348" y="991" class="band-step">→ MODELED SAFETY</text>
+  <text x="665" y="991" class="band-step">→ COMPOSITION</text>
+  <text x="940" y="991" class="band-step">→ TESTED GUARD</text>
+  <text x="1240" y="991" class="band-step">→ CURRENT DECISION</text>
+</svg>

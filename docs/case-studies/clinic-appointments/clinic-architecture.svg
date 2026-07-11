@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1080" viewBox="0 0 1800 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Clinic Appointments runtime architecture</title>
+  <desc id="desc">The external patient interacts with an LLM orchestrator and booking and management subagents. Thin tool adapters connect them to deterministic registry, eligibility, and schedule authorities that own identity, coverage, and appointment state.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#17202b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#607181"/>
+    </marker>
+    <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2e6eaf"/>
+    </marker>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3e7d54"/>
+    </marker>
+    <marker id="amber-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b77720"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .zone { font-size: 16px; font-weight: 700; letter-spacing: 1px; }
+      .heading { font-size: 25px; font-weight: 700; }
+      .body { font-size: 17px; }
+      .small { font-size: 15px; fill: #607080; }
+      .label { font-size: 14px; font-weight: 700; letter-spacing: 1px; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 15px; }
+      .edge { font-size: 14px; font-weight: 700; fill: #4f5f6f; }
+      .band-title { font-size: 27px; font-weight: 700; fill: #ffffff; }
+      .band-copy { font-size: 19px; fill: #dce5ec; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1080" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">Clinic Appointments: judgment separated from authority</text>
+  <text x="60" y="108" class="subtitle">Three LLM contracts coordinate the conversation; three deterministic manifests expose the facts and decisions the workflow relies on.</text>
+
+  <rect x="60" y="142" width="270" height="54" rx="8" fill="#f1eef7"/>
+  <text x="195" y="176" class="zone" text-anchor="middle" fill="#665082">EXTERNAL PARTICIPANT</text>
+  <rect x="370" y="142" width="650" height="54" rx="8" fill="#e5edf7"/>
+  <text x="695" y="176" class="zone" text-anchor="middle" fill="#315e8c">LLM AGENT SOCIETY · GOOGLE ADK</text>
+  <rect x="1060" y="142" width="180" height="54" rx="8" fill="#edf2f6"/>
+  <text x="1150" y="176" class="zone" text-anchor="middle" fill="#526576">TOOLS</text>
+  <rect x="1280" y="142" width="460" height="54" rx="8" fill="#e7f2ea"/>
+  <text x="1510" y="176" class="zone" text-anchor="middle" fill="#356b48">DETERMINISTIC AUTHORITIES</text>
+
+  <!-- Patient -->
+  <g filter="url(#shadow)"><rect x="60" y="264" width="270" height="440" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <circle cx="195" cy="332" r="34" fill="#75579a"/>
+  <text x="195" y="340" text-anchor="middle" style="font-size:24px;font-weight:700;fill:#ffffff">P</text>
+  <text x="195" y="395" class="heading" text-anchor="middle">patient</text>
+  <text x="195" y="425" class="small" text-anchor="middle">human · external party</text>
+  <line x1="92" y1="458" x2="298" y2="458" stroke="#d7dee5"/>
+  <text x="92" y="493" class="label">PROVIDES</text>
+  <text x="92" y="526" class="body">request and identity</text>
+  <text x="92" y="555" class="body">self-pay choice</text>
+  <text x="92" y="584" class="body">exact-slot confirmation</text>
+  <text x="92" y="628" class="label">ASSESSES</text>
+  <text x="92" y="661" class="body">whether the clinic kept</text>
+  <text x="92" y="690" class="body">its conditional promise</text>
+
+  <!-- Orchestrator -->
+  <g filter="url(#shadow)"><rect x="470" y="232" width="450" height="220" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <rect x="470" y="232" width="450" height="52" rx="8" fill="#dfeaf7"/>
+  <rect x="470" y="276" width="450" height="8" fill="#dfeaf7"/>
+  <text x="494" y="266" class="label" fill="#2e6399">ROOT LLM AGENT</text>
+  <text x="494" y="326" class="heading">clinic_orchestrator</text>
+  <text x="494" y="360" class="body">verify identity · classify one intent · route</text>
+  <text x="494" y="393" class="mono">PatientVerifiedBeforeWorkflow</text>
+  <text x="494" y="422" class="mono">RuleOfOne</text>
+
+  <!-- Booking -->
+  <g filter="url(#shadow)"><rect x="370" y="520" width="300" height="250" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <rect x="370" y="520" width="300" height="50" rx="8" fill="#eaf1fa"/>
+  <rect x="370" y="562" width="300" height="8" fill="#eaf1fa"/>
+  <text x="392" y="553" class="label" fill="#2e6399">WORKFLOW LLM</text>
+  <text x="392" y="610" class="heading">book_appointment</text>
+  <text x="392" y="644" class="body">eligibility · slot · confirm</text>
+  <text x="392" y="682" class="mono">NoDoubleBook</text>
+  <text x="392" y="711" class="mono">CoveredOrSelfPay</text>
+  <text x="392" y="740" class="mono">ConfirmBeforeBooking</text>
+
+  <!-- Manage -->
+  <g filter="url(#shadow)"><rect x="720" y="520" width="300" height="250" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <rect x="720" y="520" width="300" height="50" rx="8" fill="#eaf1fa"/>
+  <rect x="720" y="562" width="300" height="8" fill="#eaf1fa"/>
+  <text x="742" y="553" class="label" fill="#2e6399">WORKFLOW LLM</text>
+  <text x="742" y="610" class="heading">manage_appointment</text>
+  <text x="742" y="644" class="body">resolve · own · confirm · change</text>
+  <text x="742" y="682" class="mono">CancelRequiresOwnership</text>
+  <text x="742" y="711" class="mono">ChangeRequiresConfirmation</text>
+  <text x="742" y="740" class="mono">RescheduleNoDoubleBook</text>
+
+  <!-- Tool adapter -->
+  <g filter="url(#shadow)"><rect x="1060" y="264" width="180" height="506" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="1150" y="310" class="heading" text-anchor="middle">tools.py</text>
+  <text x="1150" y="340" class="small" text-anchor="middle">thin adapters</text>
+  <line x1="1088" y1="370" x2="1212" y2="370" stroke="#d7dee5"/>
+  <text x="1086" y="410" class="mono">verify_patient</text>
+  <text x="1086" y="452" class="mono">check_eligibility</text>
+  <text x="1086" y="494" class="mono">list_open_slots</text>
+  <text x="1086" y="536" class="mono">create_booking</text>
+  <text x="1086" y="578" class="mono">cancel_booking</text>
+  <text x="1086" y="620" class="mono">reschedule_booking</text>
+  <rect x="1086" y="668" width="128" height="70" rx="6" fill="#edf2f6"/>
+  <text x="1150" y="698" class="small" text-anchor="middle">no domain</text>
+  <text x="1150" y="721" class="small" text-anchor="middle">decision logic</text>
+
+  <!-- Registry -->
+  <g filter="url(#shadow)"><rect x="1280" y="232" width="460" height="180" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <rect x="1280" y="232" width="460" height="50" rx="8" fill="#e7f2ea"/>
+  <rect x="1280" y="274" width="460" height="8" fill="#e7f2ea"/>
+  <text x="1304" y="265" class="label" fill="#356b48">IDENTITY + SESSION AUTHORITY</text>
+  <text x="1304" y="324" class="heading">patient_registry</text>
+  <text x="1304" y="358" class="body">enrolled identity · active patient · isolation</text>
+  <text x="1304" y="388" class="mono">patient_identity · active_patient</text>
+
+  <!-- Eligibility -->
+  <g filter="url(#shadow)"><rect x="1280" y="448" width="460" height="150" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <rect x="1280" y="448" width="460" height="50" rx="8" fill="#faecd8"/>
+  <rect x="1280" y="490" width="460" height="8" fill="#faecd8"/>
+  <text x="1304" y="481" class="label" fill="#81571f">POINT-IN-TIME VERDICT</text>
+  <text x="1304" y="538" class="heading">insurance_eligibility</text>
+  <text x="1304" y="570" class="mono">eligibility_check · non_authoritative</text>
+
+  <!-- Schedule -->
+  <g filter="url(#shadow)"><rect x="1280" y="634" width="460" height="240" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <rect x="1280" y="634" width="460" height="50" rx="8" fill="#f8e9e7"/>
+  <rect x="1280" y="676" width="460" height="8" fill="#f8e9e7"/>
+  <text x="1304" y="667" class="label" fill="#953f3b">AUTHORITATIVE WRITE BOUNDARY</text>
+  <text x="1304" y="724" class="heading">provider_schedule</text>
+  <text x="1304" y="758" class="body">providers · slots · appointments</text>
+  <text x="1304" y="795" class="mono">open_slots · commit_booking</text>
+  <text x="1304" y="824" class="mono">appointment_record · cancel_slot</text>
+  <text x="1304" y="853" class="mono">no_double_book</text>
+
+  <!-- Conversation and delegation edges -->
+  <path d="M330 330 H430 Q446 330 446 314 V300 Q446 284 462 284" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="358" y="316" class="edge">request + identity</text>
+  <path d="M470 402 H430 Q414 402 414 418 V438 Q414 454 398 454 H330" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="352" y="438" class="edge">response / refusal</text>
+  <path d="M610 452 V492 Q610 508 594 508 H520 V512" fill="none" stroke="#2e6eaf" stroke-width="3" marker-end="url(#blue-arrow)"/>
+  <text x="478" y="492" class="edge">book offer</text>
+  <path d="M780 452 V492 Q780 508 796 508 H870 V512" fill="none" stroke="#2e6eaf" stroke-width="3" marker-end="url(#blue-arrow)"/>
+  <text x="826" y="492" class="edge">manage offers</text>
+  <path d="M330 612 H350 Q360 612 360 622 V650 H362" fill="none" stroke="#3e7d54" stroke-width="3" marker-end="url(#green-arrow)"/>
+  <text x="82" y="744" class="edge">confirmation is an external +promise</text>
+
+  <!-- LLMs to tool adapter -->
+  <path d="M920 340 H1048" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M670 650 H1028 Q1044 650 1044 634 V552 Q1044 536 1052 536" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1020 650 H1034 Q1050 650 1050 634 V594 Q1050 578 1056 578" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Tool adapter to authorities -->
+  <path d="M1240 410 H1256 Q1272 410 1272 394 V340 Q1272 324 1280 324" fill="none" stroke="#3e7d54" stroke-width="3" marker-end="url(#green-arrow)"/>
+  <path d="M1240 486 H1260 Q1276 486 1276 502 V522 H1280" fill="none" stroke="#b77720" stroke-width="3" marker-end="url(#amber-arrow)"/>
+  <path d="M1240 590 H1260 Q1276 590 1276 606 V750 H1280" fill="none" stroke="#2e6eaf" stroke-width="3" marker-end="url(#blue-arrow)"/>
+
+  <!-- Bottom model -->
+  <rect x="60" y="922" width="1680" height="110" rx="8" fill="#223547"/>
+  <text x="92" y="968" class="band-title">The LLMs choose and communicate; the services own facts and final state changes.</text>
+  <text x="92" y="1003" class="band-copy">Contracts make those authority boundaries and dependencies explicit. Tool calls connect the societies without transferring ownership.</text>
+</svg>

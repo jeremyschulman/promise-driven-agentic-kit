@@ -1,0 +1,261 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:promise-driven-agentic-kit:assessment-record:1.0",
+  "title": "Promise Assessment Record",
+  "description": "A framework-neutral record of one assessor's judgment about one promise for one runtime operation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "assessmentId",
+    "occurredAt",
+    "correlationId",
+    "assessor",
+    "promiser",
+    "promise",
+    "operation",
+    "decision",
+    "assessment",
+    "evidence",
+    "privacy"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "assessmentId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlationId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assessor": {
+      "$ref": "#/$defs/agentReference"
+    },
+    "promiser": {
+      "$ref": "#/$defs/agentReference"
+    },
+    "promise": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "polarity"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "polarity": {
+          "enum": ["offer", "use"]
+        },
+        "type": {
+          "enum": [
+            "workflow",
+            "invariant",
+            "session-state",
+            "auth",
+            "identity",
+            "receipts",
+            "ocr",
+            "ux",
+            "card"
+          ]
+        },
+        "safetyIdentity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contractDocument": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contractVersion": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)*$"
+        }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "requestId"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "idempotencyKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resourceRef": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "stateChanged"],
+      "properties": {
+        "outcome": {
+          "enum": ["committed", "refused", "failed", "unknown"]
+        },
+        "refusalCode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unmet": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stateChanged": {
+          "type": ["boolean", "null"]
+        },
+        "receiptId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "errorCategory": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {"const": "refused"}
+            }
+          },
+          "then": {
+            "required": ["refusalCode", "unmet"],
+            "properties": {
+              "stateChanged": {"const": false}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "outcome": {"const": "committed"}
+            }
+          },
+          "then": {
+            "required": ["receiptId"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "outcome": {"const": "failed"}
+            }
+          },
+          "then": {
+            "required": ["errorCategory"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "outcome": {"const": "unknown"}
+            }
+          },
+          "then": {
+            "properties": {
+              "stateChanged": {"const": null}
+            }
+          }
+        }
+      ]
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "basis"],
+      "properties": {
+        "status": {
+          "enum": ["kept", "not-kept", "not-applicable", "unknown"]
+        },
+        "basis": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "ref"],
+        "properties": {
+          "kind": {
+            "enum": [
+              "authoritative-fact",
+              "receipt",
+              "refusal",
+              "exception",
+              "external-verdict",
+              "other"
+            ]
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "digest": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "redactedFields"],
+      "properties": {
+        "classification": {
+          "enum": ["public", "internal", "confidential", "restricted"]
+        },
+        "redactedFields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "supersedes": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "agentReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent"],
+      "properties": {
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

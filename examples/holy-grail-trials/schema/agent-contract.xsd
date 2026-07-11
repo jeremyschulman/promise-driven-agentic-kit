@@ -8,8 +8,9 @@
 
   A contract document is ONE artifact read by three audiences:
 
-    1. the `fizz` model checker  -> the <contract> FizzBee block, an
-       exhaustively verifiable state machine (guards + invariants).
+    1. the `fizz` model checker  -> the <verifiable-behavior> FizzBee
+       block, an exhaustively verifiable state machine (guards +
+       invariants).
     2. the agent-construction code -> the <promises> manifest, from
        which the agent's description, bound tools, and promise graph
        are built (promises/loader.py, toolbinding.py).
@@ -49,8 +50,9 @@
         the contract document version.
 
         The child order is fixed and meaningful: what the agent is for
-        (objective) -> what it provably does (contract) -> what it
-        promises and uses (promises) -> how the LLM should carry each
+        (objective) -> what behavior is exhaustively verifiable
+        (verifiable-behavior) -> what it promises and uses (promises)
+        -> how the LLM should carry each
         step out (step-guidance) -> what code enforces regardless of
         the LLM (enforcement) -> canned response templates (responses).
       </xs:documentation>
@@ -65,7 +67,7 @@
             </xs:documentation>
           </xs:annotation>
         </xs:element>
-        <xs:element name="contract" type="Contract"/>
+        <xs:element name="verifiable-behavior" type="VerifiableBehavior"/>
         <xs:element name="promises" type="AgentContractPromises"/>
         <xs:element name="step-guidance" type="StepGuidance"
                     maxOccurs="unbounded">
@@ -87,9 +89,9 @@
   </xs:element>
 
   <!-- ============================================================
-       <contract> — the model-checkable FizzBee block
+       <verifiable-behavior> — the model-checkable behavior section
        ============================================================ -->
-  <xs:complexType name="Contract">
+  <xs:complexType name="VerifiableBehavior">
     <xs:annotation>
       <xs:documentation>
         Wraps exactly one &lt;fizzbee&gt; element. Nothing else belongs

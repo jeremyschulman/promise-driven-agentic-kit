@@ -18,7 +18,7 @@
     never let a wrong answer across.
   </objective>
 
-  <contract>
+  <verifiable-behavior>
     <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
 ---
 deadlock_detection: false
@@ -73,7 +73,7 @@ always assertion NoCrossingWithWrongAnswer:
 always assertion NeverBothCrossAndGorge:
     return (not crossed) or (not cast_into_gorge)
     </fizzbee>
-  </contract>
+  </verifiable-behavior>
 
   <promises>
     <description>Conducts the Bridge of Death: asks the three questions, has the Bridgekeeper judge the answers in code, and lets the knight cross only if all three are correct — otherwise casts them into the Gorge of Eternal Peril. Never crosses a wrong answer.</description>

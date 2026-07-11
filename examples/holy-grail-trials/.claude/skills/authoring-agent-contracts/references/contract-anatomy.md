@@ -21,12 +21,15 @@ Root `<agent-instructions>` with required attributes `workflow` (the stable id;
 matches the `agent_<workflow>.xml` filename) and `version` (dotted, e.g. `1.0`).
 Children, in this exact order, all required:
 
+The **agent contract** is the whole XML artifact. `<verifiable-behavior>` is the
+specific section containing its exhaustively checkable behavior model.
+
 ```xml
 <agent-instructions workflow="barista" version="1.0">
   <objective> … prose … </objective>
-  <contract>
+  <verifiable-behavior>
     <fizzbee mode="runtime-instructions" verified="fizz-0.5.1"> … </fizzbee>
-  </contract>
+  </verifiable-behavior>
   <promises> … description, tools, offers, uses … </promises>
   <step-guidance action="ActionName"> … prose … </step-guidance>   <!-- 1 or more -->
   <enforcement> … <rule id="…">…</rule> … </enforcement>

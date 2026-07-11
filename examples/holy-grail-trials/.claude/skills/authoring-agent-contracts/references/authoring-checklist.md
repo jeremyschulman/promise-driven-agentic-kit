@@ -5,9 +5,9 @@ last one in each section — everything else is in service of it.
 
 ## Structure
 
-- [ ] Correct document type: `agent_*.xml` (LLM, has `<contract>`) vs `manifest_*.xml` (non-LLM).
+- [ ] Correct document type: `agent_*.xml` (LLM, has `<verifiable-behavior>`) vs `manifest_*.xml` (non-LLM).
 - [ ] Root attribute set: `workflow="…"` (LLM) or `agent="…"` (manifest); `version` present.
-- [ ] LLM contract has all six sections in order: objective, contract, promises, step-guidance, enforcement, responses.
+- [ ] LLM contract has all six sections in order: objective, verifiable-behavior, promises, step-guidance, enforcement, responses.
 - [ ] `<fizzbee mode="runtime-instructions">`.
 - [ ] The right things are formal (ordering, mutual exclusion, safety) and the right things are prose (classification, wording). No fuzzy judgment smuggled into the state machine; no safety rule left to prose.
 

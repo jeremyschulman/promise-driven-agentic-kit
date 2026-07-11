@@ -1,7 +1,7 @@
 """Load an ``agent_*.xml`` contract document and extract its FizzBee block.
 
 A contract document is one artifact read by three consumers: the model checker
-(the ``<contract>`` FizzBee block), the agent constructor (the ``<promises>``
+(the ``<verifiable-behavior>`` FizzBee block), the agent constructor (the ``<promises>``
 manifest), and the LLM at runtime (the whole document, verbatim). This module is
 the single definition of "load this contract", shared by the runtime, the
 verification scripts, and the tests so they never disagree.
@@ -60,12 +60,12 @@ def find_docs_dir(explicit: str | os.PathLike[str] | None = None) -> Path:
 
 
 def _extract_fizzbee(root: ET.Element) -> tuple[str, str]:
-    contract = root.find("contract")
-    if contract is None:
-        raise ValueError("contract document has no <contract> element")
-    fizzbee = contract.find("fizzbee")
+    verifiable_behavior = root.find("verifiable-behavior")
+    if verifiable_behavior is None:
+        raise ValueError("contract document has no <verifiable-behavior> element")
+    fizzbee = verifiable_behavior.find("fizzbee")
     if fizzbee is None:
-        raise ValueError("<contract> has no <fizzbee> element")
+        raise ValueError("<verifiable-behavior> has no <fizzbee> element")
     return (fizzbee.text or ""), fizzbee.get("mode", "")
 
 

@@ -41,7 +41,7 @@ Each LLM agent's *entire* instruction set is an XML document with six sections (
 ```
 <agent-instructions>
   <objective>       — what this agent is for (natural language)
-  <contract>        — the FizzBee state machine: state, actions, guards, invariants
+  <verifiable-behavior> — the FizzBee state machine: state, actions, guards, invariants
   <promises>        — the Promise Theory manifest: description, tools, +offers, −uses
   <step-guidance>   — per-action prose: LLM judgment, tool bindings, phrasing
   <enforcement>     — invariants the server enforces in code, independent of the LLM
@@ -49,7 +49,7 @@ Each LLM agent's *entire* instruction set is an XML document with six sections (
 </agent-instructions>
 ```
 
-The center of gravity is `<contract>`. Here is the verification rule from the clinic orchestrator, verbatim ([`agent_clinic_orchestrator.xml`](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml)):
+The model-checkable center of gravity is `<verifiable-behavior>`. Here is the verification rule from the clinic orchestrator, verbatim ([`agent_clinic_orchestrator.xml`](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml)):
 
 ```python
 atomic action VerifyPatient:
@@ -149,7 +149,7 @@ The biggest caveat: **model-checking proves the spec, not the LLM's behavior.** 
 | ReAct / free tool loop | model decides ad hoc | no | no |
 | Guardrails / structured output | validates *outputs*, not the *process* | partial | partial |
 | Code state-machine graph (e.g. LangGraph) | explicit, in code | not model-checked | code is truth; prompt separate |
-| **XML + FizzBee contract (this pattern)** | explicit *and* model-checked | **yes** | **yes — one artifact for LLM, checker, devs** |
+| **XML contract + embedded FizzBee model (this pattern)** | explicit *and* model-checked | **yes** | **yes — one artifact for LLM, checker, devs** |
 
 ---
 

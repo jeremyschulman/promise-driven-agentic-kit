@@ -32,7 +32,7 @@ least self-consistent before anyone relies on it.
 The governing discipline follows directly:
 
 > **Formalize structure; leave judgment to prose.**
-> Ordering, mutual exclusion, and safety invariants go in the FizzBee `<contract>`.
+> Ordering, mutual exclusion, and safety invariants go in `<verifiable-behavior>`.
 > Intent classification, tool choice, and wording go in prose (`<step-guidance>`,
 > `<responses>`). Don't try to formalize the fuzzy parts — you'll fail. Don't leave
 > the structural parts to prose — they'll drift.
@@ -41,7 +41,7 @@ The governing discipline follows directly:
 
 | Type | File | Has FizzBee? | Validated by | For |
 | --- | --- | --- | --- | --- |
-| **LLM agent** | `agent_<name>.xml` | yes (`<contract>`) | `schema/agent-contract.xsd` | a stochastic, conversational agent with multi-step state |
+| **LLM agent** | `agent_<name>.xml` | yes (`<verifiable-behavior>`) | `schema/agent-contract.xsd` | a stochastic, conversational agent with multi-step state |
 | **Non-LLM agent** | `manifest_<name>.xml` | no | `schema/agent-manifest.xsd` | a deterministic service, shared-state store, or external boundary |
 
 A non-LLM agent has no state machine to model-check, but it is still a full
@@ -69,7 +69,7 @@ For an LLM agent (`agent_*.xml`), all six are required:
 | Section | Holds | Register |
 | --- | --- | --- |
 | `<objective>` | what the agent is for | prose |
-| `<contract>` | the FizzBee state machine: state, guards, invariants | formal |
+| `<verifiable-behavior>` | states, actions, guards, invariants | formal/verifiable |
 | `<promises>` | description, tools, `+offers`, `−uses` | declarative |
 | `<step-guidance>` | per-action judgment, tool bindings, phrasing | prose |
 | `<enforcement>` | the invariants your code enforces independently | declarative |
@@ -77,7 +77,7 @@ For an LLM agent (`agent_*.xml`), all six are required:
 
 A manifest is just `<description>` + `<promises>`.
 
-### 3. Write the FizzBee `<contract>`
+### 3. Write `<verifiable-behavior>`
 
 This skill assumes you can write FizzBee. For the language itself, install
 FizzBee's own reference skills (`fizz install-skills`) — don't reinvent that here.

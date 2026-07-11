@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Two small edits, two different change radii</title>
+  <desc id="desc">A local response-wording edit affects communication artifacts only, while a structural condition-identity change propagates through FizzBee, promise conditions, quenching uses, Python guards, tests, runtime evidence, consumers, and assessment history.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#18222d" flood-opacity="0.12"/>
+    </filter>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3d7b52"/>
+    </marker>
+    <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2d6caf"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .panel-kicker { font-size: 16px; font-weight: 700; letter-spacing: 1px; }
+      .panel-title { font-size: 28px; font-weight: 700; }
+      .phase { font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+      .node-title { font-size: 19px; font-weight: 700; }
+      .node-copy { font-size: 16px; fill: #556474; }
+      .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 18px; }
+      .code-small { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 16px; }
+      .callout { font-size: 18px; font-weight: 700; }
+      .band-title { font-size: 20px; font-weight: 700; fill: #ffffff; }
+      .band-copy { font-size: 17px; fill: #dce5ec; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1120" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">Two small edits, two different change radii</text>
+  <text x="60" y="108" class="subtitle">Classify the meaning first. Textual size is a poor predictor of contractual impact.</text>
+
+  <!-- Local change panel -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="165" width="520" height="735" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="60" y="165" width="520" height="92" rx="8" fill="#e8f3eb"/>
+  <rect x="60" y="249" width="520" height="8" fill="#e8f3eb"/>
+  <text x="88" y="197" class="panel-kicker" fill="#356b48">LOCAL CHANGE</text>
+  <text x="88" y="234" class="panel-title">Response wording</text>
+
+  <rect x="102" y="300" width="436" height="92" rx="8" fill="#eff7f1" stroke="#b9d5c1"/>
+  <text x="128" y="332" class="node-title">Edited source</text>
+  <text x="128" y="366" class="code">&lt;precondition-required&gt;</text>
+
+  <path d="M320 392 V438" fill="none" stroke="#3d7b52" stroke-width="3" marker-end="url(#green-arrow)"/>
+  <rect x="102" y="448" width="436" height="92" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  <text x="128" y="480" class="node-title">Runtime LLM wording</text>
+  <text x="128" y="514" class="node-copy">Review tone, clarity, and unchanged meaning.</text>
+
+  <path d="M320 540 V586" fill="none" stroke="#3d7b52" stroke-width="3" marker-end="url(#green-arrow)"/>
+  <rect x="102" y="596" width="436" height="92" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  <text x="128" y="628" class="node-title">Exact-text snapshots</text>
+  <text x="128" y="662" class="node-copy">Update only when tests assert the wording.</text>
+
+  <rect x="102" y="735" width="436" height="114" rx="8" fill="#edf6f0"/>
+  <text x="128" y="773" class="callout" fill="#356b48">LIMITED RADIUS</text>
+  <text x="128" y="807" class="node-copy">No model or graph change when machine</text>
+  <text x="128" y="833" class="node-copy">identities and semantic intent stay stable.</text>
+
+  <!-- Structural change panel -->
+  <g filter="url(#shadow)">
+    <rect x="630" y="165" width="1110" height="735" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="630" y="165" width="1110" height="92" rx="8" fill="#e7f0fb"/>
+  <rect x="630" y="249" width="1110" height="8" fill="#e7f0fb"/>
+  <text x="658" y="197" class="panel-kicker" fill="#245e9b">STRUCTURAL CHANGE</text>
+  <text x="658" y="234" class="panel-title">Condition identity or meaning</text>
+
+  <rect x="870" y="286" width="630" height="84" rx="8" fill="#e8def0" stroke="#cdbbd8"/>
+  <text x="900" y="318" class="node-title">Changed identity</text>
+  <text x="900" y="350" class="code">precondition_met</text>
+
+  <path d="M1185 370 V404" fill="none" stroke="#2d6caf" stroke-width="4"/>
+  <path d="M790 404 H1580" fill="none" stroke="#2d6caf" stroke-width="4"/>
+  <path d="M790 404 V430" fill="none" stroke="#2d6caf" stroke-width="4" marker-end="url(#blue-arrow)"/>
+  <path d="M1185 404 V430" fill="none" stroke="#2d6caf" stroke-width="4" marker-end="url(#blue-arrow)"/>
+  <path d="M1580 404 V430" fill="none" stroke="#2d6caf" stroke-width="4" marker-end="url(#blue-arrow)"/>
+
+  <!-- Design column -->
+  <rect x="665" y="440" width="350" height="48" rx="6" fill="#e7f0fb"/>
+  <text x="840" y="471" class="phase" text-anchor="middle" fill="#245e9b">DESIGN</text>
+  <rect x="665" y="504" width="350" height="82" rx="6" fill="#f4f8fc" stroke="#c8d7e7"/>
+  <text x="687" y="534" class="node-title">FizzBee state + guard</text>
+  <text x="687" y="564" class="code-small">require precondition_met</text>
+  <rect x="665" y="598" width="350" height="82" rx="6" fill="#f4f8fc" stroke="#c8d7e7"/>
+  <text x="687" y="628" class="node-title">Promise condition</text>
+  <text x="687" y="658" class="code-small">condition ref="..."</text>
+  <rect x="665" y="692" width="350" height="82" rx="6" fill="#f4f8fc" stroke="#c8d7e7"/>
+  <text x="687" y="722" class="node-title">Quenching dependency</text>
+  <text x="687" y="752" class="code-small">use quenches="..."</text>
+
+  <!-- Build column -->
+  <rect x="1035" y="440" width="350" height="48" rx="6" fill="#f8e8e6"/>
+  <text x="1210" y="471" class="phase" text-anchor="middle" fill="#8f3937">BUILD</text>
+  <rect x="1035" y="504" width="350" height="82" rx="6" fill="#fff7f6" stroke="#e4c3c0"/>
+  <text x="1057" y="534" class="node-title">Authoritative lookup</text>
+  <text x="1057" y="564" class="node-copy">Python guard and service state</text>
+  <rect x="1035" y="598" width="350" height="82" rx="6" fill="#fff7f6" stroke="#e4c3c0"/>
+  <text x="1057" y="628" class="node-title">Structured refusal</text>
+  <text x="1057" y="658" class="code-small">"unmet": "..."</text>
+  <rect x="1035" y="692" width="350" height="82" rx="6" fill="#fff7f6" stroke="#e4c3c0"/>
+  <text x="1057" y="722" class="node-title">Enforcement twin</text>
+  <text x="1057" y="752" class="node-copy">Refusal + unchanged-state assertions</text>
+
+  <!-- Run column -->
+  <rect x="1405" y="440" width="300" height="48" rx="6" fill="#fbefd9"/>
+  <text x="1555" y="471" class="phase" text-anchor="middle" fill="#805519">RUN</text>
+  <rect x="1405" y="504" width="300" height="82" rx="6" fill="#fffaf1" stroke="#ead7b5"/>
+  <text x="1427" y="534" class="node-title">Emitted evidence</text>
+  <text x="1427" y="564" class="node-copy">Receipts, refusals, logs</text>
+  <rect x="1405" y="598" width="300" height="82" rx="6" fill="#fffaf1" stroke="#ead7b5"/>
+  <text x="1427" y="628" class="node-title">Consumer parsing</text>
+  <text x="1427" y="658" class="node-copy">Peer and external interfaces</text>
+  <rect x="1405" y="692" width="300" height="82" rx="6" fill="#fffaf1" stroke="#ead7b5"/>
+  <text x="1427" y="722" class="node-title">Assessment history</text>
+  <text x="1427" y="752" class="node-copy">Metrics and ledger continuity</text>
+
+  <rect x="665" y="805" width="1040" height="54" rx="6" fill="#edf2f6"/>
+  <text x="1185" y="839" class="callout" text-anchor="middle">BROAD RADIUS · re-run model, graph, tests, and compatibility review</text>
+
+  <!-- Process band -->
+  <rect x="60" y="950" width="1680" height="120" rx="8" fill="#223547"/>
+  <text x="90" y="990" class="band-title">EVOLUTION WORKFLOW</text>
+  <text x="90" y="1025" class="band-copy">Classify meaning before editing.</text>
+  <text x="90" y="1052" class="band-copy">Trace identities before replacing strings.</text>
+  <text x="625" y="1008" class="band-title">CLASSIFY</text>
+  <text x="755" y="1008" class="band-title">→ TRACE</text>
+  <text x="875" y="1008" class="band-title">→ EDIT SOURCE</text>
+  <text x="1065" y="1008" class="band-title">→ PROPAGATE</text>
+  <text x="1245" y="1008" class="band-title">→ RECHECK</text>
+  <text x="1410" y="1008" class="band-title">→ MIGRATE</text>
+  <text x="625" y="1043" class="band-copy">intent</text>
+  <text x="755" y="1043" class="band-copy">identifiers</text>
+  <text x="875" y="1043" class="band-copy">contract first</text>
+  <text x="1065" y="1043" class="band-copy">dependents</text>
+  <text x="1245" y="1043" class="band-copy">all gates</text>
+  <text x="1410" y="1043" class="band-copy">consumers</text>
+</svg>

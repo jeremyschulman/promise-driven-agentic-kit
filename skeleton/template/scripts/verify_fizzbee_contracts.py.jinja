@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Model-check the FizzBee contract embedded in every ``agent_*.xml`` document.
+"""Model-check the FizzBee behavior model embedded in every ``agent_*.xml`` document.
 
 For each contract this extracts the ``<fizzbee>`` block, writes it to a temp
 ``.fizz`` file, runs the ``fizz`` model checker, and reports PASS/FAIL. Exit code

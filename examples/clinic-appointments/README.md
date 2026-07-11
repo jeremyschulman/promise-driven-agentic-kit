@@ -1,13 +1,18 @@
 # Clinic Appointments — a live, contract-driven agent
 
 The worked example for the [promise-driven-agentic-kit](../../README.md): a
-**runnable** multi-agent clinic assistant built on Google's ADK, where every
-safety guarantee is a model-checked contract *and* a code-enforced twin.
+**runnable** multi-agent clinic assistant built on Google's ADK, where modeled
+safety properties are checked offline and consequential service paths have
+deterministic Python safeguards.
 
 It books, reschedules, cancels, and lists clinic appointments, and answers
-insurance-eligibility questions — and it is **provably unable** to book before
-the patient is verified, to double-book a slot, to book without confirmation, or
-to touch an appointment the patient doesn't own.
+insurance-eligibility questions. Its bounded FizzBee models make specified unsafe
+states unreachable, while pure-Python services refuse the exercised sequential
+double-book, missing-confirmation, missing-clearance, and ownership violations.
+
+For a step-by-step reconstruction, including the exact supported claims and current
+teaching limitations, read the
+[Clinic Appointments end-to-end case study](../../docs/case-studies/clinic-appointments/README.md).
 
 > This example is deliberately richer than the kit's `skeleton/` toy (one agent):
 > it has six agents, so it shows the part of Promise Theory that matters most —
@@ -20,8 +25,8 @@ to touch an appointment the patient doesn't own.
 A real recorded session (live on Vertex, Rich-rendered). The agent verifies the
 patient, lists their appointments, **declines an uncovered service and offers
 self-pay** (the eligibility gate), then books a covered visit **only after the
-patient confirms** (the confirm gate) — every gate you see is model-checked *and*
-code-enforced.
+patient confirms** (the confirm gate). The flow combines modeled conditions with
+service-level checks; the case study distinguishes which facts are authoritative.
 
 ```bash
 asciinema play media/demo.cast     # replay the source recording in your terminal
@@ -62,7 +67,7 @@ verified offline (`scripts/verify_promise_graph.py`).
 
 ## The agents and their guarantees
 
-| Agent | Kind | Flagship invariant(s) — *proven by `fizz`, enforced in `services/`* |
+| Agent | Kind | Flagship modeled property or deterministic safeguard |
 | --- | --- | --- |
 | `clinic_orchestrator` | LLM (root) | **PatientVerifiedBeforeWorkflow**, RuleOfOne |
 | `book_appointment` | LLM subagent | **EligibilityBeforeBooking**, **NoDoubleBook**, ConfirmBeforeBooking |
@@ -72,9 +77,10 @@ verified offline (`scripts/verify_promise_graph.py`).
 | `patient_registry` | state | per-patient record isolation |
 
 **The showcase:** `NoDoubleBook` is *promised* by the LLM `book_appointment`
-agent and *kept* by `provider_schedule`'s code, which refuses to commit a taken
-slot no matter what the model does. That LLM-promise + code-assessment pair is
-the whole methodology in one place (see the kit's
+agent and supported by `provider_schedule`'s code, which refuses a sequential
+attempt to commit a slot that is currently not open regardless of the model's
+proposal. That LLM-promise + code-assessment pair is the whole methodology in
+one place (see the kit's
 [whitepaper](../../docs/why-promise-driven-agents.md)).
 
 ## Run it
@@ -108,8 +114,9 @@ uv run python -m clinic chat      # interactive (Rich: Markdown replies + a "thi
 | `src/clinic/agents/` | `build_*_agent()` — constructs ADK `LlmAgent`s from the contracts |
 | `src/clinic/env.py` | Vertex bootstrap (derives project from the SA file) |
 | `src/clinic/__main__.py` | the `chat` / `smoke` / `once` CLI |
-| `tests/` | schema-validate + model-check + promise-graph + **enforcement-twin** tests |
+| `tests/` | schema-validation, model-check, and service **enforcement-twin** tests |
 
-The clean separation is the point: everything in `services/` (where the
-invariants are *kept*) has no ADK dependency, so the entire gate runs green with
-no model, no keys, and no network. The LLM is a thin, replaceable shell on top.
+The clean separation is the point: `services/` contains the deterministic identity,
+eligibility, ownership, and scheduling paths with no ADK dependency, so the entire
+offline gate runs green with no model, keys, or network. The LLM runtime is a thin,
+replaceable shell on top.

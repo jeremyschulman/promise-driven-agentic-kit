@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1180" viewBox="0 0 1800 1180" role="img" aria-labelledby="title desc">
+  <title id="title">From counterexample to repaired model</title>
+  <desc id="desc">A three-state FizzBee counterexample shows evidence revocation violating NoUnsafeCommit after commitment. The repair adds a not-committed guard, making the unsafe transition unreachable while preserving two safe branches.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#18222d" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#627181"/>
+    </marker>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3d7b52"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .eyebrow { font-size: 16px; font-weight: 700; letter-spacing: 1px; fill: #657383; }
+      .state-title { font-size: 25px; font-weight: 700; }
+      .body { font-size: 18px; fill: #526171; }
+      .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 18px; }
+      .code-small { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 16px; }
+      .status { font-size: 17px; font-weight: 700; }
+      .action { font-size: 18px; font-weight: 700; }
+      .section { font-size: 25px; font-weight: 700; }
+      .band-title { font-size: 22px; font-weight: 700; }
+      .band-copy { font-size: 18px; }
+      .step { font-size: 17px; font-weight: 700; fill: #ffffff; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1180" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">From counterexample to repaired model</text>
+  <text x="60" y="108" class="subtitle">The first false state identifies the trigger; the intended promise determines the repair.</text>
+
+  <text x="60" y="160" class="eyebrow">FAILED MODEL · SHORTEST COUNTEREXAMPLE FOR NoUnsafeCommit</text>
+
+  <!-- State 0 -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="190" width="430" height="270" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="60" y="190" width="430" height="72" rx="8" fill="#e8f3eb"/>
+  <rect x="60" y="254" width="430" height="8" fill="#e8f3eb"/>
+  <text x="88" y="220" class="eyebrow">STATE 0</text>
+  <text x="88" y="249" class="state-title">Init</text>
+  <text x="88" y="302" class="code">committed = false</text>
+  <text x="88" y="337" class="code">evidence_valid = true</text>
+  <line x1="88" y1="365" x2="462" y2="365" stroke="#dbe1e7"/>
+  <text x="88" y="402" class="body">not committed or evidence_valid</text>
+  <circle cx="111" cy="430" r="10" fill="#3d7b52"/>
+  <text x="132" y="436" class="status" fill="#356b48">INVARIANT HOLDS</text>
+
+  <!-- State 1 -->
+  <g filter="url(#shadow)">
+    <rect x="685" y="190" width="430" height="270" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="685" y="190" width="430" height="72" rx="8" fill="#e8f3eb"/>
+  <rect x="685" y="254" width="430" height="8" fill="#e8f3eb"/>
+  <text x="713" y="220" class="eyebrow">STATE 1</text>
+  <text x="713" y="249" class="state-title">After CommitAction</text>
+  <text x="713" y="302" class="code">committed = true</text>
+  <text x="713" y="337" class="code">evidence_valid = true</text>
+  <line x1="713" y1="365" x2="1087" y2="365" stroke="#dbe1e7"/>
+  <text x="713" y="402" class="body">not committed or evidence_valid</text>
+  <circle cx="736" cy="430" r="10" fill="#3d7b52"/>
+  <text x="757" y="436" class="status" fill="#356b48">INVARIANT HOLDS</text>
+
+  <!-- State 2 -->
+  <g filter="url(#shadow)">
+    <rect x="1310" y="190" width="430" height="270" rx="8" fill="#ffffff" stroke="#d9aaa7"/>
+  </g>
+  <rect x="1310" y="190" width="430" height="72" rx="8" fill="#f8e1df"/>
+  <rect x="1310" y="254" width="430" height="8" fill="#f8e1df"/>
+  <text x="1338" y="220" class="eyebrow" fill="#8c3333">STATE 2 · FIRST FALSE STATE</text>
+  <text x="1338" y="249" class="state-title">After RevokeEvidence</text>
+  <text x="1338" y="302" class="code">committed = true</text>
+  <text x="1338" y="337" class="code" fill="#9d3434">evidence_valid = false</text>
+  <line x1="1338" y1="365" x2="1712" y2="365" stroke="#e6c6c4"/>
+  <text x="1338" y="402" class="body">not committed or evidence_valid</text>
+  <circle cx="1361" cy="430" r="10" fill="#b64b47"/>
+  <text x="1382" y="436" class="status" fill="#9d3434">NoUnsafeCommit VIOLATED</text>
+
+  <!-- Trace connectors -->
+  <path d="M500 325 H675" fill="none" stroke="#627181" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="515" y="281" width="150" height="30" rx="4" fill="#f6f8fa"/>
+  <text x="590" y="303" class="action" text-anchor="middle">CommitAction</text>
+  <path d="M1125 325 H1300" fill="none" stroke="#b64b47" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="1133" y="281" width="165" height="30" rx="4" fill="#f6f8fa"/>
+  <text x="1215" y="303" class="action" text-anchor="middle" fill="#9d3434">RevokeEvidence</text>
+
+  <!-- Diagnosis band -->
+  <rect x="60" y="500" width="1680" height="104" rx="8" fill="#fff0ef" stroke="#e5b9b7"/>
+  <text x="88" y="540" class="band-title" fill="#8c3333">DIAGNOSIS</text>
+  <text x="245" y="540" class="band-copy">The trigger is RevokeEvidence. The design defect is that it remains enabled after commitment.</text>
+  <rect x="1203" y="519" width="500" height="56" rx="6" fill="#f8dedc"/>
+  <text x="1224" y="553" class="code" fill="#8c3333">missing: require not committed</text>
+
+  <!-- Repair section -->
+  <text x="60" y="660" class="section">Repair the transition, preserve the promise</text>
+
+  <g filter="url(#shadow)">
+    <rect x="60" y="690" width="555" height="290" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="60" y="690" width="555" height="65" rx="8" fill="#edf2f6"/>
+  <rect x="60" y="747" width="555" height="8" fill="#edf2f6"/>
+  <text x="88" y="731" class="state-title">RevokeEvidence</text>
+  <text x="88" y="798" class="code">require evidence_valid</text>
+  <rect x="82" y="819" width="505" height="46" rx="4" fill="#dceee1"/>
+  <text x="101" y="849" class="code" fill="#356b48">+ require not committed</text>
+  <text x="88" y="902" class="code">evidence_valid = False</text>
+  <text x="88" y="946" class="body">The unsafe post-commit transition is now unreachable.</text>
+
+  <!-- Repaired reachable graph -->
+  <text x="710" y="705" class="eyebrow">REPAIRED REACHABLE BRANCHES</text>
+  <rect x="710" y="750" width="300" height="130" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  <text x="736" y="786" class="state-title">Init</text>
+  <text x="736" y="823" class="code-small">committed = false</text>
+  <text x="736" y="851" class="code-small">evidence_valid = true</text>
+
+  <rect x="1150" y="690" width="330" height="130" rx="8" fill="#eff7f1" stroke="#b9d5c1"/>
+  <text x="1176" y="726" class="state-title">Committed safely</text>
+  <text x="1176" y="763" class="code-small">committed = true</text>
+  <text x="1176" y="791" class="code-small">evidence_valid = true</text>
+
+  <rect x="1150" y="880" width="330" height="130" rx="8" fill="#eff7f1" stroke="#b9d5c1"/>
+  <text x="1176" y="916" class="state-title">Evidence revoked</text>
+  <text x="1176" y="953" class="code-small">committed = false</text>
+  <text x="1176" y="981" class="code-small">evidence_valid = false</text>
+
+  <path d="M1018 797 H1070 Q1086 797 1086 781 V755 Q1086 739 1102 739 H1142" fill="none" stroke="#3d7b52" stroke-width="3" stroke-linecap="round" marker-end="url(#green-arrow)"/>
+  <text x="1048" y="721" class="action" fill="#356b48">CommitAction</text>
+  <path d="M1018 833 H1070 Q1086 833 1086 849 V929 Q1086 945 1102 945 H1142" fill="none" stroke="#3d7b52" stroke-width="3" stroke-linecap="round" marker-end="url(#green-arrow)"/>
+  <text x="1018" y="918" class="action" fill="#356b48">RevokeEvidence</text>
+
+  <path d="M1488 755 H1615" fill="none" stroke="#b64b47" stroke-width="3" stroke-dasharray="8 6"/>
+  <line x1="1615" y1="735" x2="1615" y2="775" stroke="#b64b47" stroke-width="5"/>
+  <text x="1510" y="716" class="action" fill="#9d3434">RevokeEvidence blocked</text>
+  <text x="1510" y="805" class="body">new guard is false</text>
+
+  <!-- Process strip -->
+  <rect x="60" y="1050" width="1680" height="82" rx="8" fill="#223547"/>
+  <text x="95" y="1100" class="step">READ INVARIANT</text>
+  <text x="365" y="1100" class="step">→ FIND FIRST FALSE STATE</text>
+  <text x="765" y="1100" class="step">→ CLASSIFY DEFECT</text>
+  <text x="1085" y="1100" class="step">→ REPAIR TRANSITION</text>
+  <text x="1430" y="1100" class="step">→ RECHECK ALL GATES</text>
+</svg>

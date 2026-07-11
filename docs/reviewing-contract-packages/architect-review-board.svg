@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1060" viewBox="0 0 1800 1060" role="img" aria-labelledby="title desc">
+  <title id="title">Architect's contract-package review board</title>
+  <desc id="desc">Design, Build, and Run artifacts are reviewed as one package. Safety, condition, and capability identities cross the stages before severity findings determine approval.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#17202b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b84945"/>
+    </marker>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3e7d54"/>
+    </marker>
+    <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2e6eaf"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .stage { font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+      .stage-copy { font-size: 17px; fill: #576777; }
+      .label { font-size: 14px; font-weight: 700; letter-spacing: 1px; }
+      .heading { font-size: 22px; font-weight: 700; }
+      .body { font-size: 17px; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 16px; }
+      .legend { font-size: 15px; font-weight: 600; }
+      .severity { font-size: 20px; font-weight: 700; }
+      .verdict { font-size: 25px; font-weight: 700; fill: #ffffff; }
+      .verdict-copy { font-size: 18px; fill: #dce5ec; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1060" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">Architect's contract-package review board</text>
+  <text x="60" y="108" class="subtitle">Approval follows the evidence chain across Design, Build, and Run; no single green gate represents the whole package.</text>
+
+  <line x1="1280" y1="70" x2="1328" y2="70" stroke="#b84945" stroke-width="5"/>
+  <text x="1340" y="76" class="legend">Safety identity</text>
+  <line x1="1502" y1="70" x2="1550" y2="70" stroke="#3e7d54" stroke-width="5"/>
+  <text x="1562" y="76" class="legend">Condition identity</text>
+  <line x1="1280" y1="102" x2="1328" y2="102" stroke="#2e6eaf" stroke-width="5"/>
+  <text x="1340" y="108" class="legend">Capability identity</text>
+
+  <!-- Stage headers -->
+  <rect x="60" y="142" width="530" height="72" rx="8" fill="#e5edf7"/>
+  <text x="88" y="174" class="stage" fill="#2f5f90">DESIGN</text>
+  <text x="88" y="199" class="stage-copy">XSD · FizzBee · promise graph</text>
+  <rect x="635" y="142" width="530" height="72" rx="8" fill="#e7f2ea"/>
+  <text x="663" y="174" class="stage" fill="#356b48">BUILD</text>
+  <text x="663" y="199" class="stage-copy">Bindings · Python guard · enforcement twin</text>
+  <rect x="1210" y="142" width="530" height="72" rx="8" fill="#faecd8"/>
+  <text x="1238" y="174" class="stage" fill="#80571f">RUN</text>
+  <text x="1238" y="199" class="stage-copy">Decision · assessment · ledger</text>
+
+  <!-- Stage boards -->
+  <g filter="url(#shadow)"><rect x="60" y="238" width="530" height="510" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <g filter="url(#shadow)"><rect x="635" y="238" width="530" height="510" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <g filter="url(#shadow)"><rect x="1210" y="238" width="530" height="510" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+
+  <!-- Design rows -->
+  <text x="88" y="276" class="label">DECLARED AND VERIFIED INTENT</text>
+  <rect x="88" y="302" width="474" height="122" rx="6" fill="#f8e9e7"/>
+  <text x="108" y="336" class="label" fill="#9e403c">SAFETY</text>
+  <text x="108" y="369" class="heading">Invariant and rule agree</text>
+  <text x="108" y="400" class="mono">NoUnsafeCommit</text>
+  <rect x="88" y="446" width="474" height="122" rx="6" fill="#eaf4ed"/>
+  <text x="108" y="480" class="label" fill="#367149">CONDITION</text>
+  <text x="108" y="513" class="heading">Guard and quencher agree</text>
+  <text x="108" y="544" class="mono">precondition_met</text>
+  <rect x="88" y="590" width="474" height="122" rx="6" fill="#eaf1fa"/>
+  <text x="108" y="624" class="label" fill="#2c639c">CAPABILITY + PROMISE</text>
+  <text x="108" y="657" class="heading">Tool, offer, and use resolve</text>
+  <text x="108" y="688" class="mono">commit_action · safe_action</text>
+
+  <!-- Build rows -->
+  <text x="663" y="276" class="label">EXECUTABLE SAFEGUARDS</text>
+  <rect x="663" y="302" width="474" height="122" rx="6" fill="#f8e9e7"/>
+  <text x="683" y="336" class="label" fill="#9e403c">SAFETY</text>
+  <text x="683" y="369" class="heading">Guard executes before mutation</text>
+  <text x="683" y="400" class="body">Twin attempts the forbidden path.</text>
+  <rect x="663" y="446" width="474" height="122" rx="6" fill="#eaf4ed"/>
+  <text x="683" y="480" class="label" fill="#367149">CONDITION</text>
+  <text x="683" y="513" class="heading">Authority derives the current fact</text>
+  <text x="683" y="544" class="body">Refusal emits the exact unmet token.</text>
+  <rect x="663" y="590" width="474" height="122" rx="6" fill="#eaf1fa"/>
+  <text x="683" y="624" class="label" fill="#2c639c">CAPABILITY + PROMISE</text>
+  <text x="683" y="657" class="heading">Declared tool binds to callable</text>
+  <text x="683" y="688" class="body">Integration exercises the real provider.</text>
+
+  <!-- Run rows -->
+  <text x="1238" y="276" class="label">OPERATIONAL EVIDENCE</text>
+  <rect x="1238" y="302" width="474" height="122" rx="6" fill="#f8e9e7"/>
+  <text x="1258" y="336" class="label" fill="#9e403c">SAFETY</text>
+  <text x="1258" y="369" class="heading">Outcome agrees with real state</text>
+  <text x="1258" y="400" class="mono">promise.safetyIdentity</text>
+  <rect x="1238" y="446" width="474" height="122" rx="6" fill="#eaf4ed"/>
+  <text x="1258" y="480" class="label" fill="#367149">CONDITION</text>
+  <text x="1258" y="513" class="heading">Refusal and assessment agree</text>
+  <text x="1258" y="544" class="mono">decision.unmet</text>
+  <rect x="1238" y="590" width="474" height="122" rx="6" fill="#eaf1fa"/>
+  <text x="1258" y="624" class="label" fill="#2c639c">CAPABILITY + PROMISE</text>
+  <text x="1258" y="657" class="heading">Versioned, correlated, private</text>
+  <text x="1258" y="688" class="mono">operation.name · promise.id</text>
+
+  <!-- Identity circuits -->
+  <path d="M562 363 H625" fill="none" stroke="#b84945" stroke-width="4" marker-end="url(#red-arrow)"/>
+  <path d="M1137 363 H1200" fill="none" stroke="#b84945" stroke-width="4" marker-end="url(#red-arrow)"/>
+  <path d="M562 507 H625" fill="none" stroke="#3e7d54" stroke-width="4" marker-end="url(#green-arrow)"/>
+  <path d="M1137 507 H1200" fill="none" stroke="#3e7d54" stroke-width="4" marker-end="url(#green-arrow)"/>
+  <path d="M562 651 H625" fill="none" stroke="#2e6eaf" stroke-width="4" marker-end="url(#blue-arrow)"/>
+  <path d="M1137 651 H1200" fill="none" stroke="#2e6eaf" stroke-width="4" marker-end="url(#blue-arrow)"/>
+
+  <!-- Findings gate -->
+  <text x="60" y="796" class="label">FINDINGS DETERMINE THE VERDICT</text>
+  <rect x="60" y="818" width="370" height="82" rx="8" fill="#f8e7e5"/>
+  <text x="88" y="852" class="severity">P0 · Blocking defect</text>
+  <text x="88" y="881" class="body">Unsafe, unbound, bypassed, or false</text>
+  <rect x="450" y="818" width="370" height="82" rx="8" fill="#fbefd9"/>
+  <text x="478" y="852" class="severity">P1 · Assurance gap</text>
+  <text x="478" y="881" class="body">Required evidence cannot support claim</text>
+  <rect x="840" y="818" width="370" height="82" rx="8" fill="#edf2f6"/>
+  <text x="868" y="852" class="severity">P2 · Maintainability</text>
+  <text x="868" y="881" class="body">Drift risk with bounded current effect</text>
+  <rect x="1230" y="818" width="370" height="82" rx="8" fill="#f1eef7"/>
+  <text x="1258" y="852" class="severity">P3 · Ambiguity</text>
+  <text x="1258" y="881" class="body">Wording can be reasonably misread</text>
+
+  <rect x="60" y="928" width="760" height="82" rx="8" fill="#773936"/>
+  <text x="88" y="962" class="verdict">Any unresolved P0 or P1 → Changes required</text>
+  <text x="88" y="990" class="verdict-copy">Missing evidence never becomes a passing result.</text>
+  <rect x="840" y="928" width="900" height="82" rx="8" fill="#223547"/>
+  <text x="868" y="962" class="verdict">No P0/P1 → Approve or approve with bounded follow-up</text>
+  <text x="868" y="990" class="verdict-copy">Every remaining P2/P3 has an owner and closure condition.</text>
+</svg>

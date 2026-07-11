@@ -17,7 +17,7 @@
     If not, say "Ni!" and demand another — never pass an unacceptable shrubbery.
   </objective>
 
-  <contract>
+  <verifiable-behavior>
     <fizzbee mode="runtime-instructions" verified="fizz-0.5.1">
 ---
 deadlock_detection: false
@@ -59,7 +59,7 @@ always assertion NoPassageWithoutShrubbery:
 always assertion ShrubberyMustBeAcceptable:
     return (not passage_granted) or shrubbery_acceptable
     </fizzbee>
-  </contract>
+  </verifiable-behavior>
 
   <promises>
     <description>Conducts the Knights Who Say Ni trial: demands a shrubbery, lets the knight pick one from the market, and grants passage only for an acceptable shrubbery — nice enough AND within budget, judged in code. Otherwise, "Ni!" and demand another.</description>

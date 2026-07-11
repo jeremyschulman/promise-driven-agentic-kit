@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1040" viewBox="0 0 1800 1040" role="img" aria-labelledby="title desc">
+  <title id="title">From proposed action to assessment evidence</title>
+  <desc id="desc">An LLM proposes an operation, a deterministic boundary reads authoritative state and decides, then emits an operational result and promise-specific assessment records connected by stable identities.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#17202b" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#607181"/>
+    </marker>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3e7d54"/>
+    </marker>
+    <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b84945"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .stage { font-size: 16px; font-weight: 700; letter-spacing: 1px; }
+      .heading { font-size: 28px; font-weight: 700; }
+      .body { font-size: 18px; }
+      .small { font-size: 16px; fill: #5f6e7d; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 16px; }
+      .label { font-size: 14px; font-weight: 700; letter-spacing: 1px; }
+      .outcome { font-size: 21px; font-weight: 700; }
+      .band-title { font-size: 27px; font-weight: 700; fill: #ffffff; }
+      .band-copy { font-size: 19px; fill: #dce5ec; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1040" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">From proposed action to assessment evidence</text>
+  <text x="60" y="108" class="subtitle">Run separates what happened to an operation from whether each named promise was kept.</text>
+
+  <rect x="60" y="142" width="345" height="58" rx="8" fill="#e7edf5"/>
+  <text x="232" y="178" class="stage" text-anchor="middle" fill="#385b7f">1 · PROPOSE</text>
+  <rect x="445" y="142" width="500" height="58" rx="8" fill="#e7f2ea"/>
+  <text x="695" y="178" class="stage" text-anchor="middle" fill="#356b48">2 · REASSESS AUTHORITATIVE STATE</text>
+  <rect x="985" y="142" width="345" height="58" rx="8" fill="#f8e7e5"/>
+  <text x="1157" y="178" class="stage" text-anchor="middle" fill="#8c3f3b">3 · DECIDE ONCE</text>
+  <rect x="1370" y="142" width="370" height="58" rx="8" fill="#faecd8"/>
+  <text x="1555" y="178" class="stage" text-anchor="middle" fill="#81571f">4 · RECORD ASSESSMENT</text>
+
+  <!-- Propose -->
+  <g filter="url(#shadow)"><rect x="60" y="232" width="345" height="486" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="88" y="278" class="heading">LLM agent</text>
+  <text x="88" y="310" class="small">Interprets intent and selects a tool.</text>
+  <rect x="88" y="348" width="289" height="132" rx="6" fill="#eaf1fa"/>
+  <text x="108" y="382" class="label" fill="#2d659e">PROPOSED CALL</text>
+  <text x="108" y="420" class="mono">commit_action(...)</text>
+  <text x="108" y="451" class="mono">correlation: req-7f3</text>
+  <rect x="88" y="510" width="289" height="170" rx="6" fill="#f1eef7"/>
+  <text x="108" y="544" class="outcome">Proposal is intent</text>
+  <text x="108" y="578" class="body">The model may claim that a</text>
+  <text x="108" y="607" class="body">condition holds. The claim is</text>
+  <text x="108" y="636" class="body">not authoritative evidence.</text>
+
+  <!-- Reassess -->
+  <g filter="url(#shadow)"><rect x="445" y="232" width="500" height="486" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="473" y="278" class="heading">Deterministic boundary</text>
+  <text x="473" y="310" class="small">Owns the accept-or-refuse decision.</text>
+  <rect x="473" y="348" width="444" height="116" rx="6" fill="#eaf4ed"/>
+  <text x="493" y="382" class="label" fill="#38734d">AUTHORITATIVE FACT</text>
+  <text x="493" y="420" class="mono">precondition_met = false</text>
+  <rect x="473" y="486" width="444" height="116" rx="6" fill="#f8e9e7"/>
+  <text x="493" y="520" class="label" fill="#a3423e">SAFETY DUTY</text>
+  <text x="493" y="558" class="mono">NoUnsafeCommit</text>
+  <rect x="473" y="624" width="444" height="56" rx="6" fill="#edf2f6"/>
+  <text x="493" y="660" class="mono">if not precondition_met: refuse</text>
+
+  <!-- Decision -->
+  <g filter="url(#shadow)"><rect x="985" y="232" width="345" height="486" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="1013" y="278" class="heading">Operational result</text>
+  <text x="1013" y="310" class="small">Exactly one terminal classification.</text>
+  <rect x="1013" y="348" width="289" height="216" rx="6" fill="#f8e9e7"/>
+  <text x="1033" y="382" class="outcome">REFUSED</text>
+  <text x="1033" y="420" class="mono">code: precondition_required</text>
+  <text x="1033" y="451" class="mono">unmet: precondition_met</text>
+  <text x="1033" y="482" class="mono">stateChanged: false</text>
+  <text x="1033" y="526" class="small">Normal non-cooperation;</text>
+  <text x="1033" y="551" class="small">not an exception.</text>
+  <rect x="1013" y="590" width="289" height="90" rx="6" fill="#fbf0df"/>
+  <text x="1033" y="624" class="label" fill="#81571f">ALTERNATE TERMINALS</text>
+  <text x="1033" y="650" class="mono">committed | failed</text>
+  <text x="1033" y="674" class="mono">unknown</text>
+
+  <!-- Record -->
+  <g filter="url(#shadow)"><rect x="1370" y="232" width="370" height="486" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <text x="1398" y="278" class="heading">Evidence writer</text>
+  <text x="1398" y="310" class="small">One record per promise and assessor.</text>
+  <rect x="1398" y="348" width="314" height="150" rx="6" fill="#eaf4ed"/>
+  <text x="1418" y="382" class="label" fill="#38734d">SAFETY ASSESSMENT</text>
+  <text x="1418" y="414" class="mono">promise: no_unsafe_commit</text>
+  <text x="1418" y="443" class="mono">safety: NoUnsafeCommit</text>
+  <text x="1418" y="472" class="mono">status: kept</text>
+  <rect x="1398" y="520" width="314" height="132" rx="6" fill="#fbf0df"/>
+  <text x="1418" y="554" class="label" fill="#81571f">CONDITIONAL CAPABILITY</text>
+  <text x="1418" y="592" class="mono">promise: safe_action</text>
+  <text x="1418" y="623" class="mono">status: not-applicable</text>
+  <text x="1398" y="687" class="small">Both records share correlation req-7f3.</text>
+
+  <!-- Connectors -->
+  <path d="M405 434 H435" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M945 434 H975" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M1330 434 H1360" fill="none" stroke="#607181" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Meaning panel -->
+  <rect x="60" y="770" width="1680" height="94" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  <circle cx="100" cy="817" r="17" fill="#b84945"/>
+  <text x="132" y="813" class="label">DECISION OUTCOME</text>
+  <text x="132" y="842" class="body">The requested operation was refused.</text>
+  <line x1="600" y1="790" x2="600" y2="844" stroke="#d5dce3"/>
+  <circle cx="646" cy="817" r="17" fill="#3e7d54"/>
+  <text x="678" y="813" class="label">PROMISE ASSESSMENT</text>
+  <text x="678" y="842" class="body">Refusal kept the safety promise.</text>
+  <line x1="1130" y1="790" x2="1130" y2="844" stroke="#d5dce3"/>
+  <circle cx="1176" cy="817" r="17" fill="#bd7d22"/>
+  <text x="1208" y="813" class="label">CONDITION STATUS</text>
+  <text x="1208" y="842" class="body">The conditional capability did not apply.</text>
+
+  <rect x="60" y="898" width="1680" height="100" rx="8" fill="#223547"/>
+  <text x="92" y="940" class="band-title">Record the viewpoint, not just the event.</text>
+  <text x="92" y="974" class="band-copy">Stable promise, condition, capability, version, and correlation identities make local assessments reviewable without pretending they are universal truth.</text>
+</svg>

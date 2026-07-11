@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1340" viewBox="0 0 1800 1340" role="img" aria-labelledby="title desc">
+  <title id="title">Choose the participant and document type</title>
+  <desc id="desc">A decision tree distinguishes LLM agent contracts, deterministic manifests, external parties, and private implementation details. Shared-state and enforcement roles specialize deterministic agents, while a superagent boundary may surround a society of participants.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#18222d" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#627181"/>
+    </marker>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .q-num { font-size: 18px; font-weight: 700; fill: #ffffff; }
+      .question { font-size: 24px; font-weight: 700; }
+      .edge { font-size: 16px; font-weight: 700; }
+      .kicker { font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+      .role { font-size: 28px; font-weight: 700; }
+      .code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; font-size: 19px; }
+      .copy { font-size: 18px; fill: #526171; }
+      .copy-small { font-size: 16px; fill: #526171; }
+      .special { font-size: 21px; font-weight: 700; }
+      .band-title { font-size: 25px; font-weight: 700; }
+      .band-copy { font-size: 18px; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1340" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">Choose the participant and document type</text>
+  <text x="60" y="108" class="subtitle">Document the autonomous boundary, not every module. The decisive criterion is who consumes the document at runtime.</text>
+
+  <!-- Question 1 -->
+  <g filter="url(#shadow)">
+    <rect x="500" y="150" width="800" height="112" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <circle cx="545" cy="206" r="23" fill="#2d6caf"/>
+  <text x="545" y="213" class="q-num" text-anchor="middle">1</text>
+  <text x="585" y="214" class="question">Will an LLM receive this document as runtime instructions?</text>
+
+  <!-- LLM card -->
+  <g filter="url(#shadow)">
+    <rect x="70" y="350" width="550" height="300" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="70" y="350" width="550" height="86" rx="8" fill="#e7f0fb"/>
+  <rect x="70" y="428" width="550" height="8" fill="#e7f0fb"/>
+  <text x="100" y="382" class="kicker" fill="#245e9b">YES · LLM RUNTIME</text>
+  <text x="100" y="419" class="role">LLM workflow agent</text>
+  <text x="100" y="478" class="code">agent_&lt;workflow&gt;.xml</text>
+  <text x="100" y="521" class="copy">Six section types, including:</text>
+  <text x="120" y="557" class="copy">• &lt;verifiable-behavior&gt;</text>
+  <text x="120" y="590" class="copy">• guidance, enforcement, responses</text>
+  <text x="100" y="628" class="copy-small">The whole contract becomes LLM instructions.</text>
+
+  <!-- Q1 yes connector -->
+  <path d="M500 206 H345 Q329 206 329 222 V340" fill="none" stroke="#2d6caf" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <rect x="354" y="185" width="58" height="28" rx="4" fill="#f6f8fa"/>
+  <text x="383" y="205" class="edge" text-anchor="middle" fill="#245e9b">YES</text>
+
+  <!-- Question 2 -->
+  <g filter="url(#shadow)">
+    <rect x="875" y="320" width="780" height="130" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <circle cx="920" cy="386" r="23" fill="#607588"/>
+  <text x="920" y="393" class="q-num" text-anchor="middle">2</text>
+  <text x="960" y="378" class="question">Is the participant represented and governed</text>
+  <text x="960" y="409" class="question">inside this system?</text>
+
+  <!-- Q1 no connector -->
+  <path d="M1300 206 H1450 Q1466 206 1466 222 V292 Q1466 308 1450 308 H1280 Q1264 308 1264 320" fill="none" stroke="#627181" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <rect x="1366" y="185" width="52" height="28" rx="4" fill="#f6f8fa"/>
+  <text x="1392" y="205" class="edge" text-anchor="middle">NO</text>
+
+  <!-- Question 3 -->
+  <g filter="url(#shadow)">
+    <rect x="790" y="515" width="650" height="112" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <circle cx="835" cy="571" r="23" fill="#3d7b52"/>
+  <text x="835" y="578" class="q-num" text-anchor="middle">3</text>
+  <text x="875" y="560" class="question">Does it make or accept promises across</text>
+  <text x="875" y="591" class="question">a meaningful autonomous boundary?</text>
+
+  <!-- Q2 yes connector -->
+  <path d="M1115 450 V505" fill="none" stroke="#3d7b52" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="1062" y="458" width="58" height="28" rx="4" fill="#f6f8fa"/>
+  <text x="1091" y="478" class="edge" text-anchor="middle" fill="#356b48">YES</text>
+
+  <!-- External card -->
+  <g filter="url(#shadow)">
+    <rect x="1490" y="510" width="260" height="220" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="1490" y="510" width="260" height="76" rx="8" fill="#fbefd9"/>
+  <rect x="1490" y="578" width="260" height="8" fill="#fbefd9"/>
+  <text x="1514" y="540" class="kicker" fill="#805519">OUTSIDE LOCAL GOVERNANCE</text>
+  <text x="1514" y="573" class="role">External party</text>
+  <text x="1514" y="624" class="copy">No local manifest</text>
+  <text x="1514" y="659" class="copy-small">Configure a narrow verifier</text>
+  <text x="1514" y="684" class="copy-small">exemption and assess evidence.</text>
+
+  <!-- Q2 no connector -->
+  <path d="M1655 386 H1710 Q1726 386 1726 402 V500" fill="none" stroke="#b77a21" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <rect x="1661" y="401" width="52" height="28" rx="4" fill="#f6f8fa"/>
+  <text x="1687" y="421" class="edge" text-anchor="middle" fill="#805519">NO</text>
+
+  <!-- Deterministic card -->
+  <g filter="url(#shadow)">
+    <rect x="690" y="720" width="650" height="230" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="690" y="720" width="650" height="86" rx="8" fill="#e8f3eb"/>
+  <rect x="690" y="798" width="650" height="8" fill="#e8f3eb"/>
+  <text x="720" y="752" class="kicker" fill="#356b48">YES · LOCAL AUTONOMOUS BOUNDARY</text>
+  <text x="720" y="789" class="role">Deterministic service agent</text>
+  <text x="720" y="848" class="code">manifest_&lt;agent&gt;.xml</text>
+  <text x="720" y="891" class="copy">Description + offers/uses; no LLM runtime prose.</text>
+  <text x="720" y="926" class="copy-small">May own state, evidence, protocols, or commit/refuse authority.</text>
+
+  <!-- Q3 yes connector -->
+  <path d="M1015 627 V710" fill="none" stroke="#3d7b52" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="962" y="651" width="58" height="28" rx="4" fill="#f6f8fa"/>
+  <text x="991" y="671" class="edge" text-anchor="middle" fill="#356b48">YES</text>
+
+  <!-- Implementation detail -->
+  <g filter="url(#shadow)">
+    <rect x="1460" y="770" width="290" height="180" rx="8" fill="#ffffff" stroke="#c8d1da"/>
+  </g>
+  <rect x="1460" y="770" width="290" height="70" rx="8" fill="#edf2f6"/>
+  <rect x="1460" y="832" width="290" height="8" fill="#edf2f6"/>
+  <text x="1484" y="800" class="kicker">NO · PRIVATE CODE</text>
+  <text x="1484" y="832" class="role">Implementation detail</text>
+  <text x="1484" y="878" class="copy">No agent document</text>
+  <text x="1484" y="910" class="copy-small">Helper, library, or internal module.</text>
+
+  <!-- Q3 no connector -->
+  <path d="M1400 627 H1424 Q1440 627 1440 643 V844 Q1440 860 1456 860" fill="none" stroke="#627181" stroke-width="3" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <rect x="1368" y="642" width="52" height="28" rx="4" fill="#f6f8fa"/>
+  <text x="1394" y="662" class="edge" text-anchor="middle">NO</text>
+
+  <!-- Deterministic specializations -->
+  <path d="M1015 950 V982" fill="none" stroke="#627181" stroke-width="2" stroke-dasharray="6 5"/>
+  <path d="M1015 982 H845 V1002" fill="none" stroke="#627181" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+  <path d="M1015 982 H1195 V1002" fill="none" stroke="#627181" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+  <text x="1015" y="975" class="edge" text-anchor="middle">MAY SPECIALIZE AS</text>
+
+  <rect x="660" y="1012" width="370" height="126" rx="8" fill="#f2edf6" stroke="#d4c5dd"/>
+  <text x="686" y="1050" class="special">Shared-state agent</text>
+  <text x="686" y="1082" class="copy-small">Publishes provenance, isolation,</text>
+  <text x="686" y="1107" class="copy-small">freshness, and state dependencies.</text>
+
+  <rect x="1050" y="1012" width="370" height="126" rx="8" fill="#f8e8e6" stroke="#e4c3c0"/>
+  <text x="1076" y="1050" class="special">Enforcement boundary</text>
+  <text x="1076" y="1082" class="copy-small">Owns authoritative accept/refuse</text>
+  <text x="1076" y="1107" class="copy-small">decisions and executable evidence.</text>
+
+  <!-- Superagent orthogonal band -->
+  <rect x="70" y="1190" width="1680" height="105" rx="8" fill="#e9def0" stroke="#cdbbd8"/>
+  <text x="100" y="1228" class="band-title" fill="#68457e">ORTHOGONAL BOUNDARY · SUPERAGENT</text>
+  <text x="100" y="1265" class="band-copy">When one exterior identity represents several interior agents, publish a manifest with card offers entailed by named interior offers.</text>
+  <rect x="1430" y="1212" width="280" height="58" rx="6" fill="#ffffff"/>
+  <text x="1570" y="1236" class="code-small" text-anchor="middle">type="card"</text>
+  <text x="1570" y="1259" class="code-small" text-anchor="middle">entailed-by="..."</text>
+</svg>

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Promise-driven practitioner learning map</title>
+  <desc id="desc">All learners follow a shared foundation through Promise Theory, contract anatomy, Design, Build, Run, and review, then branch into software engineer, architect, formal reviewer, operator, or engineering leader paths.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#17202b" flood-opacity="0.11"/>
+    </filter>
+    <style>
+      text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1d2733; letter-spacing: 0; }
+      .title { font-size: 43px; font-weight: 700; }
+      .subtitle { font-size: 20px; fill: #566575; }
+      .section { font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+      .station { font-size: 18px; font-weight: 700; }
+      .station-copy { font-size: 15px; fill: #5c6b7a; }
+      .role { font-size: 19px; font-weight: 700; fill: #ffffff; }
+      .track-label { font-size: 17px; font-weight: 700; }
+      .track-copy { font-size: 15px; fill: #5b6977; }
+      .band-title { font-size: 27px; font-weight: 700; fill: #ffffff; }
+      .band-copy { font-size: 19px; fill: #dce5ec; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1120" fill="#f6f8fa"/>
+  <rect width="1800" height="8" fill="#2c64a0"/>
+  <text x="60" y="72" class="title">One foundation, five practitioner paths</text>
+  <text x="60" y="108" class="subtitle">Learn the shared Design → Build → Run evidence chain first; specialize only where responsibility changes.</text>
+
+  <!-- Shared foundation -->
+  <text x="60" y="162" class="section">SHARED FOUNDATION · EVERY ROLE</text>
+  <g filter="url(#shadow)"><rect x="60" y="184" width="1680" height="170" rx="8" fill="#ffffff" stroke="#c8d1da"/></g>
+  <line x1="150" y1="252" x2="910" y2="252" stroke="#2f465c" stroke-width="10" stroke-linecap="round"/>
+
+  <circle cx="150" cy="252" r="17" fill="#ffffff" stroke="#2f465c" stroke-width="8"/>
+  <text x="150" y="296" class="station" text-anchor="middle">Why promises</text>
+  <text x="150" y="322" class="station-copy" text-anchor="middle">Autonomy + assessment</text>
+
+  <circle cx="340" cy="252" r="17" fill="#ffffff" stroke="#2f465c" stroke-width="8"/>
+  <text x="340" y="221" class="station" text-anchor="middle">Contract anatomy</text>
+  <text x="340" y="321" class="station-copy" text-anchor="middle">Six coordinated sections</text>
+
+  <circle cx="530" cy="252" r="17" fill="#ffffff" stroke="#2f465c" stroke-width="8"/>
+  <text x="530" y="296" class="station" text-anchor="middle">Design</text>
+  <text x="530" y="322" class="station-copy" text-anchor="middle">Schema · model · graph</text>
+
+  <circle cx="720" cy="252" r="17" fill="#ffffff" stroke="#2f465c" stroke-width="8"/>
+  <text x="720" y="221" class="station" text-anchor="middle">Build</text>
+  <text x="720" y="321" class="station-copy" text-anchor="middle">Guard · binding · twin</text>
+
+  <circle cx="910" cy="252" r="22" fill="#ffffff" stroke="#2f465c" stroke-width="9"/>
+  <text x="910" y="296" class="station" text-anchor="middle">Run + review</text>
+  <text x="910" y="322" class="station-copy" text-anchor="middle">Assess · evidence · decide</text>
+
+  <rect x="1060" y="216" width="620" height="74" rx="8" fill="#edf2f6"/>
+  <text x="1088" y="246" class="station">Common completion check</text>
+  <text x="1088" y="273" class="station-copy">Trace one promise through all five assurance layers.</text>
+
+  <!-- Interchange trunk -->
+  <path d="M910 274 V945" fill="none" stroke="#9aa7b3" stroke-width="5"/>
+  <circle cx="910" cy="390" r="9" fill="#ffffff" stroke="#9aa7b3" stroke-width="4"/>
+  <circle cx="910" cy="525" r="9" fill="#ffffff" stroke="#9aa7b3" stroke-width="4"/>
+  <circle cx="910" cy="660" r="9" fill="#ffffff" stroke="#9aa7b3" stroke-width="4"/>
+  <circle cx="910" cy="795" r="9" fill="#ffffff" stroke="#9aa7b3" stroke-width="4"/>
+  <circle cx="910" cy="930" r="9" fill="#ffffff" stroke="#9aa7b3" stroke-width="4"/>
+
+  <!-- Engineer track -->
+  <rect x="60" y="366" width="250" height="48" rx="8" fill="#2e6eaf"/>
+  <text x="185" y="397" class="role" text-anchor="middle">SOFTWARE ENGINEER</text>
+  <line x1="330" y1="390" x2="1680" y2="390" stroke="#2e6eaf" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="1030" cy="390" r="14" fill="#ffffff" stroke="#2e6eaf" stroke-width="7"/>
+  <text x="1030" y="430" class="track-label" text-anchor="middle">Author contract</text>
+  <circle cx="1240" cy="390" r="14" fill="#ffffff" stroke="#2e6eaf" stroke-width="7"/>
+  <text x="1240" y="430" class="track-label" text-anchor="middle">Compose promises</text>
+  <circle cx="1450" cy="390" r="14" fill="#ffffff" stroke="#2e6eaf" stroke-width="7"/>
+  <text x="1450" y="430" class="track-label" text-anchor="middle">Enforce + test</text>
+  <circle cx="1680" cy="390" r="14" fill="#ffffff" stroke="#2e6eaf" stroke-width="7"/>
+  <text x="1680" y="430" class="track-label" text-anchor="middle">Evolve safely</text>
+
+  <!-- Architect track -->
+  <rect x="60" y="501" width="250" height="48" rx="8" fill="#3e7d54"/>
+  <text x="185" y="532" class="role" text-anchor="middle">SOFTWARE ARCHITECT</text>
+  <line x1="330" y1="525" x2="1680" y2="525" stroke="#3e7d54" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="1030" cy="525" r="14" fill="#ffffff" stroke="#3e7d54" stroke-width="7"/>
+  <text x="1030" y="565" class="track-label" text-anchor="middle">Choose boundaries</text>
+  <circle cx="1240" cy="525" r="14" fill="#ffffff" stroke="#3e7d54" stroke-width="7"/>
+  <text x="1240" y="565" class="track-label" text-anchor="middle">System graph</text>
+  <circle cx="1450" cy="525" r="14" fill="#ffffff" stroke="#3e7d54" stroke-width="7"/>
+  <text x="1450" y="565" class="track-label" text-anchor="middle">Assurance claims</text>
+  <circle cx="1680" cy="525" r="14" fill="#ffffff" stroke="#3e7d54" stroke-width="7"/>
+  <text x="1680" y="565" class="track-label" text-anchor="middle">Review package</text>
+
+  <!-- Formal reviewer track -->
+  <rect x="60" y="636" width="250" height="48" rx="8" fill="#b84945"/>
+  <text x="185" y="667" class="role" text-anchor="middle">FORMAL REVIEWER</text>
+  <line x1="330" y1="660" x2="1680" y2="660" stroke="#b84945" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="1030" cy="660" r="14" fill="#ffffff" stroke="#b84945" stroke-width="7"/>
+  <text x="1030" y="700" class="track-label" text-anchor="middle">Model scope</text>
+  <circle cx="1240" cy="660" r="14" fill="#ffffff" stroke="#b84945" stroke-width="7"/>
+  <text x="1240" y="700" class="track-label" text-anchor="middle">Counterexamples</text>
+  <circle cx="1450" cy="660" r="14" fill="#ffffff" stroke="#b84945" stroke-width="7"/>
+  <text x="1450" y="700" class="track-label" text-anchor="middle">Proof limits</text>
+  <circle cx="1680" cy="660" r="14" fill="#ffffff" stroke="#b84945" stroke-width="7"/>
+  <text x="1680" y="700" class="track-label" text-anchor="middle">Write findings</text>
+
+  <!-- Operator track -->
+  <rect x="60" y="771" width="250" height="48" rx="8" fill="#75579a"/>
+  <text x="185" y="802" class="role" text-anchor="middle">RUNTIME OPERATOR</text>
+  <line x1="330" y1="795" x2="1680" y2="795" stroke="#75579a" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="1030" cy="795" r="14" fill="#ffffff" stroke="#75579a" stroke-width="7"/>
+  <text x="1030" y="835" class="track-label" text-anchor="middle">Boundary outcomes</text>
+  <circle cx="1240" cy="795" r="14" fill="#ffffff" stroke="#75579a" stroke-width="7"/>
+  <text x="1240" y="835" class="track-label" text-anchor="middle">Assessment records</text>
+  <circle cx="1450" cy="795" r="14" fill="#ffffff" stroke="#75579a" stroke-width="7"/>
+  <text x="1450" y="835" class="track-label" text-anchor="middle">Reconcile unknown</text>
+  <circle cx="1680" cy="795" r="14" fill="#ffffff" stroke="#75579a" stroke-width="7"/>
+  <text x="1680" y="835" class="track-label" text-anchor="middle">Ledger + privacy</text>
+
+  <!-- Leader track -->
+  <rect x="60" y="906" width="250" height="48" rx="8" fill="#b77720"/>
+  <text x="185" y="937" class="role" text-anchor="middle">ADOPTION LEADER</text>
+  <line x1="330" y1="930" x2="1680" y2="930" stroke="#b77720" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="1030" cy="930" r="14" fill="#ffffff" stroke="#b77720" stroke-width="7"/>
+  <text x="1030" y="970" class="track-label" text-anchor="middle">Method case</text>
+  <circle cx="1240" cy="930" r="14" fill="#ffffff" stroke="#b77720" stroke-width="7"/>
+  <text x="1240" y="970" class="track-label" text-anchor="middle">Pilot workflow</text>
+  <circle cx="1450" cy="930" r="14" fill="#ffffff" stroke="#b77720" stroke-width="7"/>
+  <text x="1450" y="970" class="track-label" text-anchor="middle">Evidence limits</text>
+  <circle cx="1680" cy="930" r="14" fill="#ffffff" stroke="#b77720" stroke-width="7"/>
+  <text x="1680" y="970" class="track-label" text-anchor="middle">Adoption decision</text>
+
+  <!-- Lower band -->
+  <rect x="60" y="1020" width="1680" height="66" rx="8" fill="#223547"/>
+  <text x="92" y="1051" class="band-title">Shared vocabulary first; local responsibility second.</text>
+  <text x="92" y="1077" class="band-copy">Completion means producing or assessing evidence, not merely finishing the reading list.</text>
+</svg>

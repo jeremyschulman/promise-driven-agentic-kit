@@ -143,7 +143,7 @@ Each LLM agent's *entire* instruction set is a single XML document. Its shape is
 ```
 <agent-instructions workflow="…" version="…">
   <objective>       — what this agent is for (natural language)
-  <contract>        — the FizzBee state machine: state, actions, guards, invariants
+  <verifiable-behavior> — the FizzBee state machine: state, actions, guards, invariants
   <promises>        — the Promise Theory manifest: description, tools, +offers, −uses
   <step-guidance>   — per-action prose: LLM judgment, tool bindings, phrasing
   <enforcement>     — invariants the server enforces in code, independent of the LLM
@@ -159,7 +159,7 @@ flowchart TB
     MC["Model checker (fizz)<br/>proves invariants over<br/>every reachable state"]
     CON["Agent construction<br/>description, bound tools,<br/>promise graph"]
     LLM["LLM at runtime<br/>operating instructions"]
-    DOC -->|"the contract section"| MC
+    DOC -->|"the verifiable-behavior section"| MC
     DOC -->|"the promises section"| CON
     DOC -->|"the whole document, verbatim"| LLM
     MC -.->|"pre-assessment:<br/>promise is self-consistent"| DOC
@@ -167,9 +167,9 @@ flowchart TB
 
 This "one artifact, three readers" property is the distinctive engineering feature. In the more common alternatives — a LangGraph state machine plus a separate prompt, say — the machine and the instructions are *different artifacts that drift*. Here they are the same bytes.
 
-## 3.2 The `<contract>`: a model-checkable state machine
+## 3.2 `<verifiable-behavior>`: the model-checkable state machine
 
-The center of gravity is `<contract>`, a block of pure [FizzBee](https://fizzbee.io) — a specification language in the TLA+/PlusCal lineage[^lamport] with Python-like syntax. Here is the verification rule from the clinic orchestrator, verbatim from [`agent_clinic_orchestrator.xml`](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml):
+The model-checkable center of gravity is `<verifiable-behavior>`, a block of pure [FizzBee](https://fizzbee.io) — a specification language in the TLA+/PlusCal lineage[^lamport] with Python-like syntax. Here is the verification rule from the clinic orchestrator, verbatim from [`agent_clinic_orchestrator.xml`](../examples/clinic-appointments/agent_contracts/agent_clinic_orchestrator.xml):
 
 ```python
 atomic action VerifyPatient:
@@ -201,6 +201,9 @@ A **model checker** (`fizz`) explores every reachable combination of state varia
 If someone adds an action that could set `active_workflow` while `patient_verified` is false, the checker returns the exact sequence of steps that reaches the bad state and fails the build. "Can it ever…?" is answered by exhaustive search, at design time, before an LLM or a user is anywhere near it.
 
 **This is not hypothetical.** The Trials of the Holy Grail example has a Quest Marshal that grants the Grail only after both trials pass (`GrailRequiresBothTrials`). Its *first draft failed model-checking*: a knight could re-attempt an already-passed trial and flip it back to failed *after* the Grail was granted, violating the invariant. The checker produced the counterexample trace; the fix (making a passed trial sticky) was mechanical. That is pre-assessment doing its job on a real defect.
+
+[Debugging a FizzBee Counterexample](counterexample-debugging/README.md) develops this
+failure-to-repair process with a small runnable model and state-by-state illustration.
 
 In Promise Theory terms, this is **pre-assessment** (Part VI): a proof that the agent's promise set is internally *coherent* — that the agent is not promising something it has structurally made impossible — before the promise is ever offered. The `verified="fizz-0.5.1"` attribute stamped in each `<fizzbee>` tag records which toolchain version last certified it.
 
@@ -319,6 +322,9 @@ So `NoDoubleBook`, `EligibilityBeforeBooking`, and `ConfirmBeforeBooking` are al
 # Part V — The Inter-Agent Graph: Composing Promises
 
 Part IV made a single agent trustworthy. But the clinic agent is not one agent — it is a system of agents behind a single face. The inter-agent half of the theory is where most agentic-system designs are weakest, because their dependencies are *hidden*: shared state that one agent writes and another silently reads, construction-time coupling, orchestrators that claim to "own" their subordinates. Promise Theory's contribution here is to make every such dependency an explicit, checkable edge.
+
+For a domain-neutral, implementation-oriented treatment of the graph vocabulary and
+its verifier, see [Composing Promises](promise-graph/README.md).
 
 ## 5.1 The agents, restated as autonomous promisers
 
@@ -456,11 +462,24 @@ A promiser that publishes its own unreliability lets promisees calibrate their a
 
 ## 6.3 Trust as recorded assessment
 
-What these examples don't yet build — and what the [architecture doc](promise-theory-architecture.md) sketches — is an **assessment ledger**: a record, per `(agent, promise-type)`, of promised / kept / not-kept / unknown outcomes. With it, **trust modulates reliance, never obligation**: a dependency with a low keep-rate earns a tighter confirmation prompt; a service that repeatedly refuses gets a proactive reconnection flow instead of blind retries; a high-keep-rate subagent gets relayed with less hedging. This is the theory's trust-as-integral-of-assessment made operational — the natural next build once the promise graph exists.
+What these examples don't yet build is an **assessment ledger**: an append-only record
+of one named assessor's judgment about one promise at a time. With it, **trust modulates
+reliance, never obligation**: a dependency with repeated `not-kept` or `unknown`
+assessments earns tighter confirmation or a different provider. A normal refusal does
+not automatically count against trust; it may keep a safety promise while making a
+conditional capability not applicable. The
+[Runtime Assessment and Evidence](runtime-assessment/README.md) guide defines the
+record and outcome semantics.
 
 ## 6.4 Structured refusal as the non-cooperation path
 
-Autonomy includes the right to decline. The services already return `{"ok": false, …}` structured refusals rather than raising across boundaries — voluntary non-cooperation, not an error. Each refusal names *which promise could not bind and which condition failed* (e.g. `{"unmet": "slot_available"}`), which lets the orchestrator relay unmet-condition information mechanically and lets a future ledger record `not_kept(condition)` rather than a generic error. A refusal is a first-class promise outcome, not an exception.
+Autonomy includes the right to decline. The services already return `{"ok": false, …}`
+structured refusals rather than raising across boundaries — voluntary non-cooperation,
+not an error. Each refusal names which condition failed (for example,
+`{"unmet": "slot_available"}`), which lets the orchestrator relay the evidence
+mechanically. A ledger records the operation as `refused`, then assesses each named
+promise separately: the safety promise may be `kept` while the conditional capability
+is `not-applicable`. A refusal is a first-class operational outcome, not an exception.
 
 ---
 
@@ -595,6 +614,10 @@ That is not a domain-specific result. It is what any serious agentic system will
 
 # Appendix A — Glossary: Promise Theory term ↔ kit artifact
 
+This appendix is a compact mapping for the whitepaper. The standalone
+[Glossary and Naming Conventions](glossary/README.md) provides the practitioner
+definitions, identifier rules, and distinctions used across the kit.
+
 | Promise Theory | In the examples (clinic / grail) |
 |---|---|
 | Agent (autonomous) | Each LLM agent, the services (schedule, eligibility, registry), the human user, the model |
@@ -607,7 +630,7 @@ That is not a domain-specific result. It is what any serious agentic system will
 | Assisted promise (Law 4) | "the clinic will book your appointment" = `book \| slot_available` + `−open_slots` from the schedule (§5.5) |
 | Assessment | structured refusals, the eligibility verdict, code `<enforcement>`, test twins |
 | Pre-assessment | `fizz` model checking; `verified="fizz-0.5.1"` (and the real bug it caught in the Grail Marshal) |
-| Trust (integral of assessment) | the proposed assessment ledger (architecture doc); the eligibility service's "point-in-time" self-calibration |
+| Trust (integral of assessment) | the [assessment-ledger pattern](runtime-assessment/README.md); the eligibility service's "point-in-time" self-calibration |
 | Imposition | a prose command to the LLM |
 | Structured refusal (non-cooperation) | `{"ok": false, "unmet": …}` service results; `<responses>` refusal templates |
 | Superagent | the grail superagent card; the LLM+code enforcement pair |
