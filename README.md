@@ -1,81 +1,66 @@
-# promise-driven-agentic-kit
-
-## The short version
-
-**We believe businesses should be able to automate the complex, knowledge-intensive
-workflows that actually run them, including workflows conventional software could
-never capture. AI makes that possible, but only if we stop engineering autonomous
-agents as though they were deterministic programs.**
-
-An LLM does not execute an instruction the way ordinary software executes code. It is
-autonomous and stochastic. We can ask it to act, but a prompt cannot guarantee
-obedience. We can elicit a promise, give it scoped authority, and independently assess
-whether that promise was kept.
-
-The promise-driven-agentic-kit turns that principle into an engineering method. It
-uses model-checked contracts to make agent promises explicit, deterministic
-enforcement to protect consequential boundaries, and runtime evidence to assess what
-actually happened. It is not another agent framework. It is a framework-independent
-kit for designing, building, running, and assessing trustworthy agentic workflows.
-
-**Begin with the [Corpus Table of Contents](docs/corpus-table-of-contents.md)** for the
-complete reading path through the methodology, practitioner guides, learning material,
-examples, essays, and reference assets.
+# Promise-Driven Agentic Kit
 
 ## Why this exists
 
-Businesses have always had workflows that resist automation. They cross organizational
-boundaries, depend on institutional knowledge, accumulate exceptions, and require
-judgment that is difficult to encode as deterministic logic. Traditional automation
-works best when every important path can be specified in advance. Many of the
-workflows that matter most do not fit that shape.
+**Organizations should be able to harness the transformational potential of AI in
+consequential workflows without surrendering control, explainability, or operational
+confidence.**
 
-AI changes what is reachable. An LLM can interpret language, recover intent, navigate
-ambiguity, and participate in processes that once required a person at every step. It
-creates an opportunity to automate complex business workflows that were previously
-too tangled or expensive to capture in software.
-
-But that opportunity introduces a different engineering problem. The component making
-decisions is no longer deterministic. It may misunderstand, omit a step, invent an
-argument, or take a plausible action that violates an important business rule.
-
-More detailed prompts can improve behavior, but they cannot turn a stochastic model
-into deterministic code. A prompt is a request to an autonomous participant, not an
-enforceable constraint. For a conversational assistant, that distinction may be
-acceptable. For a stateful workflow involving identity, money, authorization, safety,
-or irreversible actions, it is the central architectural concern.
+Many consequential workflows resist conventional automation because they cross
+organizational boundaries, depend on institutional knowledge, accumulate exceptions,
+and require judgment that cannot be fully specified in advance. LLMs change what is
+reachable by interpreting language, recovering intent, and navigating ambiguity in
+processes that once required a person at every step. But that capability creates a
+different engineering problem: the component proposing actions is stochastic. A more
+detailed prompt may improve its behavior, but cannot make it deterministic or enforce
+an important business rule.
 
 The question therefore changes:
 
 > How do we build useful systems from agents we cannot command, without trusting them
 > to police their own promises?
 
+One promising approach draws on insights from my career at the intersection of
+emerging technologies and business acceleration. I helped advance the network
+automation movement as part of a passionate group of people around the world who set
+out to change the industry, and did; I was part of the pioneering effort that brought
+intent-based networking into practice; and today, I am applying those lessons to
+autonomous business-process automation with AI. Across these efforts, the same pattern
+has emerged: Promise Theory provides a way to reason about autonomous participants, an
+intent-based design gives downstream systems a shared source of truth, and state
+machines make complex workflows explicit. Together, these insights suggest a way to
+use nondeterministic LLMs in consequential workflows: let them interpret and propose,
+while explicit designs and deterministic boundaries govern which state transitions
+may occur.
+
+The result is a framework-independent kit for designing, building, running, and
+assessing agentic workflows: structured contracts that serve as shared design
+artifacts, model checks that verify selected behavioral properties, implementation
+patterns that enforce consequential decisions, and runtime evidence that supports
+assessment of whether promises were kept.
+
+[![An LLM proposes an action, a deterministic boundary reassesses authoritative state,
+the operation is committed or refused, and promise-specific evidence is
+recorded](docs/runtime-assessment/runtime-assessment-flow.png)](docs/runtime-assessment/runtime-assessment-flow.svg)
+
+*LLMs propose. Deterministic boundaries decide. Evidence records what happened.*
+
+---
+
 ## The reframe: promise and assess
 
 Promise Theory begins with autonomy: an agent can make promises only about its own
-behavior. Another agent can request, guide, or constrain access to resources, but it
-cannot impose a genuine promise on an autonomous participant.
-
-That description fits an LLM as an engineering fact. We can elicit a promise through
-instructions, but the promise has value only when its recipient can assess whether it
-was kept.
+behavior. That description fits an LLM as an engineering fact. We can request behavior
+through instructions, but the resulting promise has value only when its recipient can
+assess whether it was kept.
 
 This leads to the core discipline of the kit:
 
-- Make the promises attributed to each runtime agent explicit and assessable.
-- Give each agent only the authority it needs.
-- Model-check selected consequential properties of the intended behavior before
-  deployment.
-- Pair stochastic promises with independent assessment and authority-boundary
-  promises.
-- Preserve evidence so trust is based on observed outcomes rather than confidence in
-  a prompt.
-- Compose a system only from promises its participants can actually keep.
-
-The goal is not to remove autonomy from the model. The goal is to place an independently
-controlled boundary promise underneath the autonomous actor. The LLM remains free to
-interpret and propose; the authoritative software boundary decides whether a
-consequential action may occur.
+- Make each participant's promises explicit and assessable.
+- Give each participant only the authority it needs.
+- Model-check intended behavior and enforce consequential boundaries independently.
+- Preserve runtime evidence, and compose systems only from promises their participants
+  can keep.
 
 ## How the method works
 
@@ -92,18 +77,14 @@ comply; the runtime behavior and authoritative outcomes must still be assessed.
 Those documents move through a **Design → Build → Run → Assess** lifecycle:
 
 - **Design:** Capture the workflow and its forbidden states. Validate the contract,
-  model-check its behavior with FizzBee, and verify that every declared dependency in
-  the promise graph has a provider.
-- **Build:** Give the verified contract to the engineer and AI coding assistant. Use it
-  to implement framework wiring, authoritative Python enforcement, and matching tests
-  that exercise both allowed and refused operations.
-- **Run:** Give the same contract to the LLM as its complete instruction set. Let it
-  propose actions, but reassess consequential operations against authoritative state
-  before committing them. A failed condition produces a structured refusal, not a
-  hopeful exception.
-- **Assess:** Preserve promise-specific evidence about what was proposed, allowed,
-  refused, or left unknown. Review each kind of evidence for the claim it can support,
-  then feed findings into the next design cycle.
+  model-check it with FizzBee, and verify that every declared dependency has a
+  provider.
+- **Build:** Use the verified contract to implement framework wiring, authoritative
+  enforcement, and tests for both allowed and refused operations.
+- **Run:** Give the contract to the LLM as its instruction set, but reassess
+  consequential operations against authoritative state before committing them.
+- **Assess:** Preserve evidence of what was proposed, allowed, refused, or left unknown,
+  and feed the findings into the next design cycle.
 
 Model checking proves the specified behavior model. It does not prove the stochastic
 LLM, the generated Python, or the production environment. Deterministic enforcement,
@@ -112,8 +93,7 @@ questions. No single layer is asked to prove more than it can.
 
 ## What this repository provides
 
-This repository is a methodology kit you build with, not a software system you deploy
-and not a runtime framework you adopt.
+This is a methodology kit you build with, not runtime software you deploy.
 
 | Folder | What it provides |
 | --- | --- |
@@ -123,10 +103,8 @@ and not a runtime framework you adopt.
 | `skeleton` | A Copier template that scaffolds a new contract-driven agent package with a working example and verification gate. |
 | `examples` | Two runnable systems using different agent frameworks but the same contract, verification, enforcement, and assessment architecture. |
 
-The method is intentionally framework-independent. The included Clinic Appointments
-example uses Google ADK; Trials of the Holy Grail uses Pydantic AI. The framework
-wiring changes. The contract structure, verification gates, and authority-boundary
-discipline do not.
+The examples demonstrate the same contract and assurance method across Google ADK and
+Pydantic AI.
 
 ## When to use it
 
@@ -140,34 +118,22 @@ relevant when a system is:
 - Dependent on ordering constraints or authoritative shared state
 - Expected to evolve without silently weakening previous guarantees
 
-It is deliberately more engineering than a prose prompt. For one-shot questions,
-single-tool lookups, low-consequence assistants, or disposable prototypes, that work
-may not be justified. A good prompt can be the right solution. Contracts become
-valuable when the cost of an unexamined path is greater than the cost of proving and
-enforcing the important ones.
+This rigor may not be justified for one-shot questions, simple lookups, or disposable
+prototypes. Contracts become valuable when the cost of an unexamined path exceeds the
+cost of specifying and enforcing the important ones.
 
 ## Where to begin
 
+- **Choose a route:** The [Documentation Map](docs/README.md) offers question-driven
+  paths, while the [Corpus Table of Contents](docs/corpus-table-of-contents.md) provides
+  the complete reading order.
 - **Understand the wager:** [Contracts, Not Prompts](docs/contracts-not-prompts.md)
   gives the shortest conceptual introduction.
-- **Follow the full argument:** [The three-part essay series](docs/medium-articles/README.md)
-  develops the Why, the single-agent method, and its composition at system scale.
-- **See the complete map:** [Documentation Map](docs/README.md) offers
-  question-driven routes, while the [Corpus Table of Contents](docs/corpus-table-of-contents.md)
-  provides the full reading order.
 - **Learn the method:** [Practitioner Learning Path](docs/learning-path/README.md)
   provides an orientation, workshop, knowledge check, and role-specific paths.
-- **Trace contract to code:** [From Contract to Enforcement](docs/contract-assessment/README.md)
-  follows the six coordinated contract sections into Python enforcement and tests.
 - **Study a complete system:**
   [Clinic Appointments: An End-to-End Case Study](docs/case-studies/clinic-appointments/README.md)
   reconstructs the architecture, contracts, implementation, runtime, and evidence.
-- **Examine the theory:** [The Promise-Driven Agent](docs/why-promise-driven-agents.md)
-  develops the Promise Theory foundation and assurance rubric.
-- **Review the interpretation and its limits:**
-  [Promise Theory Interpretation and Open Questions](docs/promise-theory-interpretation.md)
-  distinguishes canonical principles from project-specific mappings and frames the
-  questions on which expert correction is invited.
 - **Build with the kit:** [Scaffold a new agent](skeleton/README.md) or inspect the
   complete [worked examples](examples/).
 
