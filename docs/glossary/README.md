@@ -41,7 +41,7 @@ The most important naming rule is:
 
 | Term | Meaning in this methodology |
 | --- | --- |
-| **Agent contract** | The complete `agent_*.xml` document consumed by an LLM as runtime instructions. It contains all six section types: `<objective>`, `<verifiable-behavior>`, `<promises>`, `<step-guidance>`, `<enforcement>`, and `<responses>`. |
+| **Agent contract** | The complete `agent_*.xml` document consumed by an LLM as runtime instructions. It publishes a proposed promise set and does not impose obligation or prove adoption by the runtime agent. It contains all six section types: `<objective>`, `<verifiable-behavior>`, `<promises>`, `<step-guidance>`, `<enforcement>`, and `<responses>`. |
 | **Contract package** | The reviewable set surrounding a consequential workflow: contracts, manifests, models, graph evidence, enforcement code, tests, runtime records, versions, and operating documentation. |
 | **Deterministic agent manifest** | A `manifest_*.xml` document that publishes promises for a governed non-LLM participant. It contains a description and `<promises>`, but no LLM instructions or embedded behavior model. |
 | **External party** | A participant outside the locally governed document set. A narrowly configured verifier exemption permits references to it without a local manifest. External status is a governance decision, not a synonym for deterministic agent. |
@@ -53,7 +53,7 @@ The most important naming rule is:
 | **Enforcement rule** | A named `<rule id="...">` inside `<enforcement>`. Its ID should exactly match the corresponding FizzBee invariant identity. The rule itself is not executable code. |
 | **Response template** | A structured communication pattern in `<responses>` for success, clarification, or refusal. It helps the LLM report an assessment but does not make the decision. |
 | **Tool binding** | The relationship between `<tool name="x">` and the runtime callable named `x`. A declared tool is a capability reference, not proof that the callable is safe. |
-| **Enforcement boundary** | The deterministic authority that reads current authoritative state and accepts or refuses a consequential operation. It may be represented by a service manifest in the promise graph. |
+| **Enforcement boundary** | The deterministic authority that reads current authoritative state and accepts or refuses a consequential operation. It assesses a proposal and keeps its own promise about when its state may change; it does not keep the LLM's promise on the LLM's behalf. It may be represented by a service manifest in the promise graph. |
 
 ## Model, verification, and runtime terms
 

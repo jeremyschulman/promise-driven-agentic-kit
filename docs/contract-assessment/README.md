@@ -21,23 +21,25 @@ The examples are intentionally domain-neutral. Names such as `NoUnsafeCommit`,
 `precondition_met`, and `commit_action` stand in for invariants, conditions, and
 capabilities in any workflow.
 
-## The lifecycle: Design → Build → Run
+## The lifecycle: Design → Build → Run → Assess
 
-The method carries one XML document through three stages of software engineering:
-**Design → Build → Run**. The bytes remain the same; what changes is the consumer and
-the question it asks of the contract.
+The method carries one XML document through four stages of software engineering:
+**Design → Build → Run → Assess**. The bytes remain the same; what changes is the
+consumer and the question it asks of the contract.
 
 | Stage | How the XML is used | Where that usage executes | Result |
 | --- | --- | --- | --- |
-| **Design** | Author the workflow; validate its structure; prove invariants; verify that offers, uses, and conditions compose. | Engineer + AI coding assistant; XSD validator; FizzBee model checker; promise-graph verifier. These run locally or in CI before implementation is accepted. | A schema-valid, model-checked, compositionally complete contract. |
-| **Build** | Treat the verified contract as the implementation specification. Generate agent wiring, Python enforcement twins, and `pytest` cases; run and repair until green. | AI coding assistant and the project test runner, locally or in CI. | Executable code plus tests that trace back to contract identifiers. |
+| **Design** | Author the workflow; validate its structure; model-check assertions; verify that offers, uses, and conditions compose. | Engineer + AI coding assistant; XSD validator; FizzBee model checker; promise-graph verifier. These run locally or in CI before implementation is accepted. | A schema-valid, model-checked, structurally complete contract. |
+| **Build** | Treat the model-checked contract as the implementation specification. Generate agent wiring, Python enforcement twins, and `pytest` cases; run and repair until green. | AI coding assistant and the project test runner, locally or in CI. | Executable code plus tests that trace back to contract identifiers. |
 | **Run** | Construct the agent from its promises and tools; give the whole contract to the LLM as instructions; assess consequential operations in Python. | Agent constructor at startup; LLM and service/tool enforcement layer for each request. | A proposed action is executed, or declined with a structured refusal naming the unmet condition. |
+| **Assess** | Preserve promise-specific evidence and distinguish the LLM proposal, authority-boundary decision, and exterior outcome. | Named assessors, evidence stores, operational review, and architecture review. | Local kept, not-kept, not-applicable, or unknown assessments that feed the next design cycle. |
 
 Two distinctions keep the stages honest. First, the model checker runs in **Design**;
 it proves the specified state machine, not the generated Python. Second, `pytest` runs
 in **Build**; it checks the implementation, not whether a stochastic LLM will obey it.
-At **Run**, the independent Python boundary closes that remaining gap by reassessing
-each consequential operation against authoritative state.
+At **Run**, the independent Python boundary does not make the LLM obey. It reassesses
+each consequential proposal against authoritative state and keeps its own promise about
+when that state may change.
 
 ## Figure 1: one contract, six coordinated sections
 
@@ -77,16 +79,16 @@ During **Run**, construction and execution are separate moments. At startup, the
 constructor resolves the verified promises and tool names into the chosen framework.
 For each request, the LLM receives the whole contract as instructions. Python services
 remain the authoritative boundary for consequential operations: they assess the
-requested operation against real state and either keep the promise or return a specific
-refusal.
+requested operation against real state and either commit consistently with their own
+boundary promise or return a specific refusal.
 
 This distinction matters: a model check proves the specification is internally safe.
 It does not prove that a stochastic model will follow the specification. Independent
-code enforcement closes that gap.
+code enforcement bounds the effect of that gap at the state it controls.
 
-## Build: From a proven contract to executable evidence
+## Build: From a model-checked contract to executable evidence
 
-Design ends with a proven contract; Build begins with that contract as its input. The
+Design ends with a model-checked contract; Build begins with that contract as its input. The
 AI coding assistant participates here, not at runtime. It reads the same verified XML,
 its schema, and the surrounding project conventions. It uses the invariant names,
 enforcement rules, condition tokens, and tool declarations to generate two
@@ -104,8 +106,8 @@ confirms that authoritative state did not change.
 The coding assistant then runs the suite, reads failures, repairs the implementation or
 test, and repeats until the build is green. This complements rather than duplicates
 model checking: the model checker proves the *specified state machine*, while the
-generated `pytest` suite checks that the *Python implementation* keeps the same
-promise.
+generated `pytest` suite checks that the *Python authority boundary* keeps its own
+corresponding safety promise.
 
 ## Figure 2: tracing one assessed promise
 

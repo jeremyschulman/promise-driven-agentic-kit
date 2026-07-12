@@ -56,7 +56,7 @@
 
           workflow      A multi-step capability the agent performs on
                         request (the thing a user asks it to do).
-          invariant     A guarantee the agent always keeps regardless
+          invariant     A published safety outcome intended to hold regardless
                         of input (e.g. "never submits a report").
                         Typically backed by code enforcement.
           session-state Shared, persisted state the agent publishes for

@@ -6,7 +6,7 @@ Renders natively on GitHub. For Medium, export a PNG (e.g. via [mermaid.live](ht
 flowchart LR
     A["1 · AUTHOR<br/>You and your AI coding assistant<br/>write the contract: state machine,<br/>guards, and invariants"]
     C["2 · CHECK<br/>Run fizz. The model checker explores<br/>every reachable state and returns a verdict"]
-    P["PASS: provably safe.<br/>Ship it, on to Build"]
+    P["PASS: model satisfies claim.<br/>On to Build"]
     F["3 · FIX<br/>fizz returns a counterexample:<br/>Init → verify → book → book<br/>violates NoDoubleBook"]
     A --> C
     C -->|PASS| P

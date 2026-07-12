@@ -32,7 +32,10 @@ From Bergstra & Burgess, the tenets this analysis uses:
 - **Assessment** — "a decision about whether a promise has been kept… Every agent makes its own." Promises are intent; keeping them is never guaranteed (§2.13).
 - **Superagents** — a cluster that makes collective promises outward is itself an agent; "we may choose the boundary of an agent wherever we please" (fig. 4.4).
 
-An LLM is *literally* an autonomous, stochastic agent — so these are engineering facts about the system, not metaphors.
+An LLM is usefully modeled as an autonomous, stochastic participant. The precise
+promiser boundary — bare model, runtime assembly, or larger superagent — is an
+engineering interpretation examined in
+[Promise Theory Interpretation and Open Questions](promise-theory-interpretation.md).
 
 ## 3. The agents restated as promisers
 
@@ -44,13 +47,15 @@ Notation: `π: Agent ──±body──▶ promisee`.
 |------|-------------|----------|
 | + | `book_appointment ⟶ {appointment}` \| `patient_verified ∧ eligibility_checked ∧ slot_available ∧ booking_confirmed` | orchestrator, patient |
 | + | `offer_alternate_slot` when the chosen slot is taken — never silently rebook (fallback promise) | patient |
-| + | `never_double_book` (invariant, kept in `provider_schedule` code) | patient, compliance |
+| + | `never_double_book` (exterior safety claim supported by the LLM proposal path and `provider_schedule` guard) | patient, compliance |
 | − | `active_patient` from `patient_registry` (quenches `patient_verified`) | patient_registry |
 | − | `eligibility_check` from `insurance_eligibility` (quenches `eligibility_checked`) | insurance_eligibility |
 | − | `open_slots` / `commit_booking` from `provider_schedule` (quenches `slot_available`) | provider_schedule |
 | − | `confirmation` from the patient (quenches `booking_confirmed`) | patient |
 
-The conditions in the first promise are exactly the FizzBee guards on `CreateBooking`. The contract *is* the conditional-promise body; the manifest publishes it so the promisees can rely on and assess it.
+The kit maps the conditions in the first promise to the FizzBee guards on
+`CreateBooking`. The contract publishes the conditional-promise body and a model of its
+intended state constraints so promisees can trace and assess the claim.
 
 #### `clinic_orchestrator`
 
@@ -60,7 +65,8 @@ Under the autonomy tenet, the orchestrator **cannot** promise that a subagent wi
 
 - `patient_registry` **promotes shared state to an agent**: it publishes `+active_patient` (with the verified identity) and `+patient_identity`, and keeps `record_isolation`. Consumers declare `−use`, so a dependency that would otherwise be a hidden blackboard read becomes a *declared, checkable binding*.
 - `insurance_eligibility` is an **honest promiser**: its promise body states the verdict is *point-in-time, not a guarantee of payment*, so `book_appointment` conditions its use on an explicit patient decision.
-- `provider_schedule` keeps `NoDoubleBook` **in code** — the assessment behind the LLM's promise.
+- `provider_schedule` assesses booking proposals and keeps its own
+  no-unsafe-commit promise **in code** by refusing a taken slot.
 
 ## 4. Conditional promises and quenching
 
@@ -92,8 +98,15 @@ Promises are intent; keeping them is never guaranteed. The system assesses const
 
 - **Structured refusals** — services return `{"ok": false, "unmet": …}` (never raise across the boundary): non-cooperation as a first-class, testable outcome.
 - **The eligibility verdict** — `book_appointment`'s assessment of coverage before it relies on it; the service's honest "point-in-time" caveat calibrates that assessment.
-- **The enforcement twins + tests** — `provider_schedule`'s refusal of a taken slot, the ownership check in `manage_appointment`, the confirm gate: repeated code-level assessments of the stochastic promiser.
-- **Model checking as *pre-assessment*** — `fizz` proves an agent's promise set is *coherent* before it is ever offered. In the Trials of the Holy Grail example, this caught a real defect: the Quest Marshal's first draft let a passed trial be un-passed, which would have let the Grail be granted without both trials. The checker produced the counterexample trace; the fix was mechanical. That is pre-assessment doing its job.
+- **The enforcement twins + tests** — `provider_schedule`'s refusal of a taken slot,
+  the ownership check in `manage_appointment`, and the confirmation gate assess LLM
+  proposals while testing each authority boundary's own promise.
+- **Model checking as a design-time coherence check** — `fizz` proves that the
+  specified state model satisfies its assertions before the corresponding promise set
+  is published. In the Trials of the Holy Grail example, this caught a real defect: the
+  Quest Marshal's first draft let a passed trial be un-passed, which would have let the
+  Grail be granted without both trials. The checker produced the counterexample trace;
+  the fix was mechanical.
 
 What a production system adds next is an **assessment ledger**: promise-specific,
 append-only records from named assessors. Trust can then *modulate reliance* (for
@@ -103,7 +116,13 @@ general record and the distinction between operational outcome and promise statu
 
 ## 7. Superagents
 
-- **The two-member superagent.** `(book_appointment LLM + provider_schedule code)` is itself a superagent: the LLM half promises `NoDoubleBook`; the code half keeps it by refusing a taken slot. Their conjunction is what makes the promise keepable against a stochastic executor. **This is the atomic unit of the methodology** — never a stochastic promise alone, always paired with a deterministic assessment.
+- **The two-member superagent.** `(book_appointment LLM + provider_schedule code)` can
+  be modeled as a superagent with two distinct interior promises: the LLM promises a
+  compliant proposal path, while the service promises never to commit a taken slot.
+  The service assesses the proposal and keeps its own promise by refusing an unsafe
+  commit. Their cooperation supports the exterior `NoDoubleBook` claim without either
+  agent keeping the other's promise. **This is the atomic unit of the methodology** —
+  never rely on a stochastic promise without an independently controlled boundary.
 - **The external card.** The Trials of the Holy Grail example adds the outward face: `manifest_grail_superagent.xml` publishes `card`-typed offers whose `entailed-by` attribute names the interior offers that justify them, and the promise-graph verifier fails if any referenced offer doesn't exist. **No capability is advertised unless a member actually offers it** — the single-source-of-truth discipline applied one level up.
 
 ## 8. Framework independence
@@ -114,4 +133,13 @@ None of the above depends on the agent framework. The promise graph, the conditi
 
 ## Closing
 
-The deepest finding: a contract-driven agent's *intra-agent* discipline is Promise Theory in disguise — each contract is a model-checked, code-enforced declaration about an agent's own behavior, with structured refusal as the non-cooperation path. The *inter-agent* half completes it: declared acceptances, conditions that name their quenchers, an external promise *derived from* rather than *asserted alongside* its members. The wager of [contracts-not-prompts](contracts-not-prompts.md) — *can this agent reach a bad state?* — extends to the system: *can this system of agents make a promise it has no way to keep?* Both are answered, before deployment, by exhaustive offline checking, on the same artifacts the model reads at runtime. See [the whitepaper](why-promise-driven-agents.md) for the full argument.
+The deepest finding is the kit's working interpretation: a contract-driven agent's
+intra-agent discipline can be represented through proposed promises, modeled safety
+claims, local assessments, and independently controlled boundary promises. The
+inter-agent half adds declared acceptances, conditions that name their proposed
+quenchers, and exterior claims traceable to interior offers. The wager of
+[contracts-not-prompts](contracts-not-prompts.md) — *can the specified model reach a
+bad state?* — extends to the system: *does its declared graph contain a promise with no
+structural support?* Offline checks answer those model and graph questions before
+deployment; runtime evidence answers whether promises were actually kept. See the
+[whitepaper](why-promise-driven-agents.md) for the full argument.

@@ -8,7 +8,12 @@
 
 Most LLM agents are instructed with a prose system prompt: *"You are a helpful clinic assistant. Always verify the patient before booking anything…"* Prose is easy to write and impossible to verify. For a one-shot Q&A bot that's fine. For a **stateful, multi-step, safety-sensitive agent**, it leaves a question you cannot answer: *can this agent ever reach a bad state — like booking an appointment before the patient is verified, or double-booking a slot?*
 
-The pattern in this article answers that with a flat "no, provably." The agent's instructions **are** a formal state machine — written in [FizzBee](https://fizzbee.io), wrapped in XML, and **model-checked offline before deployment**. The same artifact is read by three consumers: the **LLM** (as operating instructions), a **model checker** (which proves invariants hold across every reachable state), and the **developer** (the single source of truth that the enforcement code and tests trace back to).
+The pattern in this article makes a narrower answer possible: **not in the specified
+state model, under its assumptions**. Selected structural instructions are represented
+as a FizzBee state machine, wrapped in XML, and model-checked offline before deployment.
+The same artifact is read by three consumers: the **LLM** (as operating instructions),
+a **model checker** (which proves assertions over every reachable modeled state), and
+the **developer** (the source that authority code and tests trace back to).
 
 The verdict, up front: **worth it for stateful, multi-step, safety-sensitive agents; overkill for one-shot or single-tool assistants.**
 
@@ -117,17 +122,31 @@ One workflow per subagent keeps each contract small enough to model-check and re
 
 ## The Promise Theory lens
 
-[Promise Theory](http://markburgess.org/promises.html), developed by Mark Burgess, reasons about systems built from **autonomous** parts. An LLM is *literally* such a part: you cannot impose behavior on it, only elicit a promise and then assess whether it was kept. So:
+[Promise Theory](http://markburgess.org/promises.html), developed by Mark Burgess, reasons about systems built from **autonomous** parts. An LLM is usefully modeled as such a part: a prompt can propose behavior but cannot guarantee it, so any promise attributed to the runtime agent must be assessed. So:
 
-- **The contract is the agent's published promise.** `NoDoubleBook` is `book_appointment` promising *"I will never book a slot that's already taken."*
-- **The enforcement code is the assessment.** Because the promiser is stochastic, the promisee must verify: `provider_schedule.commit_booking` refuses a taken slot **in code**, no matter what the model does. This LLM-promise + code-assessment pair is the whole methodology in one place — and it is why the code layer is **mandatory, not belt-and-suspenders**.
-- **The system is a composition of promises.** "The clinic will book your appointment" is an *assisted promise*: kept only when identity, eligibility, an open slot, and confirmation all hold, each provided by a different agent.
+- **The contract publishes a proposed promise set.** `NoDoubleBook` represents the
+  promise attributed to `book_appointment`: *"I will never propose or complete a
+  booking for a slot that is already taken."* The runtime agent's behavior determines
+  whether that proposal was adopted and kept.
+- **The authority service assesses the proposal and keeps its own promise.**
+  `provider_schedule.commit_booking` refuses a taken slot **in code**, no matter what
+  the model proposes. An unsafe proposal may mean the LLM promise was not kept while
+  the service's no-unsafe-commit promise was kept. This distinction is why the code
+  layer is **mandatory, not belt-and-suspenders**.
+- **The system is a composition of promises.** "The clinic will safely book your
+  appointment" is a collective promise supported by identity, eligibility, slot, and
+  confirmation promises from different agents.
 
 ---
 
 ## Framework independence
 
-The methodology lives in the contracts and the enforcement code — **not** in any agent framework. This kit proves that with two examples that share the *same* contracts-and-enforcement shape but run on *different* runtimes: the clinic on **Google ADK**, the [Trials of the Holy Grail](../examples/holy-grail-trials/) on **Pydantic AI**. The only meaningful difference between them is one file (`agents/build.py`). Everything that makes them *safe* is identical.
+The methodology lives in the contracts and authority boundaries — **not** in any agent
+framework. The two examples demonstrate that portability with the same contract
+structure, verification gates, and assessment pattern on different runtimes: the clinic
+on **Google ADK** and the
+[Trials of the Holy Grail](../examples/holy-grail-trials/) on **Pydantic AI**. Their
+domain contracts and services differ; the architectural method is the same.
 
 ---
 
@@ -143,13 +162,13 @@ The biggest caveat: **model-checking proves the spec, not the LLM's behavior.** 
 
 ## How it compares
 
-| Approach | Multi-step ordering | Provable invariants | Single source of truth |
+| Approach | Multi-step ordering | Model-checked safety claims | Single source of truth |
 |---|---|---|---|
 | Plain system prompt | implicit, unchecked | no | no (prompt/code/tests drift) |
 | ReAct / free tool loop | model decides ad hoc | no | no |
 | Guardrails / structured output | validates *outputs*, not the *process* | partial | partial |
 | Code state-machine graph (e.g. LangGraph) | explicit, in code | not model-checked | code is truth; prompt separate |
-| **XML contract + embedded FizzBee model (this pattern)** | explicit *and* model-checked | **yes** | **yes — one artifact for LLM, checker, devs** |
+| **XML contract + embedded FizzBee model (this pattern)** | explicit *and* model-checked | **yes, for the specified model** | **yes — one artifact for LLM, checker, devs** |
 
 ---
 
@@ -157,7 +176,10 @@ The biggest caveat: **model-checking proves the spec, not the LLM's behavior.** 
 
 - A multi-step agent is a state machine whether you write it down or not. Writing it down *formally* lets you prove things a prose prompt can only assert.
 - Make one artifact serve the LLM, the model checker, and the developer.
-- Treat the LLM as an autonomous agent that makes *promises*, not one that takes *commands*. The contract is the promise; the enforcement code is the assessment; the model check proves the promise is coherent. **Never ship the contract without the assessment layer.**
+- Treat the LLM as an autonomous participant, not one that takes guaranteed commands.
+  The contract publishes proposed promises; the model check tests their modeled safety
+  claims; the authority boundary assesses proposals and keeps its own safeguards.
+  **Never ship the contract without the assessment layer.**
 - Formalize structure and ordering; leave judgment and phrasing to prose.
 
 ## Further reading

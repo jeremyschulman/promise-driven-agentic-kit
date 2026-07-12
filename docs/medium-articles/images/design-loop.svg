@@ -45,8 +45,8 @@
 
   <!-- PASS terminal -->
   <rect x="820" y="150" width="410" height="74" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
-  <text x="844" y="185" font-size="17" font-weight="700" fill="#065f46">PASS: provably safe.</text>
-  <text x="844" y="209" font-size="14" fill="#047857">Ship it. On to Build &#8594;</text>
+  <text x="844" y="185" font-size="17" font-weight="700" fill="#065f46">PASS: model satisfies claim.</text>
+  <text x="844" y="209" font-size="14" fill="#047857">On to Build &#8594;</text>
 
   <!-- FIX card -->
   <rect x="820" y="286" width="410" height="214" rx="12" fill="#ffffff" stroke="#d97706" stroke-width="2"/>

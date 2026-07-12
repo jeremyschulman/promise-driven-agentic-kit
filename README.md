@@ -62,17 +62,20 @@ was kept.
 
 This leads to the core discipline of the kit:
 
-- Make each agent's promises explicit.
+- Make the promises attributed to each runtime agent explicit and assessable.
 - Give each agent only the authority it needs.
-- Prove consequential properties of the intended behavior before deployment.
-- Pair stochastic promises with deterministic assessment and enforcement.
+- Model-check selected consequential properties of the intended behavior before
+  deployment.
+- Pair stochastic promises with independent assessment and authority-boundary
+  promises.
 - Preserve evidence so trust is based on observed outcomes rather than confidence in
   a prompt.
 - Compose a system only from promises its participants can actually keep.
 
-The goal is not to remove autonomy from the model. The goal is to put a guarantee
-underneath the autonomous actor. The LLM remains free to interpret and propose; the
-authoritative software boundary decides whether a consequential action may occur.
+The goal is not to remove autonomy from the model. The goal is to place an independently
+controlled boundary promise underneath the autonomous actor. The LLM remains free to
+interpret and propose; the authoritative software boundary decides whether a
+consequential action may occur.
 
 ## How the method works
 
@@ -81,6 +84,10 @@ purpose, a model-checkable behavior model, Promise Theory relationships, runtime
 guidance, enforcement traceability, and response language in one coordinated source.
 Deterministic services publish smaller **agent manifests** describing the promises
 they offer and use.
+
+Here, **contract** means a structured promise proposal and engineering record, not an
+obligation imposed on an autonomous model. Authoring the XML does not make the LLM
+comply; the runtime behavior and authoritative outcomes must still be assessed.
 
 Those documents move through a **Design → Build → Run → Assess** lifecycle:
 
@@ -118,7 +125,8 @@ and not a runtime framework you adopt.
 
 The method is intentionally framework-independent. The included Clinic Appointments
 example uses Google ADK; Trials of the Holy Grail uses Pydantic AI. The framework
-wiring changes. The promises and guarantees do not.
+wiring changes. The contract structure, verification gates, and authority-boundary
+discipline do not.
 
 ## When to use it
 
@@ -156,6 +164,10 @@ enforcing the important ones.
   reconstructs the architecture, contracts, implementation, runtime, and evidence.
 - **Examine the theory:** [The Promise-Driven Agent](docs/why-promise-driven-agents.md)
   develops the Promise Theory foundation and assurance rubric.
+- **Review the interpretation and its limits:**
+  [Promise Theory Interpretation and Open Questions](docs/promise-theory-interpretation.md)
+  distinguishes canonical principles from project-specific mappings and frames the
+  questions on which expert correction is invited.
 - **Build with the kit:** [Scaffold a new agent](skeleton/README.md) or inspect the
   complete [worked examples](examples/).
 

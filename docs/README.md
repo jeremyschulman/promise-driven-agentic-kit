@@ -23,11 +23,12 @@ the relevant guide.
 | Diagnose a failed model check | [Debugging a FizzBee Counterexample](counterexample-debugging/README.md) | [The assurance model](assurance-model/README.md) |
 | Compose several agents and services | [Composing Promises](promise-graph/README.md) | [Promise Theory architecture analysis](promise-theory-architecture.md) |
 | Understand the theory | [The Promise-Driven Agent](why-promise-driven-agents.md) | [Promise Theory architecture analysis](promise-theory-architecture.md) |
+| Review the Promise Theory interpretation and applicability limits | [Promise Theory Interpretation and Open Questions](promise-theory-interpretation.md) | [Runtime Assessment and Evidence](runtime-assessment/README.md) |
 | Evaluate the approach without formal-methods background | [Contracts, Not Prompts](contracts-not-prompts.md) | [From Contract to Enforcement](contract-assessment/README.md) |
 | Scaffold a working project | [Skeleton guide](../skeleton/README.md) | [Authoring an Agent Contract](authoring-workflow/README.md) |
 | Read the draft article series | [Medium article series](medium-articles/README.md) | [The Promise-Driven Agent](why-promise-driven-agents.md) |
 
-## Design, Build, Run
+## Design, Build, Run, Assess
 
 The documentation follows the same lifecycle as the method:
 
@@ -35,7 +36,8 @@ The documentation follows the same lifecycle as the method:
 | --- | --- | --- |
 | **Design** | Define behavior, promises, conditions, and invariants; validate the XML; model-check reachable states; verify the promise graph. | [Authoring workflow](authoring-workflow/README.md), [counterexample debugging](counterexample-debugging/README.md), [Promise Graph guide](promise-graph/README.md) |
 | **Build** | Bind tools, implement deterministic safeguards, create enforcement-twin tests, and run the complete gate. | [Authoring workflow](authoring-workflow/README.md), [contract-to-enforcement guide](contract-assessment/README.md) |
-| **Run** | Give the contract to the LLM, reassess consequential operations against authoritative state, and preserve promise-specific evidence. | [Runtime assessment guide](runtime-assessment/README.md), [contract-to-enforcement guide](contract-assessment/README.md), [assurance model](assurance-model/README.md) |
+| **Run** | Give the contract to the LLM and reassess consequential operations against authoritative state before commitment. | [Runtime assessment guide](runtime-assessment/README.md), [contract-to-enforcement guide](contract-assessment/README.md) |
+| **Assess** | Preserve promise-specific evidence, distinguish local assessments, review each assurance layer, and feed findings into the next design cycle. | [Runtime assessment guide](runtime-assessment/README.md), [assurance model](assurance-model/README.md), [package review guide](reviewing-contract-packages/README.md) |
 
 ## Theory and architecture
 
@@ -45,6 +47,9 @@ The documentation follows the same lifecycle as the method:
   introduction.
 - [Promise Theory Architecture](promise-theory-architecture.md) examines composition,
   assessment, trust, and future architectural extensions.
+- [Promise Theory Interpretation and Open Questions](promise-theory-interpretation.md)
+  separates canonical theory from project-specific mappings, documents known limits,
+  and frames questions for expert review.
 
 ## Learning and adoption
 
@@ -107,6 +112,7 @@ The documentation follows the same lifecycle as the method:
 - [Authoring checklist](../skills/authoring-agent-contracts/references/authoring-checklist.md)
 - [Glossary and naming conventions](glossary/README.md)
 - [Generic assessment-record schema](runtime-assessment/assessment-record.schema.json)
+- [Promise Theory interpretation and open questions](promise-theory-interpretation.md)
 - [Contract-package review report template](reviewing-contract-packages/review-report-template.md)
 - [Practitioner learning path](learning-path/README.md)
 - [Clinic end-to-end case study](case-studies/clinic-appointments/README.md)

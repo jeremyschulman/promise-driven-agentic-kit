@@ -63,6 +63,8 @@ trust, and composition, then establish a shared vocabulary for the rest of the c
   and identity chains
 - [A Contract-Driven Agent as a System of Promising Agents](promise-theory-architecture.md)
   — apply Promise Theory to the architecture
+- [Promise Theory Interpretation and Open Questions](promise-theory-interpretation.md)
+  — review the engineering mappings, applicability limits, and unresolved questions
 
 ---
 
@@ -239,6 +241,7 @@ package.
 | Conceptual introduction | [Contracts, Not Prompts](contracts-not-prompts.md) |
 | Methodology whitepaper | [The Promise-Driven Agent](why-promise-driven-agents.md) |
 | Promise Theory analysis | [Promise Theory Architecture](promise-theory-architecture.md) |
+| Promise Theory interpretation and review questions | [Promise Theory Interpretation and Open Questions](promise-theory-interpretation.md) |
 | Vocabulary | [Glossary and Naming Conventions](glossary/README.md) |
 | Participant selection | [Choosing a Participant and Document Type](participant-types/README.md) |
 | Contract authoring | [Authoring an Agent Contract](authoring-workflow/README.md) |

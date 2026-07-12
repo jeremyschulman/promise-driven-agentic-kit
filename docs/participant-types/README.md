@@ -146,10 +146,11 @@ For example, a scheduling service may simultaneously:
 - Refuse a slot that is no longer available.
 - Produce the authoritative receipt or structured refusal.
 
-The LLM agent may promise `NoDoubleBook`; the enforcement boundary keeps the system's
-side of that promise by rejecting an unsafe commit. Keeping the boundary as a named
-deterministic participant makes its authority visible in the promise graph and its duty
-testable independently of the model.
+The LLM agent may be attributed a promise to follow a `NoDoubleBook` proposal path.
+The enforcement boundary separately promises not to commit a taken slot, assesses the
+proposal, and rejects an unsafe commit. Keeping the boundary as a named deterministic
+participant makes its authority visible in the promise graph and its own duty testable
+independently of the model.
 
 Do not add a separate manifest merely because the phrase “enforcement boundary” appears
 in the architecture. When an existing service already owns the authoritative decision,

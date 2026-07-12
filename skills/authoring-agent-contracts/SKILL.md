@@ -19,15 +19,17 @@ description: >-
 
 A contract document is a single artifact read by three consumers:
 
-1. a **FizzBee model checker** — proves no reachable state violates an invariant;
+1. a **FizzBee model checker** — proves no reachable state in the specified model
+   violates an invariant under its assumptions;
 2. the **agent constructor** — reads the Promise Theory manifest to build the agent; and
 3. the **LLM at runtime** — receives the whole document as its instructions.
 
-The reason this pattern exists: an LLM is an autonomous, **stochastic** agent. You
-cannot command it — you can only publish a promise about the agent's behavior and
-then *assess* whether it kept it. The contract is that published promise; the
-enforcement code is the assessment; the model checker proves the promise is at
-least self-consistent before anyone relies on it.
+The reason this pattern exists: an LLM is an autonomous, **stochastic** participant.
+You cannot command it with a guarantee. The contract publishes a proposed promise set;
+runtime behavior reveals whether that proposal was adopted and kept. The model checker
+tests the internal coherence of selected modeled claims. At Run, authority code
+assesses the proposal and keeps its own promise about when consequential state may
+change. It never keeps the LLM's promise on the LLM's behalf.
 
 The governing discipline follows directly:
 
