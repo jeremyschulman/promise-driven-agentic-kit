@@ -3,10 +3,10 @@
   Provider Schedule — non-LLM service agent (no FizzBee block).
 
   The source of truth for providers, their open slots, and committed
-  appointments. This is where NoDoubleBook actually LIVES: the LLM subagent
-  promises never to double-book, and this agent's code keeps that promise by
-  refusing to commit a slot that is already taken. The classic two-member
-  superagent — a stochastic promiser backed by a deterministic assessor.
+  appointments. The LLM contract proposes a safe booking path; this service
+  separately promises never to commit a taken slot, assesses each proposal, and
+  keeps its own promise by refusing an unsafe commit. Together they form a
+  two-member superagent without either keeping the other's promise.
 -->
 <agent-manifest agent="provider_schedule" version="1.0">
 

@@ -120,17 +120,29 @@ Promises are statements of *intent*. Keeping them is never guaranteed — a prom
 
 Agents compose. A cluster of agents that makes collective promises to the outside — while coordinating internally — is itself an agent, a **superagent** (B&B, fig. 4.4). The theory grants us a powerful modeling freedom: *"We may choose the boundary of an agent wherever we please."* A server pool, a microservice mesh, or — as we will see — an entire multi-agent LLM system behind a single agent card, can all be treated as one agent from the outside and as a promise graph from the inside.
 
-## 2.7 The punchline: an LLM is *literally* an autonomous stochastic agent
+## 2.7 The punchline: model the LLM as an autonomous stochastic participant
 
-Here is why this decades-old theory is the right foundation for agentic AI, and not a fashionable analogy.
+Here is why this decades-old theory provides a useful foundation for agentic AI, and
+not merely a fashionable analogy.
 
-Everything Promise Theory says about autonomous agents is *true of an LLM as a matter of engineering fact*, not metaphor:
+Promise Theory's autonomy lens exposes engineering facts that an LLM-based system must
+address:
 
 - **You cannot impose behavior on it.** No prompt *guarantees* an action. A prompt is an imposition; the model may or may not cooperate. This is not a shortcoming of prompt engineering to be fixed with better wording — it is the nature of a stochastic agent.
-- **It can only be induced to promise, and then assessed.** The most a prompt can do is elicit a *promise* to behave a certain way. Because the promiser is stochastic, the promisee **must** verify — which is precisely why an enforcement layer is mandatory rather than optional (Part IV).
-- **It is one autonomous agent among several.** The model, its enforcement code, its peer agents, the external APIs, and the human user are all autonomous agents cooperating through promises. There is no privileged commander in the system — not even the orchestrator, as Part V shows.
+- **A proposed promise still requires assessment.** The contract is authored outside
+  the model and offered as an instruction and promise proposal. Whether the useful
+  promiser boundary is the bare LLM or the larger runtime assembly remains an explicit
+  modeling question. In either case, observed behavior and outcomes must be assessed.
+- **It participates among other autonomous boundaries.** The model, its runtime
+  wrapper, authority services, peer agents, external APIs, and human user control
+  different parts of the outcome. There is no privileged commander in the system —
+  not even the orchestrator, as Part V shows.
 
 Teams that treat prompts as *commands* are perpetually surprised when the model "disobeys." Teams that treat prompts as *promises requiring assessment* build the verification layer on day one. Promise Theory is the framework that makes the second stance the default, and — combined with model checking — makes it rigorous.
+
+The [Promise Theory Interpretation and Open Questions](promise-theory-interpretation.md)
+note separates canonical principles from this kit's engineering mappings and asks for
+review of the chosen agent boundary.
 
 ---
 
@@ -232,11 +244,17 @@ The rule: **formalize structure and ordering (state transitions, invariants); le
 
 # Part IV — From Guards to Promises: The Intra-Agent Discipline
 
-This part makes the central conceptual claim of the intra-agent half: **every FizzBee guard is a conditional-promise body, every invariant is a promise, and the enforcement code is the assessment.** The contracts are Promise Theory in disguise; the `<promises>` manifest simply makes the disguise explicit.
+This part introduces the kit's central engineering mapping: **FizzBee guards represent
+state preconditions associated with conditional promises; assertions represent modeled
+safety claims published as promised outcomes; authority code assesses proposals and
+keeps its own boundary promises.** These are coordinated representations connected by
+stable identifiers, not identical statements in one formalism.
 
-## 4.1 An invariant is a promise; its guard is the condition
+## 4.1 An invariant represents a promised safety outcome
 
-Return to `PatientVerifiedBeforeWorkflow`. As a FizzBee invariant it is a safety property. As a *promise* it is the clinic orchestrator declaring, to the patient and to its own subagents:
+Return to `PatientVerifiedBeforeWorkflow`. In FizzBee it is a safety assertion. The kit
+maps that assertion to the clinic orchestrator's proposed promise to the patient and its
+subagents:
 
 > *"I will not run a workflow unless you are verified."*
 
@@ -250,11 +268,11 @@ The corresponding manifest entry in `agent_clinic_orchestrator.xml` states it as
 </offer>
 ```
 
-The `<condition ref="patient_verified"/>` is the promise's `|c`. Its `ref` is deliberately the *same token* as the FizzBee guard variable, so the prose promise, the model-checked spec, and the enforcement code all speak one vocabulary. That shared name is not a nicety; it is what lets a reviewer trace a single guarantee across all three readers of the document.
+The `<condition ref="patient_verified"/>` is the promise's `|c`. Its `ref` is deliberately the *same token* as the FizzBee guard variable, so the prose promise, the model-checked spec, and the enforcement code all speak one vocabulary. That shared name is not a nicety; it is what lets a reviewer trace a single safety claim across all three readers of the document.
 
 ## 4.2 Worked example: `book_appointment`
 
-The booking subagent ([`agent_book_appointment.xml`](../examples/clinic-appointments/agent_contracts/agent_book_appointment.xml)) proves four invariants. Two are worth dwelling on:
+The booking subagent ([`agent_book_appointment.xml`](../examples/clinic-appointments/agent_contracts/agent_book_appointment.xml)) models and checks four assertions. Two are worth dwelling on:
 
 ```python
 always assertion EligibilityBeforeBooking:
@@ -264,7 +282,10 @@ always assertion NoDoubleBook:
     return (not appointment_booked) or slot_available
 ```
 
-`NoDoubleBook` is a genuinely load-bearing safety property: the agent must never commit an appointment to a slot that is already taken. As a promise, it is: *"I will never book a slot that isn't open."* The manifest publishes it as an `invariant`-typed offer to the compliance scope:
+`NoDoubleBook` is a genuinely load-bearing safety property: the system must never
+commit an appointment to a slot that is already taken. The corresponding proposed
+promise is: *"I will never book a slot that isn't open."* The manifest publishes it as
+an `invariant`-typed offer to the compliance audience:
 
 ```xml
 <offer id="never_double_book" type="invariant" to="patient clinic-compliance">
@@ -274,7 +295,11 @@ always assertion NoDoubleBook:
 </offer>
 ```
 
-Notice the body itself names the division of labor from §3.5: the LLM *promises* not to double-book, but the guarantee is *kept* by the `provider_schedule` service refusing a taken slot in code. One promise, kept jointly by two agents of very different reliability — a two-member superagent, which we formalize in Part VII.
+Notice the body itself points to the division of labor from §3.5, but the promises must
+remain distinct. The LLM is attributed a promise to follow the safe proposal path. The
+`provider_schedule` service separately promises never to commit a taken slot, assesses
+the proposal, and refuses it when necessary. Their cooperation supports the exterior
+`NoDoubleBook` claim of a two-member superagent, which we formalize in Part VII.
 
 ## 4.3 Worked example: the promise-with-fallback
 
@@ -313,7 +338,13 @@ The model check proves these hold *for every legal action sequence*. It does **n
 
 > The LLM is a stochastic promiser. A promise from an unreliable promiser is worthless to the promisee **without independent assessment.**
 
-So `NoDoubleBook`, `EligibilityBeforeBooking`, and `ConfirmBeforeBooking` are all enforced in code, in [`provider_schedule.commit_booking`](../examples/clinic-appointments/src/clinic/services/schedule.py): it refuses a taken slot, refuses a booking whose eligibility wasn't cleared, and refuses one the patient didn't confirm — no matter what the model does. The `<enforcement>` section names each rule; a test twin re-checks it. The code is the **assessment apparatus** the promisee (here, the compliance scope, on the patient's behalf) uses to decide whether the stochastic promiser kept its promise.
+So `NoDoubleBook`, `EligibilityBeforeBooking`, and `ConfirmBeforeBooking` are all
+protected in code by
+[`provider_schedule.commit_booking`](../examples/clinic-appointments/src/clinic/services/schedule.py):
+it refuses a taken slot, a booking whose eligibility was not cleared, or one the patient
+did not confirm. The `<enforcement>` section names each rule; a test twin re-checks it.
+The code supplies evidence for assessing the stochastic proposal while the schedule
+service keeps its own promise about when it will commit authoritative state.
 
 **If you ship the contract as a prompt and skip the code layer, you have bought false confidence.** The proof certifies the map; the code polices the territory.
 
@@ -528,13 +559,24 @@ The discipline: **no capability appears on the agent card unless the interior pr
 
 ## 7.3 The interior two-member superagent
 
-The `(book_appointment LLM + provider_schedule code)` pair is itself a superagent: the LLM half promises to *follow* the contract (never double-book); the code half promises to *enforce* it (refuse a taken slot). Their conjunction is what makes `NoDoubleBook` a promise the system can keep *against a stochastic executor*. The companion article calls this "defense in depth"; in promise terms it is a coordinated promise made jointly by two agents with very different keeping-probabilities — the reliable agent (code) backstopping the unreliable one (LLM). **This is the atomic unit of the whole methodology**: never a stochastic promise alone, always a stochastic promise paired with a deterministic assessment.
+The `(book_appointment LLM + provider_schedule code)` pair can be modeled as a
+superagent. The LLM is attributed a promise to follow the safe proposal path; the
+service promises to refuse a taken slot and controls the authoritative commit. The
+service's guard both assesses the proposal and keeps the service's own promise. Their
+cooperation supports the exterior `NoDoubleBook` claim without either agent keeping a
+promise on behalf of the other. **This is the atomic unit of the methodology**: never
+rely on a stochastic promise without an independently controlled boundary promise.
 
 ---
 
 # Part VIII — The Rubric
 
-This is the generalization. Everything above is grounded in two example agents; the following is not. It is a standard applicable to *any* agentic software system — any system in which one or more stochastic models are given tools and asked to act over multiple steps. The claim is strong and deliberate: **Promise Theory plus model-checked contracts is the correct engineering foundation for agentic AI, and the eight points below are its rubric.**
+This is the proposed generalization. Everything above is grounded in two example
+systems; the following is the kit's **working thesis** for agentic software in which one
+or more stochastic models are given tools and asked to act over multiple steps:
+**Promise Theory plus model-checked contracts provides a promising engineering
+foundation, and the eight points below form a candidate rubric.** Its domain of
+applicability remains open to review.
 
 The reasoning is a syllogism: an LLM is an autonomous stochastic agent (§2.7); autonomous agents cannot be commanded, only induced to promise and then assessed (§2.2, §2.5); therefore any system that relies on an LLM's behavior *must* be architected as promises with assessments, whether or not its designers use the vocabulary. The rubric simply makes explicit — and checkable — what the theory says is unavoidable.
 
@@ -542,15 +584,26 @@ The reasoning is a syllogism: an LLM is an autonomous stochastic agent (§2.7); 
 
 1. **Model every model as an autonomous agent.** Treat the LLM as a stochastic promiser you cannot command. Design for elicited promises and mandatory assessment, not for compliance. *Failure mode avoided: the "why won't it obey?" spiral.*
 
-2. **Make each agent's self-promises a model-checked contract.** Formalize the structural guarantees (ordering, mutual exclusion, safety invariants) as a state machine and prove them exhaustively offline. Keep judgment (classification, tone) in prose, quarantined so it cannot corrupt the structural guarantees. *One artifact, three readers: model checker, constructor, model.*
+2. **Publish each runtime agent's proposed promises in a model-checked contract.**
+   Formalize structural safety claims (ordering, mutual exclusion, invariants) as a
+   state machine and check them exhaustively under the model's assumptions. Keep
+   judgment (classification, tone) in prose, quarantined from those claims. *One
+   artifact, three readers: model checker, constructor, model.*
 
 3. **Every promise's condition names its quencher.** No hidden dependencies. If an agent's promise is conditional, the condition is either explicitly self-assessed or quenched by a named agent's published offer. *Failure mode avoided: the invisible shared-state dependency.*
 
-4. **Pair every stochastic promise with a deterministic assessment.** The enforcement code is not belt-and-suspenders; it is the assessment apparatus without which a stochastic promise is worthless. Model-checking proves the spec; code polices behavior. *Never ship the contract without the assessment.*
+4. **Pair every stochastic promise with independent assessment and a boundary promise.**
+   The authority code assesses the model's proposal and keeps its own promise about
+   when consequential state may change. Model checking proves the specified model;
+   boundary code protects the controlled resource. *Never ship the contract without
+   the assessment.*
 
 5. **Declare acceptances; forbid unmatched edges.** Every `−use` must meet a `+offer` and vice-versa. Verify binding completeness offline. An agent consuming something no one promised is a build failure, not a runtime surprise.
 
-6. **Derive the external promise from the interior graph.** A composite system presents one promise (an agent card, an API contract). Generate it from the union of interior offers so it can never overstate what the members deliver. *Card entailment as a CI gate.*
+6. **Trace the external promise to the interior graph.** A composite system presents
+   an exterior promise through an agent card or API contract. Require named interior
+   support and human review of semantic adequacy so the exterior does not silently
+   overstate what members offer. *Structural card entailment as a CI gate.*
 
 7. **Record assessments; let trust modulate reliance, never obligation.** Keep a ledger of promised/kept/not-kept/unknown. Use accumulated trust to tune how much each agent relies on another — tighter confirmations, proactive reconnection, less hedging — never to *compel* another agent.
 
@@ -588,9 +641,22 @@ Honesty is the point of a rubric. The costs are real:
 
 A rigorous reader — and certainly a Promise Theorist — will raise these before endorsing anything. Meeting them head-on is part of the argument.
 
-**"You claim autonomy, but your enforcement code *forces* the outcome — isn't that an imposition on the LLM, smuggled back in?"** No, and the distinction matters. The enforcement code does not reach into the model and change its behavior; the model remains free to emit whatever it samples. The code is the *promisee's assessment* — it decides whether to accept the model's output as keeping the promise, and declines (a structured refusal) when it doesn't. Equivalently, it is the *deterministic half* of a two-member superagent (§7.3) making its *own* promise to the compliance scope. Autonomy is preserved on both sides: the model may promise or break; the code assesses and may accept or refuse. What is eliminated is the *illusion of command*, not the model's freedom.
+**"You claim autonomy, but your enforcement code *forces* the outcome — isn't that an
+imposition on the LLM, smuggled back in?"** No. The authority code does not reach into
+the model and change its proposal; the model remains free to emit whatever it samples.
+The authority service assesses that proposal and independently promises the conditions
+under which it will change its own state. It may accept or refuse. An unsafe proposal
+can therefore be assessed as a broken LLM promise while the refusal is assessed as a
+kept service promise. What is eliminated is the *illusion of command*, not the model's
+freedom.
 
-**"Model checking proves the specification, not the system."** Correct, and stated as the central caveat throughout (§3.3, §4.4). The proof certifies that the *promise set is coherent* — a pre-assessment. Keeping the promise at runtime is never guaranteed for a stochastic agent, which is exactly why points 4 and 7 of the rubric (assessment, ledger) are not optional. The technique does not claim to make the LLM correct; it claims to make its *failures bounded and detected*.
+**"Model checking proves the specification, not the system."** Correct, and stated as
+the central caveat throughout (§3.3, §4.4). The check certifies that the specified state
+model satisfies its assertions under its assumptions. Keeping a promise at runtime is
+not guaranteed, which is why points 4 and 7 of the rubric (assessment, ledger) are not
+optional. The technique does not make the LLM correct; where consequential operations
+pass through covered authority boundaries, it aims to make violations detectable and
+their effects bounded.
 
 **"Assessments are subjective and local — so what does a proof buy you across a boundary?"** Precisely the ability to *name whose assessment is whose*. When a caller assesses a turn as failed (its client timed out) while the agent assesses it as kept (the appointment exists in the schedule), the promise graph does not eliminate the divergence — it makes the conversation tractable: *"your client's timeout is your assessment; the booking is real by ours."* Locality of assessment is a feature of reality, not a bug in the method.
 
@@ -602,13 +668,33 @@ A rigorous reader — and certainly a Promise Theorist — will raise these befo
 
 # Part X — Closing Argument
 
-The deepest finding, stated plainly: **an agentic system's intra-agent discipline is already Promise Theory in disguise, and its inter-agent discipline is where the theory has the most to give.** A contract document is a self-promise — a model-checked declaration about an agent's own behavior, enforced in code, with structured refusal as the non-cooperation path — whether or not anyone uses the word "promise." What the theory adds is the other half: declared acceptances, conditions that name their quenchers, an assessment record, and an external promise *derived from* rather than *asserted alongside* its members.
+The deepest proposed finding, stated plainly: **agentic systems benefit from an
+intra-agent discipline of explicit promise proposals and an inter-agent discipline of
+declared cooperation.** The contract is an externally authored engineering artifact
+that publishes proposed promises, a model of selected safety claims, and runtime
+guidance. Promise Theory adds the critical questions: who can make each promise, who
+accepts it, who assesses it, which conditions require assistance, and what exterior
+claim a cooperating society can honestly present.
 
-The wager compounds. "Contracts, not prompts" answered, for one agent, *can it reach a bad state?* Promise Theory answers, for the system, *can it make a promise it has no way to keep?* Both questions are answered **before deployment, by exhaustive offline checking**, on the same artifacts the model reads at runtime.
+The wager compounds. "Contracts, not prompts" asks, for one specified model, *can it
+reach a bad state?* The promise graph asks, for the declared system, *does it contain a
+promise with no structural support?* Those bounded questions can be answered before
+deployment on the same artifacts the model reads at runtime. Whether promises were
+actually kept remains a runtime assessment.
 
-The clinic agent takes "I'm Ada Lovelace, book me a dermatology visit" and turns it into a confirmed, eligibility-checked appointment — through identity verification, coverage assessment, and a real scheduling API — without ever being able to reach a state where it books before you are verified or double-books a slot. The Trials agent lets a knight cross only with the right three answers and pass only with an acceptable shrubbery. Not because a prompt asked nicely, but because the contract made the bad states *provably unreachable*, the code made them *assessed*, and the promise graph made every dependency *declared*.
+Within the examples' modeled assumptions and authoritative service boundaries, the
+clinic refuses booking before verification and prevents double-booking; the Trials
+example refuses crossing or completion when its guards fail. The model makes forbidden
+states unreachable in the specification, the services protect the state they control,
+and the promise graph makes declared dependencies reviewable. None of those claims
+depends on trusting a prompt alone.
 
-That is not a domain-specific result. It is what any serious agentic system will need, because the premise is universal: the model is an autonomous stochastic agent, and autonomous agents can only be promised, and then assessed. The eight-point rubric of Part VIII is one concrete way to build on that premise. It is offered here not as the last word but as a starting standard — a rubric for the agentic systems still to be built.
+That pattern is not obviously domain-specific, but its useful boundary remains an open
+question. The premise is broad: a stochastic model cannot be made reliable merely by
+treating instructions as commands. The eight-point rubric of Part VIII is one concrete
+way to build on that premise. It is offered not as the last word but as a candidate
+starting standard, with its applicability examined in
+[Promise Theory Interpretation and Open Questions](promise-theory-interpretation.md).
 
 ---
 

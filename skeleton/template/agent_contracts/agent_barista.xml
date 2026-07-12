@@ -81,8 +81,9 @@ always assertion NoDispenseWithoutOrder:
     </offer>
 
     <offer id="no_dispense_before_payment" type="invariant" to="customer">
-      <body>A drink is never dispensed before payment is confirmed
-        (NoDispenseBeforePayment) — kept in code regardless of the model.</body>
+      <body>A drink is never dispensed before payment is confirmed. This exterior
+        claim is supported by the machine service's independent refusal of an
+        unpaid dispense (NoDispenseBeforePayment).</body>
     </offer>
 
     <use id="payment" from="customer" quenches="payment_confirmed">

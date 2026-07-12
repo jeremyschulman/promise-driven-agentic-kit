@@ -108,7 +108,7 @@ systems:
 | `type` | Meaning |
 | --- | --- |
 | `workflow` | a multi-step capability the agent performs on request |
-| `invariant` | a guarantee the agent always keeps regardless of input (usually code-backed) |
+| `invariant` | a published safety outcome associated with a model assertion and usually supported by an independently controlled boundary promise |
 | `session-state` | shared, persisted state the agent publishes for others to read |
 | `auth` | an authenticated session / credential the agent vends |
 | `identity` | a verified principal (who a request is from) |

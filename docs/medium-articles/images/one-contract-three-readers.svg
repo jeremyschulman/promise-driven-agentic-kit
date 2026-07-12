@@ -3,7 +3,7 @@
 
   <!-- Title -->
   <text x="600" y="52" text-anchor="middle" font-size="34" font-weight="700" fill="#1f2937">One Contract, Three Readers</text>
-  <text x="600" y="84" text-anchor="middle" font-size="17" fill="#6b7280">One guarantee, written once and read three ways, tied by a single shared name.</text>
+  <text x="600" y="84" text-anchor="middle" font-size="17" fill="#6b7280">One safety intent, coordinated across three readings by a shared name.</text>
 
   <!-- Contract card -->
   <rect x="430" y="108" width="340" height="118" rx="14" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
@@ -27,11 +27,11 @@
   <!-- Reader 1: Model checker -->
   <rect x="70" y="304" width="320" height="158" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
   <text x="92" y="340" font-size="17" font-weight="700" fill="#2563eb">1 &#183; MODEL CHECKER</text>
-  <text x="92" y="370" font-size="14" fill="#1f2937">Proves the invariant holds in</text>
-  <text x="92" y="390" font-size="14" fill="#1f2937">every reachable state.</text>
+  <text x="92" y="370" font-size="14" fill="#1f2937">Checks the assertion in every</text>
+  <text x="92" y="390" font-size="14" fill="#1f2937">reachable modeled state.</text>
   <text x="92" y="420" font-size="12" font-family="Menlo, Consolas, monospace" fill="#6b7280">reads: patient_verified</text>
   <rect x="92" y="430" width="176" height="24" rx="12" fill="#2563eb"/>
-  <text x="180" y="447" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PROVE &#183; design-time</text>
+  <text x="180" y="447" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">CHECK &#183; design-time</text>
 
   <!-- Reader 2: Builder -->
   <rect x="440" y="304" width="320" height="158" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
@@ -54,11 +54,11 @@
   <!-- Enforcement band -->
   <rect x="70" y="500" width="1060" height="92" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
   <text x="92" y="536" font-size="17" font-weight="700" fill="#065f46">4 &#183; ENFORCEMENT CODE</text>
-  <text x="92" y="565" font-size="14" fill="#065f46">The deterministic twin that refuses any action that would break a promise, no matter what the model does.</text>
+  <text x="92" y="565" font-size="14" fill="#065f46">The authority boundary assesses consequential proposals and refuses unmet conditions.</text>
   <rect x="905" y="516" width="200" height="26" rx="13" fill="#059669"/>
-  <text x="1005" y="534" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">ASSESS &#183; runtime &#8594; TRUST</text>
+  <text x="1005" y="534" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">ASSESS &#183; runtime &#8594; EVIDENCE</text>
 
   <!-- Bottom banner -->
-  <text x="600" y="648" text-anchor="middle" font-size="16" fill="#6b7280">Proven at design time. Enforced at runtime.</text>
-  <text x="600" y="686" text-anchor="middle" font-size="26" font-weight="700" fill="#1f2937">= an agent you can prove, and trust.</text>
+  <text x="600" y="648" text-anchor="middle" font-size="16" fill="#6b7280">Model-checked at design time. Assessed at runtime.</text>
+  <text x="600" y="686" text-anchor="middle" font-size="26" font-weight="700" fill="#1f2937">Trust grounded in evidence, not instructions.</text>
 </svg>

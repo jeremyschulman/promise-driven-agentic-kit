@@ -9,9 +9,9 @@ framework-independence claim, demonstrated rather than asserted.
 
 A Quest Marshal verifies you're a Knight of the Round Table and sends you through
 two trials — the **Bridge of Death** and the **Knights Who Say Ni**. The Grail
-quest is granted only once both are passed. And it is *provably* impossible to
-cross the Bridge on a wrong answer, to pass the Ni with an unacceptable
-shrubbery, or to be sent to any trial unverified.
+quest is granted only once both are passed. Those forbidden paths are unreachable in
+the specified models, and the deterministic service boundaries independently refuse a
+wrong Bridge answer, an unacceptable shrubbery, or an unverified trial request.
 
 ## Watch it
 
@@ -100,6 +100,7 @@ uv run python -m grail chat       # interactive (Rich)
 | `tests/` | schema-validate + model-check + **enforcement-twin** tests |
 
 Compare `src/grail/agents/build.py` here with `src/clinic/agents/build.py` in the
-clinic example: that one file is essentially the *entire* difference between the
-two agents. Everything that makes them safe — the contracts and `services/` — is
-the same shape. That's the whole point.
+clinic example: that thin runtime-wiring file is the primary framework difference.
+The domain contracts and services differ, while their contract structure,
+verification gates, and authority-boundary pattern have the same shape. That's the
+whole point.

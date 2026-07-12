@@ -28,8 +28,8 @@ to it as you may be — and afraid of the same thing everyone is. What if the
 agent goes rogue and takes down something I can't afford to lose? We'll come
 back to that fear; where it went is part of the story.
 
-Let's get going! This first piece makes the case. The two that follow show you the way, starting with [Everybody Wants to Rule the World — How to Build an Agent You Can Prove](medium-part-2-everybody-wants-to-rule-the-world.md)
-and wrapping up with [Games Without Frontiers — How to Compose a System You Can Prove](medium-part-3-games-without-frontiers.md).
+Let's get going! This first piece makes the case. The two that follow show you the way, starting with [Everybody Wants to Rule the World — How to Build an Agent with Provable Boundaries](medium-part-2-everybody-wants-to-rule-the-world.md)
+and wrapping up with [Games Without Frontiers — How to Check a System's Declared Promise Graph](medium-part-3-games-without-frontiers.md).
 
 ## Mr. Roboto
 
@@ -63,11 +63,11 @@ You can only elicit a promise and then verify it.** And the teams who accept tha
 One of the two example agents I'll show you (in the Github repo), which I call
 **The Clinic**, takes an input *"I'm Ada Lovelace, book me a dermatology visit"*
 and turns it into a confirmed, eligibility-checked appointment, through real
-identity verification, a coverage check, and an actual scheduling API. And it
-**provably cannot** reach a state where it books before you're verified, or
-double-books a slot. Not because I asked it nicely in a prompt. Because the
-design makes those bad states *unreachable*, and I can prove it, exhaustively,
-before I ever build the code or deploy it to production.
+identity verification, a coverage check, and an actual scheduling API. Its specified
+model makes booking before verification and double-booking unreachable, and its
+authority services independently refuse those operations at runtime. Not because I
+asked it nicely in a prompt. Because the design claim is checked exhaustively before I
+build, and the controlled state is guarded when the system runs.
 
 That *"and I can prove it"* is the whole game. It's the thing a prose prompt can
 never give you. And make no mistake, something big is happening: agentic
@@ -303,7 +303,8 @@ You cannot *force* another agent to do anything. You can only ask, and it decide
 
 Now read that axiom again with an LLM in mind, because this is where my brain started to hyperventilate:
 
-**Everything Promise Theory says about autonomous agents is true of an LLM as a matter of engineering fact, not as a metaphor.**
+**Promise Theory's autonomy lens exposes engineering facts that an LLM-based system
+cannot wish away.**
 
 - You cannot impose behavior on it. No prompt *guarantees* an action.
 - The most a prompt can do is *elicit a promise* to behave a certain way. Because the promiser is stochastic, you the recipient **must** verify.
@@ -327,11 +328,11 @@ idea and completely inert until you can answer: where does the promise *live?*
 What file is it in? How do you check it? How does it survive contact with a real
 framework and a real deploy?
 
-So I put together what I'm calling the **promise-driven-agentic-kit**: a set of files that help a software engineer turn these ideas into a real agentic solution, in Python. You don't so much *run* it as *build* with it. The companion to this piece, **[Everybody Wants to Rule the World — How to Build an Agent You Can Prove](medium-part-2-everybody-wants-to-rule-the-world.md)**, walks the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state machine that proves The Clinic can never book before you're verified; and the enforcement code that keeps a stochastic promiser honest.
+So I put together what I'm calling the **promise-driven-agentic-kit**: a set of files that help a software engineer turn these ideas into a real agentic solution, in Python. You don't so much *run* it as *build* with it. The companion to this piece, **[Everybody Wants to Rule the World — How to Build an Agent with Provable Boundaries](medium-part-2-everybody-wants-to-rule-the-world.md)**, walks the whole method: the single contract document that a model checker, your build code, and the LLM all read from; the state model that makes booking before verification unreachable under its assumptions; and the authority code that assesses proposals while keeping its own safety promise.
 
 ## Here I Go Again
 
-That fear from the start — the rogue agent, the blast radius — here's where it went. A year ago I meant to hand-write every line myself, using AI assist only in small, supervised doses. Today I let an AI coding assistant write essentially all of it, because a proven contract underneath makes that safe. If the arc feels familiar, it should: it's the same one I watched a generation of network engineers walk — "you'll get the CLI out of my cold, dead hands" in one breath, "okay, fine, automate it" a decade later. Fear turns to trust the moment a guarantee shows up underneath. That's the real journey — mine, theirs, and maybe now yours.
+That fear from the start — the rogue agent, the blast radius — here's where it went. A year ago I meant to hand-write every line myself, using AI assist only in small, supervised doses. Today I let an AI coding assistant write essentially all of it, because a model-checked contract and independently tested authority boundaries make the risk bounded and inspectable. If the arc feels familiar, it should: it's the same one I watched a generation of network engineers walk — "you'll get the CLI out of my cold, dead hands" in one breath, "okay, fine, automate it" a decade later. Fear turns to trust the moment a guarantee shows up underneath. That's the real journey — mine, theirs, and maybe now yours.
 
 For now, hold onto the instinct I asked you to keep at the very top. Why should you believe an LLM's promise? You shouldn't, not on its own. You elicit the promise, and then you verify it. *Trust, but verify.* Here, that isn't a proverb. It's the whole method, and it's buildable. Let me prove it to you.
 

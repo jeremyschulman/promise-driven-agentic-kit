@@ -28,13 +28,13 @@
 
   <line x1="62" y1="410" x2="398" y2="410" stroke="#e5e7eb" stroke-width="1.5"/>
   <text x="62" y="440" font-size="12" font-weight="700" letter-spacing="1" fill="#9ca3af">PRODUCES</text>
-  <text x="62" y="466" font-size="14" fill="#1f2937">A verdict. PASS means provably safe.</text>
+  <text x="62" y="466" font-size="14" fill="#1f2937">A verdict. PASS means modeled claims hold.</text>
   <text x="62" y="488" font-size="14" fill="#1f2937">A failure returns a counterexample: the</text>
   <text x="62" y="510" font-size="14" fill="#1f2937">exact step-by-step path to the bad state,</text>
   <text x="62" y="532" font-size="14" fill="#1f2937">so you know precisely what to fix.</text>
 
   <rect x="62" y="640" width="150" height="26" rx="13" fill="#2563eb"/>
-  <text x="137" y="658" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">PROVE &#183; design-time</text>
+  <text x="137" y="658" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">CHECK &#183; design-time</text>
 
   <!-- ===== BUILD ===== -->
   <rect x="450" y="250" width="380" height="450" rx="12" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
@@ -58,8 +58,8 @@
   <line x1="472" y1="470" x2="808" y2="470" stroke="#e5e7eb" stroke-width="1.5"/>
   <text x="472" y="500" font-size="12" font-weight="700" letter-spacing="1" fill="#9ca3af">PRODUCES</text>
   <text x="472" y="526" font-size="14" fill="#1f2937">The agent itself: framework wiring,</text>
-  <text x="472" y="548" font-size="14" fill="#1f2937">plus the enforcement code that backs</text>
-  <text x="472" y="570" font-size="14" fill="#1f2937">every promise.</text>
+  <text x="472" y="548" font-size="14" fill="#1f2937">plus authority code and tests traced</text>
+  <text x="472" y="570" font-size="14" fill="#1f2937">to selected safety claims.</text>
 
   <rect x="472" y="640" width="96" height="26" rx="13" fill="#7c3aed"/>
   <text x="520" y="658" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">COMPOSE</text>
@@ -90,14 +90,14 @@
 
   <line x1="882" y1="470" x2="1218" y2="470" stroke="#e5e7eb" stroke-width="1.5"/>
   <text x="882" y="500" font-size="12" font-weight="700" letter-spacing="1" fill="#9ca3af">PRODUCES</text>
-  <text x="882" y="526" font-size="14" fill="#1f2937">A live agent, with the enforcement</text>
-  <text x="882" y="548" font-size="14" fill="#1f2937">code assessing every action at</text>
+  <text x="882" y="526" font-size="14" fill="#1f2937">A live agent, with authority code</text>
+  <text x="882" y="548" font-size="14" fill="#1f2937">assessing consequential actions at</text>
   <text x="882" y="570" font-size="14" fill="#1f2937">runtime.</text>
 
   <rect x="882" y="640" width="210" height="26" rx="13" fill="#059669"/>
-  <text x="987" y="658" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">ASSESS &#183; runtime &#8594; TRUST</text>
+  <text x="987" y="658" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">ASSESS &#183; runtime &#8594; EVIDENCE</text>
 
   <!-- Bottom banner -->
-  <text x="640" y="758" text-anchor="middle" font-size="16" fill="#6b7280">Proven at design. Enforced at runtime.</text>
-  <text x="640" y="798" text-anchor="middle" font-size="26" font-weight="700" fill="#1f2937">= an agent you can prove, and trust.</text>
+  <text x="640" y="758" text-anchor="middle" font-size="16" fill="#6b7280">Model-checked at design. Assessed at runtime.</text>
+  <text x="640" y="798" text-anchor="middle" font-size="26" font-weight="700" fill="#1f2937">Trust grounded in evidence, not instructions.</text>
 </svg>

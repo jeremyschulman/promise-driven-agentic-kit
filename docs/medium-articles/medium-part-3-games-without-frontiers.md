@@ -1,6 +1,6 @@
 # Games Without Frontiers
 
-### How to compose a system you can prove. The runnable method at system scale: many agents composed through a promise graph, verified offline, so a whole *system* can't make a promise it has no way to keep.
+### How to compose a system whose declared promise graph can be checked for unsupported dependencies before it runs.
 
 *By Jeremy Schulman · Part 3 of 3*
 
@@ -8,7 +8,7 @@
 
 **TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
 
-This is the third and final piece. Part 1, [Promises, Promises — Why Do I Believe?](medium-part-1-why-do-i-believe.md), argued the *why*: you cannot command an LLM, only elicit a promise and then *assess* it. Part 2, [Everybody Wants to Rule the World](medium-part-2-everybody-wants-to-rule-the-world.md), showed the *how* for a single agent: capture the workflow as a contract and Design, Build, and Run it, so it provably cannot reach a state it must never be in.
+This is the third and final piece. Part 1, [Promises, Promises — Why Do I Believe?](medium-part-1-why-do-i-believe.md), argued the *why*: you cannot command an LLM with a guarantee; you can publish a promise proposal and then assess what it does. Part 2, [Everybody Wants to Rule the World](medium-part-2-everybody-wants-to-rule-the-world.md), showed the *how* for a single agent: capture the workflow as a contract, model-check selected safety claims, and protect consequential state at independently controlled boundaries.
 
 But one agent is rarely the whole story. The workflows worth automating are carried by *many* agents cooperating, and that is exactly where most multi-agent designs quietly fall apart. This piece is about composing them without lying to yourself, so that a whole *system* of agents, not just one, can't make a promise it has no way to keep.
 
@@ -26,11 +26,11 @@ Draw the whole clinic that way and its promise graph appears:
 
 ![The Clinic as a promise graph. The patient talks to one superagent; inside, the clinic_orchestrator routes to two LLM subagents (book_appointment and manage_appointment), which lean on three deterministic service agents (patient_registry, provider_schedule, insurance_eligibility). Gray edges are uses meeting offers; the indigo edges are the shared verified-patient dependency that every agent declares against the registry. An unmatched edge is a build failure.](images/clinic-promise-graph.png)
 
-Trace one request through it. A patient says *"book me an appointment."* The orchestrator verifies identity against the `patient_registry`, classifies the intent, and then, instead of *commanding* anyone, hands the request to the subagent whose published offer matches it — here, `book_appointment`. That booking agent in turn *uses* three offers to do its job: the registry's verified patient, the insurer's `eligibility_check`, and the schedule's `open_slots`; then it commits through the schedule's `commit_booking`, where `NoDoubleBook` is kept in code regardless of what the model decided. Every arrow on that path is a promise one agent published and another declared it depends on. None of it is implicit.
+Trace one request through it. A patient says *"book me an appointment."* The orchestrator verifies identity against the `patient_registry`, classifies the intent, and then, instead of *commanding* anyone, hands the request to the subagent whose published offer matches it — here, `book_appointment`. That booking agent in turn *uses* three offers to do its job: the registry's verified patient, the insurer's `eligibility_check`, and the schedule's `open_slots`; then it proposes a commit through the schedule's `commit_booking`. The schedule assesses that proposal and keeps its own `NoDoubleBook` boundary promise regardless of what the model decided. Every arrow on that path is a promise one agent published and another declared it depends on. None of it is implicit.
 
 Each agent publishes a small manifest of its offers and uses. Here's the booking agent promising not to double-book, written as an offer:
 
-![The never_double_book offer from the booking agent's promises: a slot is never booked twice; the commit is refused by the provider schedule if the slot was taken since it was offered — NoDoubleBook, kept in code regardless of the model.](images/code-offer-neverdoublebook.png)
+![The never_double_book offer from the booking agent's promises: a slot is never booked twice, supported by the provider schedule's independent refusal of a taken slot.](images/code-offer-neverdoublebook.png)
 
 Notice the body names its own division of labor: the LLM promises it, the schedule service *keeps* it. Promise-and-assess, made explicit for anyone reading the manifest.
 
@@ -48,21 +48,29 @@ Concretely, that check is just matching names across contracts. The schedule *pu
 
 Miss that match — a `−` with no `+` to meet it — and the build goes red before a single request arrives.
 
-So the wager scales. For one agent it was *"can this reach a bad state?"* For the superagent it becomes *"can this society of agents make a promise it has no way to keep?"* And I answer that before I deploy, too.
+So the wager scales. For one specified model it was *"can this reach a bad state?"*
+For the declared superagent graph it becomes *"does this society advertise a promise
+with no named interior support?"* I can detect that structural defect before I deploy;
+semantic adequacy still requires review and runtime assessment.
 
-I believe engineers building serious systems must have **choice and control**: choice of tools, frameworks, and languages, and control over how they build, deploy, and evolve. Any method worth adopting has to honor that instead of locking you in. So the property I care about most here isn't a feature at all; it's that the method asks nothing of your stack. The two examples prove it: The Clinic and the Trials of the Holy Grail run on **entirely different frameworks** (The Clinic on Google's ADK, the Trials on Pydantic AI) yet they share the *same* contracts and the *same* enforcement code. The only meaningful difference between them is a single file wiring each to its runtime. Everything that makes them *safe* is identical and framework-independent. The method lives in the contracts and the assessment code, not in anybody's framework-of-the-month. Choose your tools; keep your guarantees.
+I believe engineers building serious systems must have **choice and control**: choice of tools, frameworks, and languages, and control over how they build, deploy, and evolve. Any method worth adopting has to honor that instead of locking you in. So the property I care about most here isn't a feature at all; it's that the method asks nothing of your stack. The Clinic and the Trials of the Holy Grail run on **entirely different frameworks** (The Clinic on Google's ADK, the Trials on Pydantic AI) yet share the same contract structure, verification gates, and authority-boundary pattern. Their domain contracts and services differ; the safety architecture is framework-independent. The method lives in the contracts and assessment boundaries, not in anybody's framework-of-the-month. Choose your tools; keep your guarantees.
 
 ## Don't You (Forget About Me)
 
 I don't want to leave you with a vibe. Here's the distilled standard I hold my own systems to, mapped to the lifecycle across the series. If you build nothing else from these pieces, run your design past these:
 
 1. **Treat every model as an autonomous agent.** Design for elicited promises and mandatory assessment, not compliance. This ends the "why won't it obey?" spiral, because you stop expecting obedience.
-2. **Make each agent's self-promises a model-checked contract.** *(Design.)* Formalize ordering and safety as a state machine; prove it exhaustively offline. Keep judgment in prose, quarantined so it can't corrupt the guarantees.
+2. **Publish the runtime agent's proposed promises in a model-checked contract.**
+   *(Design.)* Formalize selected ordering and safety claims as a state machine; check
+   that model exhaustively under its assumptions. Keep judgment in prose, quarantined
+   from the modeled claims.
 3. **Every condition names who satisfies it.** *(Design.)* No hidden dependencies. A condition is either self-assessed or met by a named agent's offer.
-4. **Pair every stochastic promise with a deterministic guarantee.** *(Build.)* The enforcement code isn't belt-and-suspenders. It's the whole point. Never ship the contract without it.
+4. **Pair every stochastic promise with independent assessment and an authority-boundary promise.** *(Build.)* The boundary code isn't belt-and-suspenders. It's the whole point. Never ship the contract without it.
 5. **Make refusal first-class.** *(Run.)* A structured "no" that names the unmet condition is a normal outcome, relayed and recorded, not an exception to swallow.
 6. **Declare what you rely on; forbid unmatched edges.** *(Compose.)* Every use meets an offer. Relying on something nobody promised is a build failure.
-7. **Derive the outside promise from the inside.** *(Compose.)* A superagent, a society of agents behind one face, must generate what it advertises to the world from what its members actually offer, so it can never overstate what it delivers.
+7. **Trace the outside promise to the inside.** *(Compose.)* A superagent, a society of
+   agents behind one face, must name the interior offers supporting what it advertises;
+   reviewers still judge whether those offers semantically justify the exterior claim.
 
 Points 1 through 5 make a single agent trustworthy, from Design through Run; points 6 and 7 make a *system* trustworthy as you compose. And I genuinely believe this is where agentic engineering is heading, whether or not anyone uses the word "promise," because the premise underneath it is simply *true:* the model is an autonomous stochastic agent, and autonomous agents can only be promised, then assessed.
 
@@ -78,11 +86,18 @@ So **skip it** for one-shot Q&A, a single-tool lookup, or a throwaway prototype 
 
 ## The Promise
 
-We've walked the whole method now: the contract that every stage reads, the model check that proves the bad states unreachable, the enforcement code that keeps a promise against a stochastic promiser, and the promise graph that scales it all up to a superagent.
+We've walked the whole method now: the contract that every stage reads, the model
+check that makes bad states unreachable in the specified model, the authority code that
+assesses proposals and keeps its own promise, and the promise graph that scales the
+declared cooperation up to a superagent.
 
 Strip away the machinery and one shape remains, and it's the same shape I first met in 2013. An autonomous actor, handed scoped authority, made safe not by trust but by a guarantee underneath. Then the actor was a config-management agent and the guarantee lived in the OS. Now the actor is an LLM and the guarantee lives in a model-checked contract and its enforcement code. Same idea. New actor. That's the whole reason I'm confident this is a real shift and not a fashion: I've watched this exact pattern cross a boundary from a neighboring discipline once already, and I've spent thirteen years living inside the field it remade.
 
-The prize I promised at the start of this series, The Clinic that *provably cannot* book before you're verified, isn't a trick of a clever prompt. It's the payoff of that shape, made concrete: the contract makes the bad states unreachable, the code makes every promise assessed, and the promise graph makes every dependency something we declared out loud.
+The prize I promised at the start of this series, The Clinic that refuses booking before
+verification and prevents double-booking at its authoritative service boundary, isn't
+a trick of a clever prompt. The contract makes those bad states unreachable in its
+specified model, the code protects the state it controls, and the promise graph makes
+every declared dependency visible.
 
 I packaged all of this as the **promise-driven-agentic-kit**. It isn't an app you run; it's a set of files you build *with*, in Python. It ships two complete worked examples you *can* run and talk to (The Clinic and the Trials of the Holy Grail), the contract schemas, a template that scaffolds a fresh contract-driven agent that's green out of the box, and agentic-coding **Skills** you fold into your own workflow to author and model-check contracts as you go.
 
