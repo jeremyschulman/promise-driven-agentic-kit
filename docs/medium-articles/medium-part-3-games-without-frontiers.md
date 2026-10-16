@@ -6,7 +6,7 @@
 
 ---
 
-**TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
+**TL;DR:** if you just want to look at a GitHub repo: https://github.com/jeremyschulman/promise-driven-agentic-kit.
 
 This is the third and final piece. Part 1, [Promises, Promises — Why Do I Believe?](medium-part-1-why-do-i-believe.md), argued the *why*: you cannot command an LLM with a guarantee; you can publish a promise proposal and then assess what it does. Part 2, [Everybody Wants to Rule the World](medium-part-2-everybody-wants-to-rule-the-world.md), showed the *how* for a single agent: capture the workflow as a contract, model-check selected safety claims, and protect consequential state at independently controlled boundaries.
 

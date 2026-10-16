@@ -5,7 +5,7 @@
 *By Jeremy Schulman · Part 2 of 3*
 
 ---
-**TL;DR:** if you just want to look at a GitHub repo: `<Github repo: TBD>`.
+**TL;DR:** if you just want to look at a GitHub repo: https://github.com/jeremyschulman/promise-driven-agentic-kit.
 
 Does this sound like you?
 
